@@ -15,5 +15,16 @@
   "bugs": {
     "url": "https://github.com/slsriehl/todo-coffeescript/issues"
   },
-  "homepage": "https://github.com/slsriehl/todo-coffeescript#readme"
+  "homepage": "https://github.com/slsriehl/todo-coffeescript#readme",
+  "dependencies": {
+    "coffee-script": "^1.12.4",
+    "express": "^4.15.2",
+    "express-handlebars": "^3.0.0",
+    "gulp": "^3.9.1",
+    "java": "^0.8.0",
+    "less": "^2.7.2",
+    "method-override": "^2.3.7",
+    "mocha": "^3.2.0",
+    "sequelize": "^3.30.2"
+  }
 }
