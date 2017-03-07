@@ -1,0 +1,19 @@
+{
+  "name": "todo-coffeescript",
+  "version": "1.0.0",
+  "description": "A ToDo application with moderately secure login created with Nodejs, CoffeeScript, Express, Express Handlebars, LESS, PostgreSQL, sequelize, gulp, and love.",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slsriehl/todo-coffeescript.git"
+  },
+  "author": "Sarah Schieffer Riehl",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slsriehl/todo-coffeescript/issues"
+  },
+  "homepage": "https://github.com/slsriehl/todo-coffeescript#readme"
+}
