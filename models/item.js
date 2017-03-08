@@ -26,6 +26,8 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
+				Item.belongsTo(models.User, {foreignKey: Item.user_id, onDelete: 'CASCADE'});
+				Item.belongsTo(models.Context, {foreignKey: Item.context_id, onDelete: 'CASCADE'});
         // associations can be defined here
       }
     }
