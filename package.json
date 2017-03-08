@@ -1,30 +1,42 @@
 {
-  "name": "todo-coffeescript",
+  "name": "todo-react",
   "version": "1.0.0",
-  "description": "A ToDo application with moderately secure login created with Nodejs, CoffeeScript, Express, Express Handlebars, LESS, PostgreSQL, sequelize, gulp, and love.",
+  "description": "A to-do application written with Nodejs, React, MySQL, and more.",
   "main": "server.js",
   "scripts": {
     "test": "test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/slsriehl/todo-coffeescript.git"
+    "url": "git+https://github.com/slsriehl/todo-react-less.git"
   },
   "author": "Sarah Schieffer Riehl",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/slsriehl/todo-coffeescript/issues"
+    "url": "https://github.com/slsriehl/todo-react-less/issues"
   },
-  "homepage": "https://github.com/slsriehl/todo-coffeescript#readme",
+  "homepage": "https://github.com/slsriehl/todo-react-less#readme",
   "dependencies": {
+    "body-parser": "^1.17.1",
+    "chai": "^3.5.0",
     "coffee-script": "^1.12.4",
     "express": "^4.15.2",
     "express-handlebars": "^3.0.0",
-    "gulp": "^3.9.1",
-    "java": "^0.8.0",
-    "less": "^2.7.2",
-    "method-override": "^2.3.7",
     "mocha": "^3.2.0",
-    "sequelize": "^3.30.2"
+    "morgan": "^1.8.1",
+    "mysql": "^2.13.0",
+    "sequelize": "^3.30.2",
+    "util": "^0.10.3"
+  },
+  "devDependencies": {
+    "eslint": "^3.13.1",
+    "eslint-plugin-react": "^6.9.0",
+    "graceful-fs": "^4.1.11",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.0.3",
+    "gulp-coffee": "^2.3.4",
+    "gulp-header": "^1.8.8",
+    "gulp-less": "^3.3.0",
+    "gulp-rename": "^1.2.2"
   }
 }
