@@ -6,6 +6,7 @@ const util = require('util');
 const express         = require('express'),
       bodyParser      = require('body-parser'),
       logger          = require('morgan'),
+			hbs							= require('express-handlebars'),
       //cookieParser    = require('cookie-parser'),
       app             = express(),
 			routes 					= require('./routes/index');
@@ -17,7 +18,13 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(express.static("./public"));
 
-app.set('view engine', 'html');
+app.engine('hbs', hbs({
+  extname: 'hbs',
+  defaultLayout: 'main',
+  layoutsDir: __dirname + '/views/layouts/',
+  partialsDir: __dirname + '/views/partials/'
+}));
+app.set('view engine', 'handlebars');
 
 //++++++ HTML Routes +++++
 app.get('/', (req, res) => {
