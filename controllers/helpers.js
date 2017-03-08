@@ -8,7 +8,7 @@ const helpers = {
 		.then(() => {
 			//TODO: bcrypt the password here too
 			return models.User
-			.update({ objToUpdate }, {
+			.update(objToUpdate, {
 				//TODO: object destructuring threw an error here, fix maybe?
 				where: { email: req.body.email, password: req.body.password }
 			})

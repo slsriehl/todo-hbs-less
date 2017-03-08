@@ -37,6 +37,11 @@ app.use(routes);
 // ++++++ SERVER LISTEN ++++++
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, function() {
-  console.log("server.js listening to your mom on PORT: " + PORT);
+const server = app.listen(PORT, function () {
+  const host = server.address().address;
+  const port = server.address().port;
+
+  console.log('express server listening to your mom at http://%s:%s', host, port);
 });
+
+module.exports = server;

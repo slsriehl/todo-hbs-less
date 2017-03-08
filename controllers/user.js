@@ -19,7 +19,9 @@ const controller = {
 				.then((data) => {
 					//TODO: add cookies and login user on signup. sessions?
 					if(data) {
-						res.send('Signup successful!  Start saving to-dos now.')
+						res.send('Signup successful!  Start saving to-dos now.');
+					} else if(!data) {
+						res.send('signup not successful.');
 					}
 					console.log(`data from user save ${util.inspect(data)}`);
 				});
@@ -37,14 +39,15 @@ const controller = {
 		.then(() => {
 			return models.User
 				.findOne({
-					where:{ email, password } = req.body
+					//obj destructing doesn't work.
+					where:{ email: req.body.email, password: req.body.password }
 				})
 				.then((data) => {
 					//TODO: send a cookie instead of the data on login. sessions?
 					if(!data) {
 						res.send(`Sorry, your credentials don't match any users.  Please check them and try again.`);
 					} else {
-						res.send(data);
+						res.json(data);
 					}
 				});
 		});
