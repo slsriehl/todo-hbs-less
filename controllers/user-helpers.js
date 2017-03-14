@@ -50,7 +50,12 @@ const helpers = {
 	//bcrypt retrieve password
 	getHash: (password, hash) => {
 		return bcrypt.compareSync(password, hash);
-	}
+	},
+	saveSession: function(req, res, data) {
+    req.session.email = data.dataValues.email;
+    req.session.cookie.expires = 1000 * 60 * 60 * 24 * 3;
+    req.session.save();
+  },
 }
 
 module.exports = helpers;

@@ -1,0 +1,4 @@
+//create users controller
+add logout path to users controller
+incorporate sessions
+create handlebars templates to render login and sign up forms

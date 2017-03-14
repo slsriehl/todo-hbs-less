@@ -19,9 +19,11 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
-    "coffee-script": "^1.12.4",
+    "connect-sequelize": "^2.0.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
     "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.1",
     "morgan": "^1.8.1",
     "mysql": "^2.13.0",
     "sequelize": "^3.30.2",

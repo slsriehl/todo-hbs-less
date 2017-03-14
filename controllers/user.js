@@ -28,9 +28,12 @@ const controller = {
 				.then((data) => {
 					//TODO: add cookies and login user on signup. sessions?
 					if(data) {
-						res.render('index.hbs', {user: true, data: 'Signup successful!  Start saving to-dos now.'});
+						req.session.success = 'Signup successful!  Start saving to-dos now.';
+						helpers.saveSession(req, res, data);
+						res.render('index.hbs', {user: true, data: req.session.success});
 					} else if(!data) {
-						res.render('index.hbs', {user: true, data: 'Signup not successful.'});
+						req.session.error = 'Signup not successful.';
+						res.render('index.hbs', {user: true, data: req.session.error});
 					}
 					console.log(`data from user save ${util.inspect(data)}`);
 				});
