@@ -28,7 +28,7 @@ app.set('view engine', 'handlebars');
 
 //++++++ HTML Routes +++++
 app.get('/', (req, res) => {
-	res.render('main.hbs');
+	res.render('index.hbs');
 });
 
 //++++++ API Routes ++++++

@@ -7,13 +7,7 @@ module.exports = function(sequelize, DataTypes) {
 		},
     password: {
 			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				len: {
-					args: [8, 25],
-					msg: "Your password must be between 8 and 25 characters.  Please try again."
-				}
-			}
+			allowNull: false
 		},
   }, {
     classMethods: {
