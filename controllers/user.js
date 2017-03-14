@@ -28,9 +28,9 @@ const controller = {
 				.then((data) => {
 					//TODO: add cookies and login user on signup. sessions?
 					if(data) {
-						res.send('Signup successful!  Start saving to-dos now.');
+						res.render('index.hbs', {user: true, data: 'Signup successful!  Start saving to-dos now.'});
 					} else if(!data) {
-						res.send('signup not successful.');
+						res.render('index.hbs', {user: true, data: 'Signup not successful.'});
 					}
 					console.log(`data from user save ${util.inspect(data)}`);
 				});
@@ -52,12 +52,12 @@ const controller = {
 				.then((data) => {
 					//TODO: send a cookie instead of the data on login. sessions?
 					if(!data) {
-						res.send(`Sorry, your credentials don't match any users.  Please check them and try again.`);
+						res.render('index.hbs', {user: true, data:`Sorry, your credentials don't match any users.  Please check them and try again.`});
 					} else {
 						//compare stored hash to password sent in post request
 						const hash = helpers.getHash(req.body.password, data.password);
 						if (hash) {
-							res.send(`You have successfully logged in.`);
+							res.render('index.hbs', {user: true, data: `You have successfully logged in.`});
 						}
 					}
 				});
