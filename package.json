@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/slsriehl/todo-hbs-less#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
     "coffee-script": "^1.12.4",
     "express": "^4.15.2",

@@ -1,5 +1,5 @@
 const models = require('../models');
-const helpers = require('./helpers');
+const helpers = require('./user-helpers');
 
 const util = require('util');
 
@@ -12,10 +12,19 @@ const controller = {
 		//body elements are email and password
 		console.log(req.body);
 		//sync models and save user to the Users table
+		//hash password
+		const hash = helpers.setHash(req.body.password);
+		console.log(hash);
+		//create new user to save
+		const newUser = {
+			email: req.body.email,
+			password: hash
+		}
+		//sequelize call to save user
 		models.User.sync()
 		.then(() => {
 			return models.User
-				.create({ email, password } = req.body)
+				.create(newUser)
 				.then((data) => {
 					//TODO: add cookies and login user on signup. sessions?
 					if(data) {
@@ -33,21 +42,23 @@ const controller = {
 		//body elements are email and password
 		console.log(req.body);
 		//sync models and authenticate user against the Users table
-		//TODO: bcrypt password and store the hash
-		//TODO: only retrieve the email and not whole user object
 		models.User.sync()
 		.then(() => {
 			return models.User
 				.findOne({
 					//obj destructing doesn't work.
-					where:{ email: req.body.email, password: req.body.password }
+					where: { email: req.body.email }
 				})
 				.then((data) => {
 					//TODO: send a cookie instead of the data on login. sessions?
 					if(!data) {
 						res.send(`Sorry, your credentials don't match any users.  Please check them and try again.`);
 					} else {
-						res.json(data);
+						//compare stored hash to password sent in post request
+						const hash = helpers.getHash(req.body.password, data.password);
+						if (hash) {
+							res.send(`You have successfully logged in.`);
+						}
 					}
 				});
 		});
@@ -55,9 +66,11 @@ const controller = {
 	updateUser: (req, res) => {
 		//the user will provide either a new password or a new email to update their account
 		console.log(req.body);
+		//they must send their current password to authorize them to change the data
 		if(req.body.newPassword) {
 			//pass the new password to the helper function to change it
-			const objToUpdate = { password: req.body.newPassword };
+			const hash = setHash(req.body.newPassword)
+			const objToUpdate = { password: hash };
 			helpers.updateUser(req, res, objToUpdate);
 		} else if(req.body.newEmail) {
 			//pass the new email to the helper function to change it
@@ -72,19 +85,30 @@ const controller = {
 		models.User.sync()
 		.then(() => {
 			return models.User
-			.destroy({
-				//object destructuring doesn't work here either. pooh!
-				where: { email: req.body.email, password: req.body.password }
+			.findOne({
+				where: { email: req.body.email }
 			})
 			.then((data) => {
-				console.log(`data ${util.inspect(data)}`);
-				console.log(typeof data);
-				if(data === 0) {
-					res.send(`Sorry, your account wasn't deleted.  Please check your credentials and try again.`);
-				} else if(data === 1) {
-					res.send('Your account and all your to-dos were successfully deleted.');
+				console.log(data.dataValues);
+				const hash = helpers.getHash(req.body.password, data.dataValues.password);
+				if(hash) {
+					return models.User
+					.destroy({
+						//object destructuring doesn't work here either. pooh!
+						where: { email: req.body.email }
+					})
+					.then((data) => {
+						console.log(`data ${util.inspect(data)}`);
+						console.log(typeof data);
+						if(data === 0) {
+							res.send(`Sorry, your account wasn't deleted.  Please check your credentials and try again.`);
+						} else if(data === 1) {
+							res.send('Your account and all your to-dos were successfully deleted.');
+						}
+					});
 				}
 			});
+
 		});
 	}
 }
