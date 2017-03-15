@@ -30,10 +30,11 @@ const controller = {
 					if(data) {
 						req.session.success = 'Signup successful!  Start saving to-dos now.';
 						helpers.saveSession(req, res, data);
-						res.render('index.hbs', {user: true, data: req.session.success});
+						res.render('index.hbs', {user: true, data: req.session});
 					} else if(!data) {
 						req.session.error = 'Signup not successful.';
-						res.render('index.hbs', {user: true, data: req.session.error});
+						helpers.saveSession(req, res, data);
+						res.render('index.hbs', {user: true, data: req.session});
 					}
 					console.log(`data from user save ${util.inspect(data)}`);
 				});
@@ -55,16 +56,24 @@ const controller = {
 				.then((data) => {
 					//TODO: send a cookie instead of the data on login. sessions?
 					if(!data) {
-						res.render('index.hbs', {user: true, data:`Sorry, your credentials don't match any users.  Please check them and try again.`});
+						req.session.error = `Sorry, your credentials don't match any users.  Please check them and try again.`;
+						helpers.saveSession(req, res, data);
+						res.render('index.hbs', {user: true, data: req.session});
 					} else {
 						//compare stored hash to password sent in post request
-						const hash = helpers.getHash(req.body.password, data.password);
-						if (hash) {
-							res.render('index.hbs', {user: true, data: `You have successfully logged in.`});
+						const hash = helpers.getHash(req.body.password, data.dataValues.password);
+						if(hash) {
+							req.session.success = `You have successfully logged in.`;
+							helpers.saveSession(req, res, data);
+							res.render('index.hbs', {user: true, data: req.session});
 						}
 					}
 				});
 		});
+	},
+	logoutUser: (req, res) => {
+		console.log(req.body);
+		//
 	},
 	updateUser: (req, res) => {
 		//the user will provide either a new password or a new email to update their account
@@ -80,7 +89,9 @@ const controller = {
 			const objToUpdate = { email: req.body.newEmail };
 			helpers.updateUser(req, res, objToUpdate);
 		} else {
-			res.send('Please check the data you were trying to change and send it again.')
+			req.session.error = 'Please check the data you were trying to change and send it again.';
+			req.session.save();
+			res.render('index.hbs', {user: true, data: req.session})
 		}
 	},
 	deleteUser: (req, res) => {
@@ -101,17 +112,17 @@ const controller = {
 						where: { email: req.body.email }
 					})
 					.then((data) => {
+						//response from deleting the user
 						console.log(`data ${util.inspect(data)}`);
 						console.log(typeof data);
 						if(data === 0) {
-							res.send(`Sorry, your account wasn't deleted.  Please check your credentials and try again.`);
+							res.render('index.hbs', {user: true, data: `Sorry, your account wasn't deleted.  Please check your credentials and try again.`});
 						} else if(data === 1) {
-							res.send('Your account and all your to-dos were successfully deleted.');
+							res.render('index.hbs', {user: true, data: 'Your account and all your to-dos were successfully deleted.'});
 						}
 					});
 				}
 			});
-
 		});
 	}
 }

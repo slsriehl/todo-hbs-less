@@ -1,4 +1,9 @@
 //create users controller
+//incorporate sessions
+//create handlebars templates to render login and sign up forms
+write coffeescript to receive handlebars render function and create a cookie from the session
+use coffeescript to send forms with axios instead of method override
+create click events on login, logout, signup, settings/email spans in coffeescript
+add jquery to html scripts
 add logout path to users controller
-incorporate sessions
-create handlebars templates to render login and sign up forms
+use a series of partials to render page, figure out booleans to send

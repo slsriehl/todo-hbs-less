@@ -29,10 +29,14 @@ const helpers = {
 						console.log(dataStr)
 						//user mods not saved
 						if(dataStr === '[0]') {
-							res.send(`Info not updated.  Try again.`);
+							req.session.error = `Info not updated.  Try again.`;
+							req.session.save();
+							res.render({user: true, data: req.session});
 							//user mods not saved
 						} else if (dataStr === '[1]') {
-							res.send(`You're golden!  Please use your new credentials to log in in the future.`);
+							req.session.success = `You're golden!  Please use your new credentials to log in in the future.`;
+							req.session.save();
+							res.render({user: true, data: req.session});
 						}
 					});
 				} else {

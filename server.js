@@ -32,7 +32,6 @@ app.set('view engine', 'handlebars');
 const session 		= require('express-session'),
 			database 		= require('./models').sequelize,
  			SequelStore	= require('connect-sequelize')(session),
-			config 			= require('./config/config.json'),
 			secret 			= require('./config/secret'),
 			modelName		= 'ConnectSession';
 
