@@ -5,6 +5,7 @@ var cleanCSS = require('gulp-clean-css');
 var rename = require("gulp-rename");
 var coffee = require('gulp-coffee');
 var pkg = require('./package.json');
+var uglify = require('gulp-uglify');
 
 // Set the banner content
 var banner = ['/*!\n',
@@ -37,5 +38,13 @@ gulp.task('coffee', function() {
     .pipe(gulp.dest('./public/js'));
 });
 
+gulp.task('minify-js', function() {
+  return gulp.src('./public/js/index.js')
+    .pipe(uglify())
+    .pipe(header(banner, { pkg: pkg }))
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulp.dest('./public/js'))
+});
+
 // Run everything
-gulp.task('dev', ['less', 'minify-css', 'coffee']);
+gulp.task('dev', ['less', 'minify-css', 'coffee', 'minify-js']);

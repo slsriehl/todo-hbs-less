@@ -24,6 +24,7 @@
     "express": "^4.15.2",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.1",
+    "gulp-uglify": "^2.1.0",
     "morgan": "^1.8.1",
     "mysql": "^2.13.0",
     "sequelize": "^3.30.2",

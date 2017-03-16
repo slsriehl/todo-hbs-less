@@ -30,11 +30,11 @@ const controller = {
 					if(data) {
 						req.session.success = 'Signup successful!  Start saving to-dos now.';
 						helpers.saveSession(req, res, data);
-						res.render('index.hbs', {user: true, data: req.session});
+						res.render('index.hbs', {user: true, data: req.session.success});
 					} else if(!data) {
 						req.session.error = 'Signup not successful.';
 						helpers.saveSession(req, res, data);
-						res.render('index.hbs', {user: true, data: req.session});
+						res.render('index.hbs', {user: true, data: req.session.error});
 					}
 					console.log(`data from user save ${util.inspect(data)}`);
 				});
