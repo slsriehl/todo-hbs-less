@@ -40,7 +40,7 @@ handleSubmit = function(event, postTo) {
   console.log(data);
   axios.post(postTo, data).then(function(result) {
     console.log(result);
-    $('html').html(result.data);
+    $('body').html(result.data);
     return createCookie('do-it', result.headers.cookie, 3);
   })["catch"](function(error) {
     return console.log(error);
@@ -63,7 +63,7 @@ handleLoginSubmit = function(event) {
 logout = function(event) {
   return axios["delete"]('/user/logout').then(function(result) {
     console.log(result);
-    return $('html').html(result.data);
+    return $('body').html(result.data);
   })["catch"](function(error) {
     return console.log(error);
   });

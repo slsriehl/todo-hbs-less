@@ -29,7 +29,7 @@ handleSubmit = (event, postTo) ->
 	axios.post(postTo, data)
 	.then (result) ->
 		console.log result
-		$('html').html(result.data)
+		$('body').html(result.data)
 		# document.write result.data
 		createCookie('do-it', result.headers.cookie, 3)
 	.catch (error) ->
@@ -48,7 +48,7 @@ logout = (event) ->
 	axios.delete('/user/logout')
 	.then (result) ->
 		console.log result
-		$('html').html(result.data)
+		$('body').html(result.data)
 		# document.write result.data
 	.catch (error) ->
 		console.log error
