@@ -58,16 +58,17 @@ const controller = {
 				//TODO: send a cookie instead of the data on login. sessions?
 				console.log(`data ${util.inspect(data)}`);
 				if(!data) {
-					req.session.error = `Sorry, your credentials don't match any users.  Please check them and try again.`;
-					helpers.saveSession(req, res, data);
-					res.render('index.hbs', {data: req.session.error});
+					helpers.loginFail(req, res);
 				} else {
 					//compare stored hash to password sent in post request
 					const hash = helpers.getHash(req.body.password, data.dataValues.password);
 					if(hash) {
 						req.session.success = `You have successfully logged in.`;
 						helpers.saveSession(req, res, data);
+						res.header('Cookie', req.session.id);
 						res.render('todos.hbs', {data: req.session.success});
+					} else {
+						helpers.loginFail(req, res);
 					}
 				}
 			})
