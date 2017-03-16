@@ -31,11 +31,11 @@ const controller = {
 						req.session.success = 'Signup successful!  Start saving to-dos now.';
 						helpers.saveSession(req, res, data);
 						res.header('Cookie', req.session.id);
-						res.render('index.hbs', {user: true, data: req.session.success});
+						res.render('todos.hbs', {data: req.session.success});
 					} else if(!data) {
 						req.session.error = 'Signup not successful.';
 						helpers.saveSession(req, res, data);
-						res.render('index.hbs', {user: true, data: req.session.error});
+						res.render('signup.hbs', {data: req.session.error});
 					}
 					console.log(`data from user save ${util.inspect(data)}`);
 				});
@@ -50,26 +50,28 @@ const controller = {
 		models.User.sync()
 		.then(() => {
 			return models.User
-				.findOne({
-					//obj destructing doesn't work.
-					where: { email: req.body.email }
-				})
-				.then((data) => {
-					//TODO: send a cookie instead of the data on login. sessions?
-					if(!data) {
-						req.session.error = `Sorry, your credentials don't match any users.  Please check them and try again.`;
+			.findOne({
+				//obj destructing doesn't work.
+				where: { email: req.body.email }
+			})
+			.then((data) => {
+				//TODO: send a cookie instead of the data on login. sessions?
+				console.log(`data ${util.inspect(data)}`);
+				if(!data) {
+					req.session.error = `Sorry, your credentials don't match any users.  Please check them and try again.`;
+					helpers.saveSession(req, res, data);
+					res.render('index.hbs', {data: req.session.error});
+				} else {
+					//compare stored hash to password sent in post request
+					const hash = helpers.getHash(req.body.password, data.dataValues.password);
+					if(hash) {
+						req.session.success = `You have successfully logged in.`;
 						helpers.saveSession(req, res, data);
-						res.render('index.hbs', {user: true, data: req.session});
-					} else {
-						//compare stored hash to password sent in post request
-						const hash = helpers.getHash(req.body.password, data.dataValues.password);
-						if(hash) {
-							req.session.success = `You have successfully logged in.`;
-							helpers.saveSession(req, res, data);
-							res.render('index.hbs', {user: true, data: req.session});
-						}
+						res.render('todos.hbs', {data: req.session.success});
 					}
-				});
+				}
+			})
+			.catch((error) => console.log(error));
 		});
 	},
 	logoutUser: (req, res) => {

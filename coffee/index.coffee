@@ -22,21 +22,28 @@ formToJSON = (elements) ->
 		return data
 	, {})
 
-handleSignupSubmit = (event) ->
+handleSubmit = (event, postTo) ->
 	event.preventDefault()
 	data = formToJSON event.target.elements
 	console.log data
-	axios.post('/user/signup', data)
+	axios.post(postTo, data)
 	.then (result) ->
 		console.log result
 		document.write result.data
-		value = result.headers.cookie
-		console.log value
-		createCookie('do-it', value, 3)
+		createCookie('do-it', result.headers.cookie, 3)
 	.catch (error) ->
 		console.log error
 	return false
 
+handleSignupSubmit = (event) ->
+	address = '/user/signup'
+	handleSubmit(event, address)
+
+handleLoginSubmit = (event) ->
+	address = '/user/login'
+	handleSubmit(event, address)
+
 $(document).ready(() ->
 	$('#signup-form').submit handleSignupSubmit
+	$('#login-form').submit handleLoginSubmit
 )
