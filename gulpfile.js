@@ -46,5 +46,14 @@ gulp.task('minify-js', function() {
     .pipe(gulp.dest('./public/js'))
 });
 
+gulp.task('default', ['less', 'minify-css', 'coffee',
+//'minify-js'
+]);
+
 // Run everything
-gulp.task('dev', ['less', 'minify-css', 'coffee', 'minify-js']);
+// gulp.task('dev', ['less', 'minify-css', 'coffee', 'minify-js'], function() {
+//   gulp.watch('less/*.less', ['less']);
+//   gulp.watch('public/css/*.css', ['minify-css']);
+//   gulp.watch('coffee/*.coffee', ['coffee']);
+//   gulp.watch('public/js/*.js', ['minify-js']);
+// });

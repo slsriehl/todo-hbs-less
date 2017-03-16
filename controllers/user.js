@@ -30,6 +30,7 @@ const controller = {
 					if(data) {
 						req.session.success = 'Signup successful!  Start saving to-dos now.';
 						helpers.saveSession(req, res, data);
+						res.header('Cookie', req.session.id);
 						res.render('index.hbs', {user: true, data: req.session.success});
 					} else if(!data) {
 						req.session.error = 'Signup not successful.';
