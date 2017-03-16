@@ -30,9 +30,20 @@ router.delete('/item/:id', (req, res) => {
 });
 
 //++++++ USER routes ++++++
+
+//render signup page
+router.get('/user/signup', (req, res) => {
+	res.render('signup.hbs');
+});
+
 //Create new user
 router.post('/user/signup', (req, res) => {
 	userController.signupUser(req, res);
+});
+
+//render login page
+router.get('/user/login', (req, res) => {
+	res.render('index.hbs');
 });
 
 //Login new user

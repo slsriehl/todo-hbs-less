@@ -1,9 +1,33 @@
 //create users controller
 //incorporate sessions
 //create handlebars templates to render login and sign up forms
-write coffeescript to receive handlebars render function and create a cookie from the session
-use coffeescript to send forms with axios instead of method override
+//write coffeescript to receive handlebars render function and create a cookie from the session
+//use coffeescript to send forms with axios instead of method override
 create click events on login, logout, signup, settings/email spans in coffeescript
-add jquery to html scripts
-add logout path to users controller
-use a series of partials to render page, figure out booleans to send
+//add jquery to html scripts
+//add logout path to users controller
+//create login = index.hbs, signup = signup.hbs, todos = todos.hbs
+//create axios call to render signup
+//create axios call to render login
+create axios call to render settings
+create backend settings get route
+create settings template
+modify put controller to change both username and password
+create axios calls to hit put controller
+//create axios call to logout
+
+test all user api routes
+test user html
+test user front end javascript
+
+create contexts controller
+print contexts to page
+write coffeescript to crud adding contexts
+
+create todos controller
+write front end coffeescript to axios crud the todos
+print todos to page
+
+learn less
+style login and signup pages
+write coffeescript and less to create dynamic, interactive todos with adding contexts

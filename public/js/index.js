@@ -1,4 +1,4 @@
-var createCookie, formToJSON, handleLoginSubmit, handleSignupSubmit, handleSubmit, logout, readCookie;
+var createCookie, formToJSON, getLogin, getLoginSignup, getSignup, logout, postLogin, postLoginSignup, postSignup, readCookie;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -33,9 +33,17 @@ formToJSON = function(elements) {
   }, {});
 };
 
-handleSubmit = function(event, postTo) {
+getLoginSignup = function(event, pathTo) {
+  return axios.get(pathTo).then(function(result) {
+    console.log(result);
+    return $('body').html(result.data);
+  })["catch"](function(error) {
+    return console.log(error);
+  });
+};
+
+postLoginSignup = function(event, postTo) {
   var data;
-  event.preventDefault();
   data = formToJSON(event.target.elements);
   console.log(data);
   axios.post(postTo, data).then(function(result) {
@@ -48,16 +56,28 @@ handleSubmit = function(event, postTo) {
   return false;
 };
 
-handleSignupSubmit = function(event) {
+getSignup = function(event) {
   var address;
   address = '/user/signup';
-  return handleSubmit(event, address);
+  return getLoginSignup(event, address);
 };
 
-handleLoginSubmit = function(event) {
+getLogin = function(event) {
   var address;
   address = '/user/login';
-  return handleSubmit(event, address);
+  return getLoginSignup(event, address);
+};
+
+postSignup = function(event) {
+  var address;
+  address = '/user/signup';
+  return postLoginSignup(event, address);
+};
+
+postLogin = function(event) {
+  var address;
+  address = '/user/login';
+  return postLoginSignup(event, address);
 };
 
 logout = function(event) {
@@ -69,9 +89,12 @@ logout = function(event) {
   });
 };
 
-$(document).on('click', '#log-out', logout);
+$(document).on('click', '#sign-up', getSignup);
 
-$(document).ready(function() {
-  $('#signup-form').submit(handleSignupSubmit);
-  return $('#login-form').submit(handleLoginSubmit);
-});
+$(document).on('click', '#log-in', getLogin);
+
+$(document).on('submit', '#signup-form', postSignup);
+
+$(document).on('submit', '#login-form', postLogin);
+
+$(document).on('click', '#log-out', logout);
