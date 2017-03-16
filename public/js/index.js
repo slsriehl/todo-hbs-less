@@ -1,4 +1,4 @@
-var createCookie, formToJSON, handleLoginSubmit, handleSignupSubmit, handleSubmit, readCookie;
+var createCookie, formToJSON, handleLoginSubmit, handleSignupSubmit, handleSubmit, logout, readCookie;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -40,7 +40,7 @@ handleSubmit = function(event, postTo) {
   console.log(data);
   axios.post(postTo, data).then(function(result) {
     console.log(result);
-    document.write(result.data);
+    $('html').html(result.data);
     return createCookie('do-it', result.headers.cookie, 3);
   })["catch"](function(error) {
     return console.log(error);
@@ -59,6 +59,17 @@ handleLoginSubmit = function(event) {
   address = '/user/login';
   return handleSubmit(event, address);
 };
+
+logout = function(event) {
+  return axios["delete"]('/user/logout').then(function(result) {
+    console.log(result);
+    return $('html').html(result.data);
+  })["catch"](function(error) {
+    return console.log(error);
+  });
+};
+
+$(document).on('click', '#log-out', logout);
 
 $(document).ready(function() {
   $('#signup-form').submit(handleSignupSubmit);

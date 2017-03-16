@@ -62,7 +62,6 @@ const helpers = {
   },
 	loginFail: (req, res) => {
 		req.session.error = `Sorry, your credentials don't match any users.  Please check them and try again.`;
-		helpers.saveSession(req, res, data);
 		res.render('index.hbs', {data: req.session.error});
 	}
 }

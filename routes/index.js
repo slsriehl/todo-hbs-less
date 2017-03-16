@@ -50,6 +50,10 @@ router.delete('/user', (req, res) => {
 	userController.deleteUser(req, res);
 });
 
+router.delete('/user/logout', (req, res) => {
+	userController.logoutUser(req, res);
+});
+
 //++++++ CONTEXT routes ++++++
 //Create new context
 router.post('/context', (req, res) => {

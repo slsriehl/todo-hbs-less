@@ -77,6 +77,8 @@ const controller = {
 	},
 	logoutUser: (req, res) => {
 		console.log(req.body);
+		req.session.destroy();
+		res.render('index.hbs');
 		//
 	},
 	updateUser: (req, res) => {
