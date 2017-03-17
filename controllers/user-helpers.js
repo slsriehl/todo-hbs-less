@@ -31,12 +31,15 @@ const helpers = {
 						if(dataStr === '[0]') {
 							req.session.error = `Info not updated.  Try again.`;
 							req.session.save();
-							res.render({user: true, data: req.session});
+							res.render('settings.hbs', {data: req.session.error, email: req.session.email});
 							//user mods not saved
 						} else if (dataStr === '[1]') {
 							req.session.success = `You're golden!  Please use your new credentials to log in in the future.`;
+							if(req.body.newEmail) {
+								req.session.email = req.body.newEmail;
+							}
 							req.session.save();
-							res.render({user: true, data: req.session});
+							res.render('settings.hbs', {data: req.session.success, email: req.session.email});
 						}
 					});
 				} else {

@@ -81,13 +81,34 @@ const controller = {
 		res.render('index.hbs');
 		//
 	},
+	userSettings: (req, res) => {
+		console.log(req.params);
+		models.ConnectSession.sync()
+		.then(() => {
+			return models.ConnectSession
+			.findOne({
+				where: { sid: req.params.cookie }
+			})
+			.then((data) => {
+				console.log(data.dataValues);
+				sessionObj = JSON.parse(data.dataValues.data);
+				console.log(sessionObj.email);
+				res.render('settings.hbs', {email: sessionObj.email});
+			})
+		});
+
+	},
 	updateUser: (req, res) => {
 		//the user will provide either a new password or a new email to update their account
 		console.log(req.body);
 		//they must send their current password to authorize them to change the data
-		if(req.body.newPassword) {
+		if(req.body.newPassword && req.body.newEmail) {
+			const hash = helpers.setHash(req.body.newPassword)
+			const objToUpdate = { password: hash, email: req.body.newEmail };
+			helpers.updateUser(req, res, objToUpdate);
+		} else if(req.body.newPassword) {
 			//pass the new password to the helper function to change it
-			const hash = setHash(req.body.newPassword)
+			const hash = helpers.setHash(req.body.newPassword)
 			const objToUpdate = { password: hash };
 			helpers.updateUser(req, res, objToUpdate);
 		} else if(req.body.newEmail) {

@@ -46,7 +46,7 @@ gulp.task('minify-js', function() {
     .pipe(gulp.dest('./public/js'))
 });
 
-gulp.task('default', ['less', 'minify-css', 'coffee',
+gulp.task('default', ['coffee', 'less', 'minify-css', 
 //'minify-js'
 ]);
 

@@ -51,6 +51,11 @@ router.post('/user/login', (req, res) => {
 	userController.loginUser(req, res);
 });
 
+//get user settings
+router.get('/user/:cookie', (req, res) => {
+	userController.userSettings(req, res);
+});
+
 //Update user
 router.put('/user', (req, res) => {
 	userController.updateUser(req, res);

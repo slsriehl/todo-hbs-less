@@ -1,0 +1,23 @@
+<div>
+	<div class="header">
+		<span id="log-out">Log Out</span> | <span id="go-to-dos">Go To To-Dos</span>
+	</div>
+
+{{#if data}}
+<div>
+	{{data}}
+</div>
+{{/if}}
+
+<div class="getin-form">
+	<!-- <form id="deleteTask" method="POST" action="/todos/{{id}}?_method=DELETE" /> -->
+	<form id="change-form">
+		<h3>Change your email or password</h3>
+		<span id="logged-in-email">{{email}}</span>
+		<input type="password" placeholder="password" name="password" />
+		<input type="email" placeholder="new email" name="newEmail" />
+		<input type="password" placeholder="new password" name="newPassword" />
+		<button type="submit">Change Data</button>
+	</form>
+
+</div>

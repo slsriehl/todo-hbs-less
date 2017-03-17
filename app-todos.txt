@@ -9,12 +9,13 @@ create click events on login, logout, signup, settings/email spans in coffeescri
 //create login = index.hbs, signup = signup.hbs, todos = todos.hbs
 //create axios call to render signup
 //create axios call to render login
-create axios call to render settings
-create backend settings get route
-create settings template
-modify put controller to change both username and password
-create axios calls to hit put controller
 //create axios call to logout
+//create backend settings get route
+//create settings template
+//modify put controller to change both username and password
+create axios calls to hit put controller
+create axios call to render settings
+
 
 test all user api routes
 test user html
