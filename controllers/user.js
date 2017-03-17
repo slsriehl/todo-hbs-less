@@ -7,6 +7,35 @@ const util = require('util');
 //from the same res.render
 
 const controller = {
+	//when the root route loads, check the cookie against the session store
+	// and load the signin page or the todo page accordingly
+	land: (req, res) => {
+		//how to get the cookie from the front end to compare it to the back end?
+		console.log(`this is req.params.cookie ${req.params.cookie}`);
+		models.ConnectSession.sync()
+		.then(() => {
+			return models.ConnectSession
+			.findOne({
+				where: { sid: req.params.cookie }
+			})
+			.then((data) => {
+				console.log(data.dataValues);
+				if(data) {
+					res.render('todos.hbs');
+				} else {
+					res.render('login.hbs');
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+		})
+		.catch((error) => {
+			console.log(error);
+		})
+
+	},
+
 	//save a new user to the db
 	signupUser: (req, res) => {
 		//body elements are email and password
@@ -28,14 +57,14 @@ const controller = {
 				.then((data) => {
 					//TODO: add cookies and login user on signup. sessions?
 					if(data) {
-						req.session.success = 'Signup successful!  Start saving to-dos now.';
+						req.session.message = 'Signup successful!  Start saving to-dos now.';
 						helpers.saveSession(req, res, data);
 						res.header('Cookie', req.session.id);
-						res.render('todos.hbs', {data: req.session.success});
+						res.render('todos.hbs', {data: req.session.message});
 					} else if(!data) {
-						req.session.error = 'Signup not successful.';
+						req.session.message = 'Signup not successful.';
 						helpers.saveSession(req, res, data);
-						res.render('signup.hbs', {data: req.session.error});
+						res.render('signup.hbs', {data: req.session.message});
 					}
 					console.log(`data from user save ${util.inspect(data)}`);
 				});
@@ -63,10 +92,10 @@ const controller = {
 					//compare stored hash to password sent in post request
 					const hash = helpers.getHash(req.body.password, data.dataValues.password);
 					if(hash) {
-						req.session.success = `You have successfully logged in.`;
+						req.session.message = `You have successfully logged in.`;
 						helpers.saveSession(req, res, data);
 						res.header('Cookie', req.session.id);
-						res.render('todos.hbs', {data: req.session.success});
+						res.render('todos.hbs', {data: req.session.message});
 					} else {
 						helpers.loginFail(req, res);
 					}
@@ -78,7 +107,7 @@ const controller = {
 	logoutUser: (req, res) => {
 		console.log(req.body);
 		req.session.destroy();
-		res.render('index.hbs');
+		res.render('login.hbs');
 		//
 	},
 	userSettings: (req, res) => {
@@ -116,9 +145,9 @@ const controller = {
 			const objToUpdate = { email: req.body.newEmail };
 			helpers.updateUser(req, res, objToUpdate);
 		} else {
-			req.session.error = 'Please check the data you were trying to change and send it again.';
+			req.session.message = 'Please check the data you were trying to change and send it again.';
 			req.session.save();
-			res.render('index.hbs', {user: true, data: req.session})
+			res.render('settings.hbs', {email: req.session.email})
 		}
 	},
 	deleteUser: (req, res) => {
@@ -143,9 +172,9 @@ const controller = {
 						console.log(`data ${util.inspect(data)}`);
 						console.log(typeof data);
 						if(data === 0) {
-							res.render('index.hbs', {user: true, data: `Sorry, your account wasn't deleted.  Please check your credentials and try again.`});
+							res.render('login.hbs', {data: `Sorry, your account wasn't deleted.  Please check your credentials and try again.`});
 						} else if(data === 1) {
-							res.render('index.hbs', {user: true, data: 'Your account and all your to-dos were successfully deleted.'});
+							res.render('login.hbs', {data: 'Your account and all your to-dos were successfully deleted.'});
 						}
 					});
 				}

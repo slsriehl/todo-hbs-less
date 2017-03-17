@@ -13,8 +13,10 @@ create click events on login, logout, signup, settings/email spans in coffeescri
 //create backend settings get route
 //create settings template
 //modify put controller to change both username and password
-create axios calls to hit put controller
-create axios call to render settings
+//create axios calls to hit put controller
+//create axios call to render settings
+if front end cookie matches session on index render, send to todos page
+add delete user to settings page
 
 
 test all user api routes
@@ -32,3 +34,5 @@ print todos to page
 learn less
 style login and signup pages
 write coffeescript and less to create dynamic, interactive todos with adding contexts
+
+add nodemailer functionality to reset password

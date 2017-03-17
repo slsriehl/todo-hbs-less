@@ -1,21 +1,8 @@
 <div>
-	<div class="header">
-		<span id="sign-up">Sign Up</span>
-	</div>
-
-{{#if data}}
-<div>
-	{{data}}
-</div>
-{{/if}}
-
-<div class="getin-form">
-	<!-- <form id="deleteTask" method="POST" action="/todos/{{id}}?_method=DELETE" /> -->
-	<form id="login-form" method="POST" action="/user/login">
-		<h3>Login</h3>
-		<input type="email" placeholder="email" name="email" />
-		<input type="password" placeholder="password" name="password" />
-		<button type="submit">Login</button>
-	</form>
-
+  <h2 id="intro">
+    Welcome to the do-It task management application
+  </h2>
+  <p>
+    You'll be directed to login or view your tasks in just one moment...
+  </p>
 </div>

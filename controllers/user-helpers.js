@@ -29,17 +29,17 @@ const helpers = {
 						console.log(dataStr)
 						//user mods not saved
 						if(dataStr === '[0]') {
-							req.session.error = `Info not updated.  Try again.`;
+							req.session.message = `Info not updated.  Try again.`;
 							req.session.save();
-							res.render('settings.hbs', {data: req.session.error, email: req.session.email});
+							res.render('settings.hbs', {data: req.session.message, email: req.session.email});
 							//user mods not saved
 						} else if (dataStr === '[1]') {
-							req.session.success = `You're golden!  Please use your new credentials to log in in the future.`;
+							req.session.message = `You're golden!  Please use your new credentials to log in in the future.`;
 							if(req.body.newEmail) {
 								req.session.email = req.body.newEmail;
 							}
 							req.session.save();
-							res.render('settings.hbs', {data: req.session.success, email: req.session.email});
+							res.render('settings.hbs', {data: req.session.message, email: req.session.email});
 						}
 					});
 				} else {
@@ -64,8 +64,8 @@ const helpers = {
     req.session.save();
   },
 	loginFail: (req, res) => {
-		req.session.error = `Sorry, your credentials don't match any users.  Please check them and try again.`;
-		res.render('index.hbs', {data: req.session.error});
+		req.session.message = `Sorry, your credentials don't match any users.  Please check them and try again.`;
+		res.render('login.hbs', {data: req.session.message});
 	}
 }
 

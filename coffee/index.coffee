@@ -17,6 +17,7 @@ readCookie = (cookieName) ->
 		if b[0] == " #{cookieName}"
 			console.log b[1]
 			return b[1]
+	return null
 
 formToJSON = (elements) ->
 	[].reduce.call(elements, (data, element) ->
@@ -24,8 +25,20 @@ formToJSON = (elements) ->
 		return data
 	, {})
 
+auth = (event, cookie) ->
+	if cookie && cookie != 'undefined'
+		console.log 'auth fired'
+		axios.get("/auth/#{cookie}")
+		.then (result) ->
+			console.log result
+			$('body').html result.data
+		.catch (error) ->
+			console.log error
+	else
+		getLogin null
+
 getLoginSignupSettings = (event, getTo) ->
-	event.preventDefault()
+	event.preventDefault() if event
 	getTo
 	.then (result) ->
 		console.log result
@@ -96,4 +109,8 @@ $(document).ready(() ->
 	$('#login-form').submit postLogin
 	$('#change-form').submit putSettings
 	$('#log-out').click logout
+
+	console.log $('#intro').text().trim()
+	auth readCookie 'do-it' if $('#intro').text().trim() == 'Welcome to the do-It task management application'
+
 )

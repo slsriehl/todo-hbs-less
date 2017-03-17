@@ -1,0 +1,21 @@
+<div>
+	<div class="header">
+		<span id="sign-up">Sign Up</span>
+	</div>
+
+{{#if data}}
+<div>
+	{{data}}
+</div>
+{{/if}}
+
+<div class="getin-form">
+	<!-- <form id="deleteTask" method="POST" action="/todos/{{id}}?_method=DELETE" /> -->
+	<form id="login-form" method="POST" action="/user/login">
+		<h3>Login</h3>
+		<input type="email" placeholder="email" name="email" />
+		<input type="password" placeholder="password" name="password" />
+		<button type="submit">Login</button>
+	</form>
+
+</div>

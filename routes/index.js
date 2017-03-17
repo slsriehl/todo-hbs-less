@@ -31,6 +31,15 @@ router.delete('/item/:id', (req, res) => {
 
 //++++++ USER routes ++++++
 
+//render landing page based on logged in status
+router.get('/', (req, res) => {
+	res.render('index.hbs');
+});
+
+router.get('/auth/:cookie', (req, res) => {
+	userController.land(req, res);
+});
+
 //render signup page
 router.get('/user/signup', (req, res) => {
 	res.render('signup.hbs');
@@ -43,7 +52,7 @@ router.post('/user/signup', (req, res) => {
 
 //render login page
 router.get('/user/login', (req, res) => {
-	res.render('index.hbs');
+	res.render('login.hbs');
 });
 
 //Login new user

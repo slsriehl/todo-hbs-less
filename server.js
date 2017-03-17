@@ -42,11 +42,6 @@ app.use(session({
   saveUninitialized: true
 }));
 
-//++++++ HTML Routes +++++
-app.get('/', (req, res) => {
-	res.render('index.hbs');
-});
-
 //++++++ API Routes ++++++
 app.use(routes);
 

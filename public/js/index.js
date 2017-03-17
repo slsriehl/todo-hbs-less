@@ -1,4 +1,4 @@
-var createCookie, formToJSON, getLogin, getLoginSignupSettings, getSettings, getSignup, logout, postLogin, postPut, postSignup, putSettings, readCookie;
+var auth, createCookie, formToJSON, getLogin, getLoginSignupSettings, getSettings, getSignup, logout, postLogin, postPut, postSignup, putSettings, readCookie;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -26,6 +26,7 @@ readCookie = function(cookieName) {
       return b[1];
     }
   }
+  return null;
 };
 
 formToJSON = function(elements) {
@@ -35,8 +36,24 @@ formToJSON = function(elements) {
   }, {});
 };
 
+auth = function(event, cookie) {
+  if (cookie && cookie !== 'undefined') {
+    console.log('auth fired');
+    return axios.get("/auth/" + cookie).then(function(result) {
+      console.log(result);
+      return $('body').html(result.data);
+    })["catch"](function(error) {
+      return console.log(error);
+    });
+  } else {
+    return getLogin(null);
+  }
+};
+
 getLoginSignupSettings = function(event, getTo) {
-  event.preventDefault();
+  if (event) {
+    event.preventDefault();
+  }
   return getTo.then(function(result) {
     console.log(result);
     return $('body').html(result.data);
@@ -114,5 +131,9 @@ $(document).ready(function() {
   $('#signup-form').submit(postSignup);
   $('#login-form').submit(postLogin);
   $('#change-form').submit(putSettings);
-  return $('#log-out').click(logout);
+  $('#log-out').click(logout);
+  console.log($('#intro').text().trim());
+  if ($('#intro').text().trim() === 'Welcome to the do-It task management application') {
+    return auth(readCookie('do-it'));
+  }
 });
