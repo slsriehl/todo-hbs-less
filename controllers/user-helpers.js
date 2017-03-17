@@ -10,7 +10,7 @@ const helpers = {
 			//TODO: bcrypt the password here too
 			return models.User
 			.findOne({
-				where: { email: req.body.email }
+				where: { email: req.session.email }
 			})
 			.then((data) => {
 				console.log(data.dataValues);
@@ -20,7 +20,7 @@ const helpers = {
 					return models.User
 					.update(objToUpdate, {
 						//TODO: object destructuring threw an error here, fix maybe?
-						where: { email: req.body.email }
+						where: { email: req.session.email }
 					})
 					.then((result) => {
 						console.log(`result in update user ${util.inspect(result)}`);

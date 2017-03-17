@@ -9,12 +9,14 @@ createCookie = (name, value, days) ->
 
 readCookie = (cookieName) ->
 	cookies = " #{document.cookie}"
-	a = cookies.split(';')
-	for i in a
-		b = a[i].split('=')
+	a = cookies.split ';'
+	console.log a
+	for n, i in a
+		b = a[i].split '='
+		console.log b
 		if b[0] == " #{cookieName}"
-			c = JSON.parse(b[1])
-	return c
+			console.log b[1]
+			return b[1]
 
 formToJSON = (elements) ->
 	[].reduce.call(elements, (data, element) ->
@@ -22,52 +24,76 @@ formToJSON = (elements) ->
 		return data
 	, {})
 
-getLoginSignup = (event, pathTo) ->
-	axios.get(pathTo)
+getLoginSignupSettings = (event, getTo) ->
+	event.preventDefault()
+	getTo
 	.then (result) ->
 		console.log result
 		$('body').html result.data
 	.catch (error) ->
 		console.log error
 
-postLoginSignup = (event, postTo) ->
-	data = formToJSON event.target.elements
-	console.log data
-	axios.post(postTo, data)
+postPut = (event, postPutTo) ->
+	event.preventDefault()
+	postPutTo
 	.then (result) ->
 		console.log result
 		$('body').html result.data
 		createCookie('do-it', result.headers.cookie, 3)
 	.catch (error) ->
 		console.log error
-	return false
 
 getSignup = (event) ->
-	address = '/user/signup'
-	getLoginSignup(event, address)
+	address = axios.get '/user/signup'
+	getLoginSignupSettings(event, address)
 
 getLogin = (event) ->
-	address = '/user/login'
-	getLoginSignup(event, address)
+	address = axios.get '/user/login'
+	getLoginSignupSettings(event, address)
+
+getSettings = (event) ->
+	cookie = readCookie('do-it')
+	address = axios.get "/user/#{cookie}"
+	getLoginSignupSettings(event, address)
 
 postSignup = (event) ->
-	address = '/user/signup'
-	postLoginSignup(event, address)
+	data = formToJSON event.target.elements
+	address = axios.post('/user/signup', data)
+	postPut(event, address)
 
 postLogin = (event) ->
-	address = '/user/login'
-	postLoginSignup(event, address)
+	data = formToJSON event.target.elements
+	address = axios.post('/user/login', data)
+	postPut(event, address)
+
+putSettings = (event) ->
+	data = formToJSON event.target.elements
+	console.log data
+	address = axios.put('/user', data)
+	postPut(event, address);
 
 logout = (event) ->
-	axios.delete('/user/logout')
+	event.preventDefault()
+	axios.delete '/user/logout'
 	.then (result) ->
 		console.log result
 		$('body').html result.data
 	.catch (error) ->
 		console.log error
 
-$(document).on('click', '#sign-up', getSignup)
-$(document).on('click', '#log-in', getLogin)
-$(document).on('submit', '#signup-form', postSignup)
-$(document).on('submit', '#login-form', postLogin)
-$(document).on('click', '#log-out', logout)
+# $(document).on('click', '#sign-up', getSignup)
+# $(document).on('click', '#log-in', getLogin)
+# $(document).on('click', '#settings', getSettings)
+# $(document).on('submit', '#signup-form', postSignup)
+# $(document).on('submit', '#login-form', postLogin)
+# $(document).on('submit', '#change-form', putSettings)
+# $(document).on('click', '#log-out', logout)
+$(document).ready(() ->
+	$('#sign-up').click getSignup
+	$('#log-in').click getLogin
+	$('#settings').click getSettings
+	$('#signup-form').submit postSignup
+	$('#login-form').submit postLogin
+	$('#change-form').submit putSettings
+	$('#log-out').click logout
+)
