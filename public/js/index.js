@@ -36,7 +36,7 @@ formToJSON = function(elements) {
   }, {});
 };
 
-auth = function(event, cookie) {
+auth = function(cookie) {
   if (cookie && cookie !== 'undefined') {
     console.log('auth fired');
     return axios.get("/auth/" + cookie).then(function(result) {

@@ -37,6 +37,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/auth/:cookie', (req, res) => {
+	console.log('auth cookie fired');
 	userController.land(req, res);
 });
 

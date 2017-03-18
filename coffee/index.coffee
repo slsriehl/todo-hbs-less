@@ -25,8 +25,8 @@ formToJSON = (elements) ->
 		return data
 	, {})
 
-auth = (event, cookie) ->
-	if cookie && cookie != 'undefined'
+auth = (cookie) ->
+	if cookie and cookie != 'undefined'
 		console.log 'auth fired'
 		axios.get("/auth/#{cookie}")
 		.then (result) ->

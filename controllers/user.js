@@ -19,7 +19,7 @@ const controller = {
 				where: { sid: req.params.cookie }
 			})
 			.then((data) => {
-				console.log(data.dataValues);
+				console.log(`data.dataValues ${data.dataValues}`);
 				if(data) {
 					res.render('todos.hbs');
 				} else {
@@ -28,6 +28,7 @@ const controller = {
 			})
 			.catch((error) => {
 				console.log(error);
+				res.render('login.hbs');
 			});
 		})
 		.catch((error) => {
