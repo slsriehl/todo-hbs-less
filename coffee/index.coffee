@@ -37,9 +37,9 @@ auth = (cookie) ->
 	else
 		getLogin null
 
-getLoginSignupSettings = (event, getTo) ->
+getDelete = (event, getDeleteTo) ->
 	event.preventDefault() if event
-	getTo
+	getDeleteTo
 	.then (result) ->
 		console.log result
 		$('body').html result.data
@@ -58,16 +58,16 @@ postPut = (event, postPutTo) ->
 
 getSignup = (event) ->
 	address = axios.get '/user/signup'
-	getLoginSignupSettings(event, address)
+	getDelete(event, address)
 
 getLogin = (event) ->
 	address = axios.get '/user/login'
-	getLoginSignupSettings(event, address)
+	getDelete(event, address)
 
 getSettings = (event) ->
 	cookie = readCookie('do-it')
 	address = axios.get "/user/#{cookie}"
-	getLoginSignupSettings(event, address)
+	getDelete(event, address)
 
 postSignup = (event) ->
 	data = formToJSON event.target.elements
@@ -86,13 +86,16 @@ putSettings = (event) ->
 	postPut(event, address);
 
 logout = (event) ->
-	event.preventDefault()
-	axios.delete '/user/logout'
-	.then (result) ->
-		console.log result
-		$('body').html result.data
-	.catch (error) ->
-		console.log error
+	address = axios.delete '/user/logout'
+	getDelete(event, address)
+
+deleteAccount = (event) ->
+	data =
+		password: $('#password').val()
+		cookie: readCookie 'do-it'
+	console.log data
+	address = axios.put("/user/delete", data)
+	getDelete(event, address)
 
 # $(document).on('click', '#sign-up', getSignup)
 # $(document).on('click', '#log-in', getLogin)
@@ -109,6 +112,7 @@ $(document).ready(() ->
 	$('#login-form').submit postLogin
 	$('#change-form').submit putSettings
 	$('#log-out').click logout
+	$('#delete-account').click deleteAccount
 
 	console.log $('#intro').text().trim()
 	auth readCookie 'do-it' if $('#intro').text().trim() == 'Welcome to the do-It task management application'

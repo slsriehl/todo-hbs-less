@@ -25,14 +25,11 @@ const controller = {
 				} else {
 					res.render('login.hbs');
 				}
-			})
-			.catch((error) => {
-				console.log(error);
-				res.render('login.hbs');
 			});
 		})
 		.catch((error) => {
 			console.log(error);
+			res.render('login.hbs');
 		})
 
 	},
@@ -54,21 +51,22 @@ const controller = {
 		models.User.sync()
 		.then(() => {
 			return models.User
-				.create(newUser)
-				.then((data) => {
-					//TODO: add cookies and login user on signup. sessions?
-					if(data) {
-						req.session.message = 'Signup successful!  Start saving to-dos now.';
-						helpers.saveSession(req, res, data);
-						res.header('Cookie', req.session.id);
-						res.render('todos.hbs', {data: req.session.message});
-					} else if(!data) {
-						req.session.message = 'Signup not successful.';
-						helpers.saveSession(req, res, data);
-						res.render('signup.hbs', {data: req.session.message});
-					}
-					console.log(`data from user save ${util.inspect(data)}`);
-				});
+			.create(newUser)
+			.then((data) => {
+				//TODO: add cookies and login user on signup. sessions?
+				if(data) {
+					req.session.message = 'Signup successful!  Start saving to-dos now.';
+					helpers.saveSession(req, res, data);
+					res.header('Cookie', req.session.id);
+					res.render('todos.hbs', {data: req.session.message});
+				} else {
+					helpers.sessionMessage(req, res, `Signup not successful.`, 'signup.hbs');
+				}
+				console.log(`data from user save ${util.inspect(data)}`);
+			});
+		})
+		.catch((error) => {
+			helpers.sessionMessage(req, res, `Signup not successful.`, 'signup.hbs');
 		});
 
 	},
@@ -88,7 +86,7 @@ const controller = {
 				//TODO: send a cookie instead of the data on login. sessions?
 				console.log(`data ${util.inspect(data)}`);
 				if(!data) {
-					helpers.loginFail(req, res);
+					helpers.sessionMessage(req, res, `Sorry, your credentials don't match any users.  Please check them and try again.`, 'login.hbs');
 				} else {
 					//compare stored hash to password sent in post request
 					const hash = helpers.getHash(req.body.password, data.dataValues.password);
@@ -98,11 +96,14 @@ const controller = {
 						res.header('Cookie', req.session.id);
 						res.render('todos.hbs', {data: req.session.message});
 					} else {
-						helpers.loginFail(req, res);
+						helpers.sessionMessage(req, res, `Sorry, your credentials don't match any users.  Please check them and try again.`, 'login.hbs');
 					}
 				}
-			})
-			.catch((error) => console.log(error));
+			});
+		})
+		.catch((error) => {
+			console.log(error);
+			helpers.sessionMessage(req, res, `Sorry, your credentials don't match any users.  Please check them and try again.`, 'login.hbs');
 		});
 	},
 	logoutUser: (req, res) => {
@@ -124,7 +125,11 @@ const controller = {
 				sessionObj = JSON.parse(data.dataValues.data);
 				console.log(sessionObj.email);
 				res.render('settings.hbs', {email: sessionObj.email});
-			})
+			});
+		})
+		.catch((error) => {
+			console.log(error);
+			helpers.sessionMessage(req, res, `Sorry, your credentials don't match any users.  Please check them and try again.`, 'login.hbs');
 		});
 
 	},
@@ -146,40 +151,67 @@ const controller = {
 			const objToUpdate = { email: req.body.newEmail };
 			helpers.updateUser(req, res, objToUpdate);
 		} else {
-			req.session.message = 'Please check the data you were trying to change and send it again.';
-			req.session.save();
-			res.render('settings.hbs', {email: req.session.email})
+			helpers.sessionMessage(req, res, 'Please check the data you were trying to change and send it again.', 'settings.hbs');
 		}
 	},
 	deleteUser: (req, res) => {
-		console.log(req.body);
+		console.log(`req.body ${util.inspect(req.body)}`);
 		models.User.sync()
 		.then(() => {
-			return models.User
+			return models.ConnectSession
 			.findOne({
-				where: { email: req.body.email }
+				where: { sid: req.body.cookie }
 			})
 			.then((data) => {
-				console.log(data.dataValues);
-				const hash = helpers.getHash(req.body.password, data.dataValues.password);
-				if(hash) {
-					return models.User
-					.destroy({
-						//object destructuring doesn't work here either. pooh!
-						where: { email: req.body.email }
-					})
-					.then((data) => {
-						//response from deleting the user
-						console.log(`data ${util.inspect(data)}`);
-						console.log(typeof data);
-						if(data === 0) {
-							res.render('login.hbs', {data: `Sorry, your account wasn't deleted.  Please check your credentials and try again.`});
-						} else if(data === 1) {
-							res.render('login.hbs', {data: 'Your account and all your to-dos were successfully deleted.'});
-						}
-					});
-				}
+				console.log(`found session? ${util.inspect(data.data)}`);
+				const emailObj = JSON.parse(data.data);
+				return models.User
+				.findOne({
+					where: { email: emailObj.email }
+				})
+				.then((result) => {
+					console.log(`found user? ${util.inspect(result.dataValues)}`);
+
+					const hash = helpers.getHash(req.body.password, result.dataValues.password);
+					if(hash) {
+						console.log('password is correct');
+						return models.User
+						.destroy({
+							//object destructuring doesn't work here either. pooh!
+							where: { email: emailObj.email }
+						})
+						.then((data) => {
+							//response from deleting the user
+							console.log(`data ${util.inspect(data)}`);
+							console.log(typeof data);
+							if(data === 0) {
+								res.render('login.hbs', {data: `Sorry, your account wasn't deleted.  Please check your credentials and try again.`});
+							} else if(data === 1) {
+								req.session.destroy();
+								res.render('login.hbs', {data: 'Your account and all your to-dos were successfully deleted.'});
+							}
+						})
+						.catch((error) => {
+							console.log('error, destroy user call failed');
+							throw error;
+						});
+					} else {
+						helpers.sessionMessage(req, res, 'Your password is incorrect.  Please try again.', 'login.hbs');
+					}
+				})
+				.catch((error) => {
+					console.log(`error, find user call failed.`);
+					throw error;
+				});
+			})
+			.catch((error) => {
+				console.log(`error, find session call failed.`);
+				throw error;
 			});
+		})
+		.catch((error) => {
+			helpers.sessionMessage(req, res, 'Error deleting your account.  Please login again.', 'login.hbs');
+			throw error;
 		});
 	}
 }

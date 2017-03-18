@@ -1,4 +1,4 @@
-var auth, createCookie, formToJSON, getLogin, getLoginSignupSettings, getSettings, getSignup, logout, postLogin, postPut, postSignup, putSettings, readCookie;
+var auth, createCookie, deleteAccount, formToJSON, getDelete, getLogin, getSettings, getSignup, logout, postLogin, postPut, postSignup, putSettings, readCookie;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -50,11 +50,11 @@ auth = function(cookie) {
   }
 };
 
-getLoginSignupSettings = function(event, getTo) {
+getDelete = function(event, getDeleteTo) {
   if (event) {
     event.preventDefault();
   }
-  return getTo.then(function(result) {
+  return getDeleteTo.then(function(result) {
     console.log(result);
     return $('body').html(result.data);
   })["catch"](function(error) {
@@ -76,20 +76,20 @@ postPut = function(event, postPutTo) {
 getSignup = function(event) {
   var address;
   address = axios.get('/user/signup');
-  return getLoginSignupSettings(event, address);
+  return getDelete(event, address);
 };
 
 getLogin = function(event) {
   var address;
   address = axios.get('/user/login');
-  return getLoginSignupSettings(event, address);
+  return getDelete(event, address);
 };
 
 getSettings = function(event) {
   var address, cookie;
   cookie = readCookie('do-it');
   address = axios.get("/user/" + cookie);
-  return getLoginSignupSettings(event, address);
+  return getDelete(event, address);
 };
 
 postSignup = function(event) {
@@ -115,13 +115,20 @@ putSettings = function(event) {
 };
 
 logout = function(event) {
-  event.preventDefault();
-  return axios["delete"]('/user/logout').then(function(result) {
-    console.log(result);
-    return $('body').html(result.data);
-  })["catch"](function(error) {
-    return console.log(error);
-  });
+  var address;
+  address = axios["delete"]('/user/logout');
+  return getDelete(event, address);
+};
+
+deleteAccount = function(event) {
+  var address, data;
+  data = {
+    password: $('#password').val(),
+    cookie: readCookie('do-it')
+  };
+  console.log(data);
+  address = axios.put("/user/delete", data);
+  return getDelete(event, address);
 };
 
 $(document).ready(function() {
@@ -132,6 +139,7 @@ $(document).ready(function() {
   $('#login-form').submit(postLogin);
   $('#change-form').submit(putSettings);
   $('#log-out').click(logout);
+  $('#delete-account').click(deleteAccount);
   console.log($('#intro').text().trim());
   if ($('#intro').text().trim() === 'Welcome to the do-It task management application') {
     return auth(readCookie('do-it'));

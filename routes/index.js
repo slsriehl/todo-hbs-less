@@ -72,7 +72,7 @@ router.put('/user', (req, res) => {
 });
 
 //Delete user
-router.delete('/user', (req, res) => {
+router.put('/user/delete', (req, res) => {
 	userController.deleteUser(req, res);
 });
 

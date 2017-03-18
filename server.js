@@ -11,7 +11,7 @@ const express         = require('express'),
       app             = express(),
 			routes 					= require('./routes/index');
 
-app.use(logger("combined"));
+app.use(logger("dev"));
 app.use(bodyParser.urlencoded({
   extended: false
 }));
