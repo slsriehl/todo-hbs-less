@@ -3,7 +3,7 @@
 //create handlebars templates to render login and sign up forms
 //write coffeescript to receive handlebars render function and create a cookie from the session
 //use coffeescript to send forms with axios instead of method override
-create click events on login, logout, signup, settings/email spans in coffeescript
+//create click events on login, logout, signup, settings/email spans in coffeescript
 //add jquery to html scripts
 //add logout path to users controller
 //create login = index.hbs, signup = signup.hbs, todos = todos.hbs
@@ -15,9 +15,14 @@ create click events on login, logout, signup, settings/email spans in coffeescri
 //modify put controller to change both username and password
 //create axios calls to hit put controller
 //create axios call to render settings
-if front end cookie matches session on index render, send to todos page
-add delete user to settings page
+//if front end cookie matches session on index render, send to todos page
+//add delete user to settings page
 
+test users controller and front end
+
+front end validation
+
+test front end validation
 
 test all user api routes
 test user html
