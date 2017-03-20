@@ -19,6 +19,81 @@
 //add delete user to settings page
 
 test users controller and front end
+user tests:
+land
+  get request
+  response object has html
+  dom of rendered page
+  front end reads dom and sends cookie to back end
+  if the cookie is undefined, the login page is sent to the front end
+  dom of rendered page (login) includes some specific html
+  if there is a cookie, it could not match a session sid,
+  and if so the login page is sent to the front end
+  dom of rendered page (login) includes some specific html
+  if there is a cookie, it could match a session sid,
+  and if so the todos page is sent to front end
+  dom of rendered page (todos) includes some specific html
+signup
+  post request sends an object
+  post request has a password
+  post request has a username
+  hash password
+  save username and hash to Users table
+  save success message, email address, and password hash in session object
+  cookie header is sent
+  response object has html
+  dom of rendered page (todos) includes some specific html and the success message
+  if the username and hash aren't saved to the users table,
+  store fail message in the session object
+  response object has html
+  dom of rendered page (login) includes some specific html and the fail message
+login
+  post request sends an object
+  post request has a password
+  post request has a username
+  dehash password
+  query Users table by username to find hashed password
+  save success message, email address, and password hash in session object
+  cookie header is sent
+  response object has html
+  dom of rendered page (todos) includes some specific html and the success message
+  if the hashed password doesn't match, save the fail message in the session object
+  response object has html
+  dom of rendered page (login) includes some specific html and the fail message
+  if the query by username fails, save the fail message in the session object
+  response object has html
+  dom of rendered page (login) includes some specific html and the fail message
+logout
+  delete request
+  session is destroyed
+  response object has html
+  dom of rendered page (login) includes some specific html
+user settings page render
+  get request sends user cookie
+  query session store to find cookie; if cookie is present, render settings page
+  with email
+  response object has html
+  dom of rendered page (settings) includes some specific html
+  if cookie is not present, save fail message to session and render login page
+  response object has html
+  dom of rendered page (login) includes some specific html and fail message
+update username and/or email
+  put request has body with current password and either new password and/or new email
+  update Users table where session email, get a fail result and render settings page
+  response object has html
+  dom of rendered page (settings) includes some specific html and fail message
+  update Users table where session email, get a result of [1] and render settings page
+  response object has html
+  dom of rendered page (settings) includes some specific html and success message
+delete user
+  put request has body with password and cookie
+  query session store where cookie, if hash matches destroy session
+  render login page with session message, success or fail
+  response object has html
+  dom of rendered page (login) includes some specific html and session message
+
+
+
 
 front end validation
 
