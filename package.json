@@ -24,7 +24,6 @@
     "express": "^4.15.2",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.1",
-    "gulp-uglify": "^2.1.0",
     "morgan": "^1.8.1",
     "mysql": "^2.13.0",
     "sequelize": "^3.30.2",
@@ -41,6 +40,7 @@
     "gulp-header": "^1.8.8",
     "gulp-less": "^3.3.0",
     "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.1.0",
     "mocha": "^3.2.0",
     "nightmare": "^2.10.0"
   }

@@ -162,7 +162,7 @@ const controller = {
 			helpers.updateUser(req, res, objToUpdate);
 		} else {
 			//if neither a new password nor a new email is received
-			helpers.settingsSessMessage(req, res, 'Please check the data you were trying to change and send it again.', null, null);
+			helpers.settingsSessMessage(req, res, 'Please check the data you were trying to change and send it again.');
 		}
 	},
 	//to delete the user and all her todos in the db
@@ -217,6 +217,7 @@ const controller = {
 					//if the password sent to authorize the user delete
 					//doesn't match the stored hash
 					helpers.sessionMessage(req, res, 'Your password is incorrect.  Please try again.', 'login.hbs');
+				}
 			})
 			.catch((error) => {
 				//if the client side cookie is not found in the session store

@@ -21,12 +21,13 @@ app.use(express.static("./public"));
 
 //++++++ Handlebars config ++++++
 app.engine('hbs', hbs({
-  extname: 'hbs',
+  extname: '.hbs',
   defaultLayout: 'main',
   layoutsDir: __dirname + '/views/layouts/',
   partialsDir: __dirname + '/views/partials/'
 }));
-app.set('view engine', 'handlebars');
+app.set('views', __dirname + '/views');
+app.set('view engine', 'hbs');
 
 //++++++ express sessions ++++++
 const session 		= require('express-session'),
@@ -42,14 +43,16 @@ app.use(session({
   saveUninitialized: true
 }));
 
-//++++++ API Routes ++++++
+//++++++ Routes ++++++
 app.use(routes);
 
 // ++++++ SERVER LISTEN ++++++
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, function () {
-	console.log(`express server listening to your mom on port ${PORT}`);
+  const host = server.address().address;
+  const port = server.address().port;
+  console.log('express server listening to your mom at http://' + host + ':' + port);
 });
 
 module.exports = server;

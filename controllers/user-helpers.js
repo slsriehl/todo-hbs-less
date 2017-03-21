@@ -5,61 +5,62 @@ const util = require('util');
 
 const helpers = {
 	updateUser: (req, res, objToUpdate) => {
-		//sync user model
-		models.User.sync()
-		.then(() => {
-			//query Users table for email in the session
-			return models.User
-			.findOne({
-				where: { email: req.session.email }
+		//dehash password
+		const hash = helpers.getHash(req.body.password, req.session.password);
+		console.log(hash);
+		//if current password matches stored hash
+		if(hash) {
+			models.User.sync()
+			.then(() => {
+				//pass object to replace Users table row values, either username,
+				//password, or both, where the email matches the session email
+				return models.User
+				.update(objToUpdate, {
+					where: { email: req.session.email }
+				})
+				.then((result) => {
+					//returned object from the update call
+					console.log(`result in update user ${util.inspect(result)}`);
+					//stringify the data object so that we can check the value
+					//to determine the message to send
+					//can't compare objects/arrays for equality
+					dataStr = JSON.stringify(result);
+					console.log(dataStr)
+					if(dataStr === '[0]') {
+						//if no User record was updated
+						helpers.settingsSessMessage(req, res, `Info not updated.  Try again.`);
+					} else if (dataStr === '[1]') {
+						//if one User record was updated
+						const hash = helpers.setHash(req.body.newPassword);
+						if(hash) {
+							req.session.password = hash;
+						}
+						if(req.body.newEmail) {
+							req.session.email = req.body.newEmail;
+						}
+						helpers.settingsSessMessage(req, res, `You're golden!  Please use your new credentials to login in the future.`);
+					} else {
+						//more than one User record is updated, yikes!
+						helpers.settingsSessMessage(req, res, `Error.`);
+					}
+				});
 			})
-			.then((data) => {
-				//if the session email exists in the Users table
-				console.log(data.dataValues);
-				//dehash password
-				const hash = helpers.getHash(req.body.password, data.dataValues.password);
-				console.log(hash);
-				//if current password matches stored hash
+			.catch((error) => {
+				console.log(error);
+				//the update call doesn't return an object
+				const hash = helpers.setHash(req.body.newPassword);
 				if(hash) {
-					models.User.sync()
-					.then(() => {
-						//pass object to replace Users table row values, either username,
-						//password, or both, where the email matches the session email
-						return models.User
-						.update(objToUpdate, {
-							where: { email: req.session.email }
-						})
-						.then((result) => {
-							//returned object from the update call
-							//console.log(`result in update user ${util.inspect(result)}`);
-							//stringify the data object so that we can check the value
-							//to determine the message to send
-							//can't compare objects/arrays for equality
-							dataStr = JSON.stringify(result);
-							//console.log(dataStr)
-							if(dataStr === '[0]') {
-								//if no User record was updated
-								helpers.settingsSessMessage(req, res, `Info not updated.  Try again.`, null, null);
-							} else if (dataStr === '[1]') {
-								//if one User record was updated
-								helpers.settingsSessMessage(req, res, `You're golden!  Please use your new credentials to login in the future.`, req.body.newEmail, helpers.setHash(req.body.newPassword));
-							} else {
-								//more than one User record is updated, yikes!
-								helpers.settingsSessMessage(req, res, `Error.`, null, null);
-							}
-						});
-					})
-					.catch((error) => {
-						//the update call doesn't return an object
-						helpers.settingsSessMessage(req, res, `Info not updated.  Try again.`, null, null);
-					})
-				} else {
-					//the current password doesn't match the stored hash
-					helpers.settingsSessMessage(req, res, `Your current password doesn't match our records.`, null, null);
+					req.session.password = hash;
 				}
+				if(req.body.newEmail) {
+					req.session.email = req.body.newEmail;
+				}
+				helpers.settingsSessMessage(req, res, `Info not updated.  Try again.`);
 			})
-
-		});
+		} else {
+			//the current password doesn't match the stored hash
+			helpers.settingsSessMessage(req, res, `Your current password doesn't match our records.`);
+		}
 	},
 	//bcrypt save password
 	setHash: (password) => {
@@ -67,7 +68,7 @@ const helpers = {
 		if(password) {
 			return bcrypt.hashSync(password, salt);
 		} else {
-			return false
+			return null;
 		}
 	},
 	//bcrypt retrieve password
@@ -88,16 +89,10 @@ const helpers = {
 		req.session.save();
 		res.render(render, {data: req.session.message});
 	},
-	settingsSessMessage: (req, res, message, email, hash) => {
+	settingsSessMessage: (req, res, message) => {
 		req.session.message = message;
-		if(hash) {
-			req.session.password = hash;
-		}
-		if(email) {
-			req.session.email = email;
-		}
 		req.session.save();
-		req.session.save('settings.hbs', {data: req.session.message, email: req.session.email})
+		res.render('settings.hbs', {data: req.session.message, email: req.session.email})
 	}
 }
 
