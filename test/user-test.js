@@ -6,14 +6,16 @@
 process.env.NODE_ENV = 'test';
 
 const chai = require('chai');
-const chaiHttp = require('chai-http');
+const chaiHTTP = require('chai-http');
 const server = require('../server');
 const should = chai.should();
 const models = require('../models');
 const bcrypt = require('bcryptjs');
-const user = require('../controllers/user');
+const chaiDOM = require('chai-dom');
+const Nightmare = require('nightmare');
 
-chai.use(chaiHttp);
+chai.use(chaiHTTP);
+chai.use(chaiDOM);
 
 Date.prototype.addDays = function(days) {
     this.setDate(this.getDate() + parseInt(days));
@@ -59,6 +61,11 @@ describe('Users', function() {
       console.log(res);
       res.should.have.status(200);
       res.should.be.html;
+      Nightmare()
+        .goto('localhost:5000')
+        .evaluate(function() {
+          document.querySelector('#intro').should.have.text('Welcome to the do-It task management application');
+        });
       done();
     });
   });
