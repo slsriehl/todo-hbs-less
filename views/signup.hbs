@@ -4,7 +4,7 @@
 	</div>
 
 {{#if data}}
-<div>
+<div class="data">
 	{{data}}
 </div>
 {{/if}}
@@ -13,10 +13,37 @@
 	<!-- <form id="deleteTask" method="POST" action="/todos/{{id}}?_method=DELETE" /> -->
 	<form id="signup-form">
 		<h3>Sign Up</h3>
-		<input type="email" placeholder="email" name="email" />
-		<input type="email" placeholder="email" name="email-conf" />
-		<input type="password" placeholder="password" name="password" />
-		<input type="password" placeholder="password" name="password-conf" />
+		<input
+			type="email"
+			placeholder="email"
+			name="email"
+			onchange="if(this.checkValidity()) form.emailConf.pattern = this.value;"
+			required
+			title="Please enter a valid email."
+		/>
+		<input
+			type="email"
+			placeholder="email"
+			name="emailConf"
+			onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same email as above.' : '');"
+			required
+		/>
+		<input
+			type="password"
+			placeholder="password"
+			name="password"
+			pattern="^\S{8,}$"
+			onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 8 characters.' : ''); if(this.checkValidity()) form.passwordConf.pattern = this.value;"
+			required
+		/>
+		<input
+			type="password"
+			placeholder="password"
+			name="passwordConf"
+			pattern="^\S{8,}$"
+			onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same password as above.' : '');"
+			required
+		/>
 		<button type="submit">Sign Up</button>
 	</form>
 

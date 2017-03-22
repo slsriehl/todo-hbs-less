@@ -76,10 +76,6 @@ const helpers = {
 				console.log('session lookup failed');
 				helpers.settingsSessMessage(req, res, `Info not updated.  Try again.`);
 			});
-		})
-		.catch((error) => {
-			console.log('sessions sync failed');
-			helpers.settingsSessMessage(req, res, `Info not updated.  Try again.`);
 		});
 	},
 	//bcrypt save password

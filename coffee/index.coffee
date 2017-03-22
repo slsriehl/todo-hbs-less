@@ -70,7 +70,15 @@ getSettings = (event) ->
 	getDelete(event, address)
 
 postSignup = (event) ->
+	# if $('[name="email"]').val() != $('[name="emailConf"]').val()
+	# 	$('[name="emailConf"]')[0].setCustomValidity 'Emails must match'
+	# else if $('[name="password"]').val() != $('[name="passwordConf"]').val()
+	# 	$('[name="passwordConf"]')[0].setCustomValidity 'Passwords must match'
+	# else
+	# 	$('[name="emailConf"]')[0].setCustomValidity ''
+	# 	$('[name="passwordConf"]')[0].setCustomValidity ''
 	data = formToJSON event.target.elements
+	console.log data
 	address = axios.post('/user/signup', data)
 	postPut(event, address)
 
@@ -89,7 +97,7 @@ putSettings = (event) ->
 logout = (event) ->
 	address = axios.delete '/user/logout'
 	getDelete(event, address)
-	
+
 deleteAccount = (event) ->
 	data =
 		password: $('#password').val()

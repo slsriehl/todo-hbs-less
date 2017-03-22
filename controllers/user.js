@@ -222,16 +222,9 @@ const controller = {
 			.catch((error) => {
 				//if the client side cookie is not found in the session store
 				console.log(`error, find session call failed.`);
+				helpers.sessionMessage(req, res, 'Error deleting your account.  Please login again.', 'login.hbs');
 				throw error;
 			});
-		})
-		.catch((error) => {
-			//send message to render to the login page if any of the steps fail
-			//render the login page because who knows how far the user got into the
-			//delete process.  logging in again will fail if the user was
-			//actually deleted.
-			helpers.sessionMessage(req, res, 'Error deleting your account.  Please login again.', 'login.hbs');
-			throw error;
 		});
 	}
 }

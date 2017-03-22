@@ -4,7 +4,7 @@
 	</div>
 
 {{#if data}}
-<div>
+<div class="data">
 	{{data}}
 </div>
 {{/if}}
@@ -14,9 +14,41 @@
 	<form id="change-form">
 		<h3>Change your email or password</h3>
 		<span id="logged-in-email">{{email}}</span>
-		<input type="password" placeholder="password" name="password" id="password" />
-		<input type="email" placeholder="new email" name="newEmail" />
-		<input type="password" placeholder="new password" name="newPassword" />
+		<input
+			type="password"
+			placeholder="password"
+			name="password"
+			id="password"
+			required
+			title="Please enter your password to make changes."
+		/>
+		<input
+			type="email"
+			placeholder="new email"
+			name="newEmail"
+			onchange="if(this.checkValidity()) form.emailConf.pattern = this.value;"
+			title="Please enter a valid email."
+		/>
+		<input
+			type="email"
+			placeholder="new email (verify)"
+			name="emailConf"
+			onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same email as above.' : '');"
+		/>
+		<input
+			type="password"
+			placeholder="new password"
+			name="newPassword"
+			pattern="^\S{8,}$"
+			onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 8 characters.' : ''); if(this.checkValidity()) form.passwordConf.pattern = this.value;"
+		/>
+		<input
+			type="password"
+			placeholder="new password (verify)"
+			name="passwordConf"
+			pattern="^\S{8,}$"
+			onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same new password as above.' : '');"
+		/>
 		<button type="submit">Change Data</button>
 	</form>
 	<button type="button" id="delete-account">Delete Account</button>

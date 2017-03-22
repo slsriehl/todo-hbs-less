@@ -18,96 +18,56 @@
 //if front end cookie matches session on index render, send to todos page
 //add delete user to settings page
 
-test users controller and front end
-user tests:
-land
-  get request
-  response object has html
-  dom of rendered page
-  front end reads dom and sends cookie to back end
-  if the cookie is undefined, the login page is sent to the front end
-  dom of rendered page (login) includes some specific html
-  if there is a cookie, it could not match a session sid,
-  and if so the login page is sent to the front end
-  dom of rendered page (login) includes some specific html
-  if there is a cookie, it could match a session sid,
-  and if so the todos page is sent to front end
-  dom of rendered page (todos) includes some specific html
-signup
-  post request sends an object
-  post request has a password
-  post request has a username
-  hash password
-  save username and hash to Users table
-  save success message, email address, and password hash in session object
-  cookie header is sent
-  response object has html
-  dom of rendered page (todos) includes some specific html and the success message
-  if the username and hash aren't saved to the users table,
-  store fail message in the session object
-  response object has html
-  dom of rendered page (login) includes some specific html and the fail message
-login
-  post request sends an object
-  post request has a password
-  post request has a username
-  dehash password
-  query Users table by username to find hashed password
-  save success message, email address, and password hash in session object
-  cookie header is sent
-  response object has html
-  dom of rendered page (todos) includes some specific html and the success message
-  if the hashed password doesn't match, save the fail message in the session object
-  response object has html
-  dom of rendered page (login) includes some specific html and the fail message
-  if the query by username fails, save the fail message in the session object
-  response object has html
-  dom of rendered page (login) includes some specific html and the fail message
-logout
-  delete request
-  session is destroyed
-  response object has html
-  dom of rendered page (login) includes some specific html
-user settings page render
-  get request sends user cookie
-  query session store to find cookie; if cookie is present, render settings page
-  with email
-  response object has html
-  dom of rendered page (settings) includes some specific html
-  if cookie is not present, save fail message to session and render login page
-  response object has html
-  dom of rendered page (login) includes some specific html and fail message
-update username and/or email
-  put request has body with current password and either new password and/or new email
-  update Users table where session email, get a fail result and render settings page
-  response object has html
-  dom of rendered page (settings) includes some specific html and fail message
-  update Users table where session email, get a result of [1] and render settings page
-  response object has html
-  dom of rendered page (settings) includes some specific html and success message
-delete user
-  put request has body with password and cookie
-  query session store where cookie, if hash matches destroy session
-  render login page with session message, success or fail
-  response object has html
-  dom of rendered page (login) includes some specific html and session message
+//test users controller and front end
+
+//should update users' password and email with correct cookie and password, display success message
+//shouldn't update users' password and email if cookie is wrong, display fail message
+//shouldn't update users' password and email if cookie is null, display fail message
+//shouldn't update users' password and email if password is wrong, display fail message
+//shouldn't update users' password and email if password is null, display fail message
+//shouldn't update users' info where nothing is sent, display fail message
+
+//should delete user with cookie and correct password, show success message
+//shouldn't delete user if password is wrong, display fail message
+//shouldn't delete user if password is null, display fail message
+//should't delete user if cookie is wrong, display fail message
+//shouldn't delete user if cookie is undefined, display fail message
+
+//should render user settings page
+//shouldn't render user settings page if cookie is wrong, display fail message
+//shouldn't render user settings page if cookie is undefined, display fail message
+
+//login
+//login should fail if password doesn't match, display fail message
+//login should fail if username doesn't match any in db, display fail message
+//if login is successful, todos page should display success messaage
+
+//signup
+//signup should fail if username is already in the db, display fail message
+//if signup is successful, todos page should display success message
+
+//nightmare go to root, set timeout
+//if cookie is valid, nightmare go to root and load todos page
+//if cookie is invalid, nightmare go to root and load login page
+//if cookie is undefined, nightmare go to root and load login page
 
 
+//front end validation
+--leaving settings where you can change your password without verifying it
 
-
-front end validation
-
-test front end validation
+//test front end validation
 
 test all user api routes
 test user html
 test user front end javascript
 
 create contexts controller
+contexts front end validation
 print contexts to page
 write coffeescript to crud adding contexts
 
 create todos controller
+todos front end validation
 write front end coffeescript to axios crud the todos
 print todos to page
 
