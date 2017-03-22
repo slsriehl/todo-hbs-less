@@ -1,3 +1,6 @@
+
+
+
 createCookie = (name, value, days) ->
 	if(days)
 		date = new Date()

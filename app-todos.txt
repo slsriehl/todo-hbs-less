@@ -57,9 +57,9 @@
 
 //test front end validation
 
-test all user api routes
-test user html
-test user front end javascript
+//test all user api routes
+//test user html
+//test user front end javascript
 
 create contexts controller
 contexts front end validation
@@ -74,5 +74,7 @@ print todos to page
 learn less
 style login and signup pages
 write coffeescript and less to create dynamic, interactive todos with adding contexts
+
+consider adding tests with nightmare navigating to the page and entering the info
 
 add nodemailer functionality to reset password
