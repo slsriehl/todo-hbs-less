@@ -81,6 +81,7 @@ postLogin = (event) ->
 
 putSettings = (event) ->
 	data = formToJSON event.target.elements
+	data.cookie = readCookie 'do-it'
 	console.log data
 	address = axios.put('/user', data)
 	postPut(event, address);
@@ -88,7 +89,7 @@ putSettings = (event) ->
 logout = (event) ->
 	address = axios.delete '/user/logout'
 	getDelete(event, address)
-
+	
 deleteAccount = (event) ->
 	data =
 		password: $('#password').val()

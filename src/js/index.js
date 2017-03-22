@@ -1,3 +1,8 @@
+/*!
+ * Studio Riehl -  v1.0.0 (https://github.com/slsriehl/todo-hbs-less#readme)
+ * Copyright 2017-2017 Sarah Schieffer Riehl
+ * Licensed under  ()
+ */
 var auth, createCookie, deleteAccount, formToJSON, getDelete, getLogin, getSettings, getSignup, logout, postLogin, postPut, postSignup, putSettings, readCookie;
 
 createCookie = function(name, value, days) {
@@ -109,6 +114,7 @@ postLogin = function(event) {
 putSettings = function(event) {
   var address, data;
   data = formToJSON(event.target.elements);
+  data.cookie = readCookie('do-it');
   console.log(data);
   address = axios.put('/user', data);
   return postPut(event, address);
