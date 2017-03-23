@@ -3,7 +3,7 @@
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, deleteAccount, formToJSON, getDelete, getLogin, getSettings, getSignup, logout, postLogin, postPut, postSignup, putSettings, readCookie;
+var auth, createCookie, deleteAccount, formToJSON, getDelete, getLogin, getSettings, getSignup, logout, postContexts, postLogin, postPut, postSignup, putSettings, readCookie;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -41,20 +41,6 @@ formToJSON = function(elements) {
   }, {});
 };
 
-auth = function(cookie) {
-  if (cookie && cookie !== 'undefined') {
-    console.log('auth fired');
-    return axios.get("/auth/" + cookie).then(function(result) {
-      console.log(result);
-      return $('body').html(result.data);
-    })["catch"](function(error) {
-      return console.log(error);
-    });
-  } else {
-    return getLogin(null);
-  }
-};
-
 getDelete = function(event, getDeleteTo) {
   if (event) {
     event.preventDefault();
@@ -72,10 +58,23 @@ postPut = function(event, postPutTo) {
   return postPutTo.then(function(result) {
     console.log(result);
     $('body').html(result.data);
-    return createCookie('do-it', result.headers.cookie, 3);
+    if (result.headers.cookie) {
+      return createCookie('do-it', result.headers.cookie, 3);
+    }
   })["catch"](function(error) {
     return console.log(error);
   });
+};
+
+auth = function(cookie) {
+  var address;
+  if (cookie && cookie !== 'undefined') {
+    console.log('auth fired');
+    address = axios.get("/auth/" + cookie);
+    return getDelete(event, address);
+  } else {
+    return getLogin(null);
+  }
 };
 
 getSignup = function(event) {
@@ -138,7 +137,19 @@ deleteAccount = function(event) {
   return getDelete(event, address);
 };
 
+postContexts = function(event) {
+  var address, data;
+  data = formToJSON(event.target.elements);
+  console.log(data);
+  address = axios.post('/context', data);
+  return postPut(event, address);
+};
+
 $(document).ready(function() {
+  console.log($('#intro').text().trim());
+  if ($('#intro').text().trim() === 'Welcome to the do-It task management application') {
+    auth(readCookie('do-it'));
+  }
   $('#sign-up').click(getSignup);
   $('#log-in').click(getLogin);
   $('#settings').click(getSettings);
@@ -147,8 +158,5 @@ $(document).ready(function() {
   $('#change-form').submit(putSettings);
   $('#log-out').click(logout);
   $('#delete-account').click(deleteAccount);
-  console.log($('#intro').text().trim());
-  if ($('#intro').text().trim() === 'Welcome to the do-It task management application') {
-    return auth(readCookie('do-it'));
-  }
+  return $('#add-context').submit(postContexts);
 });

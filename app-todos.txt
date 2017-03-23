@@ -61,7 +61,9 @@
 //test user html
 //test user front end javascript
 
-create contexts controller
+combine context and todos controllers
+
+//create contexts controller
 contexts front end validation
 print contexts to page
 write coffeescript to crud adding contexts
