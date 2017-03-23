@@ -9,15 +9,18 @@
 <!-- todos -->
 
 <form id="add-todo">
-
+	<select id="context-select">
+		{{#each contexts}}
+			<option value="{{id}}">{{name}}</option>
+		{{/each}}
+	</select>
 </form>
 
-<form id ="add-context">
-
+<form id="add-context">
+	<input
+		type="text"
+		name="name"
+		placeholder="new context"
+	/>
+	<button type="submit">Add New Context</button>
 </form>
-
-<select id="context-select">
-	{{#each contexts}}
-		<option value="{{id}}">{{name}}</option>
-	{{/each}}
-</select>
