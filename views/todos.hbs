@@ -15,3 +15,9 @@
 <form id ="add-context">
 
 </form>
+
+<select id="context-select">
+	{{#each contexts}}
+		<option value="{{id}}">{{name}}</option>
+	{{/each}}
+</select>
