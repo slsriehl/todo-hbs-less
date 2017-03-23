@@ -1,6 +1,8 @@
 const models = require('../models');
 const helpers = require('./user-helpers');
 
+const contextItemController = require('./contextItem');
+
 const util = require('util');
 
 
@@ -21,7 +23,7 @@ const controller = {
 			//render todo or login page depending on login status from cookie check
 			.then((data) => {
 				console.log(`data.dataValues ${data.dataValues}`);
-				res.render('todos.hbs');
+				contextItemController.readContexts(req, res);
 			});
 		})
 		//in case the cookie check fails, redirect user to login page
@@ -56,7 +58,7 @@ const controller = {
 					req.session.message = 'Signup successful!  Start saving to-dos now.';
 					helpers.saveSession(req, res, data);
 					res.header('Cookie', req.session.id);
-					res.render('todos.hbs', {data: req.session.message});
+					contextItemController.readContexts(req, res);
 				//console.log(`data from user save ${util.inspect(data)}`);
 			});
 		})
@@ -90,7 +92,7 @@ const controller = {
 					req.session.message = `You have successfully logged in.`;
 					helpers.saveSession(req, res, data);
 					res.header('Cookie', req.session.id);
-					res.render('todos.hbs', {data: req.session.message});
+					contextItemController.readContexts(req, res);
 				} else {
 					//if there's data but the hash doesn't match the entered password
 					helpers.sessionMessage(req, res, `Sorry, your credentials don't match any users.  Please check them and try again.`, 'login.hbs');
@@ -107,7 +109,7 @@ const controller = {
 	logoutUser: (req, res) => {
 		console.log(req.body);
 		req.session.destroy();
-		res.render('login.hbs');
+		res.render('login.hbs', {layout: false});
 		//
 	},
 	//display settings page
@@ -128,7 +130,7 @@ const controller = {
 				sessionObj = JSON.parse(data.dataValues.data);
 				console.log(sessionObj.email);
 				//render email on settings page
-				res.render('settings.hbs', {email: sessionObj.email});
+				res.render('settings.hbs', {email: sessionObj.email, layout: false});
 			});
 		})
 		//if the call to the session store fails
@@ -205,7 +207,7 @@ const controller = {
 						} else if(data === 1) {
 							//the user was deleted so delete her session as well
 							req.session.destroy();
-							res.render('login.hbs', {data: 'Your account and all your to-dos were successfully deleted.'});
+							res.render('login.hbs', {data: 'Your account and all your to-dos were successfully deleted.', layout: false});
 						}
 					})
 					.catch((error) => {

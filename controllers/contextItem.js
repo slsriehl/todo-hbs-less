@@ -7,7 +7,8 @@ const controller = {
 		models.Context.sync()
 		.then(() => {
 			return models.Context
-			.create(req.body)
+			//obj destructuring doesn't work
+			.create({name: req.body.name})
 			.then((data) => {
 				console.log(data.dataValues);
 				res.redirect('/context');
@@ -35,7 +36,7 @@ const controller = {
 					contextObj = {id, name} = obj.dataValues
 					contexts.push(contextObj);
 				}
-				res.render('todos.hbs', {contexts});
+				res.render('todos.hbs', {contexts, data: req.session.message, layout: false});
 			})
 			.catch((error) => {
 				console.log('find all contexts failed');
@@ -46,6 +47,18 @@ const controller = {
 			console.log('read contexts sync failed');
 			throw error;
 		});
+	},
+	createItem: (req, res) => {
+
+	},
+	readItems: (req, res) => {
+
+	},
+	updateItem: (req, res) => {
+
+	},
+	deleteItem: (req, res) => {
+
 	}
 }
 
