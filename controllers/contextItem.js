@@ -23,6 +23,34 @@ const controller = {
 			throw error;
 		});
 	},
+
+	addInitialContexts: (req, res) => {
+		models.Context.sync()
+		.then(() => {
+			return models.Context
+			.bulkCreate([{
+				name: 'Home',
+				UserId: req.session.userId
+			}, {
+				name: 'Work',
+				UserId: req.session.userId
+			}, {
+				name: 'Phone',
+				UserId: req.session.userId
+			}, {
+				name: 'Computer',
+				UserId: req.session.userId
+			}])
+			.then(function(data) {
+				controller.readContexts(req, res);
+			});
+		})
+		.catch((error) => {
+			console.log('context model sync or bulk create failed');
+			throw error;
+		})
+	},
+
 	readContexts: (req, res) => {
 		models.Context.sync()
 		.then(() => {

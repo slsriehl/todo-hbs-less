@@ -58,7 +58,7 @@ const controller = {
 					req.session.message = 'Signup successful!  Start saving to-dos now.';
 					helpers.saveSession(req, res, data);
 					res.header('Cookie', req.session.id);
-					contextItemController.readContexts(req, res);
+					contextItemController.addInitialContexts(req, res);
 				//console.log(`data from user save ${util.inspect(data)}`);
 			});
 		})
