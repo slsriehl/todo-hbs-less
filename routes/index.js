@@ -87,7 +87,7 @@ router.post('/context', (req, res) => {
 
 //Read contexts
 router.get('/context', (req, res) => {
-	contextcontextItemController.readContexts(req, res);
+	contextItemController.readContexts(req, res);
 });
 
 

@@ -11,7 +11,7 @@ const controller = {
 			.create({name: req.body.name})
 			.then((data) => {
 				console.log(data.dataValues);
-				res.redirect('/context');
+				controller.readContexts(req, res);
 			})
 			.catch((error) => {
 				console.log("create function failed");
