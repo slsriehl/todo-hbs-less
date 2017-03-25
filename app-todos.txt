@@ -74,16 +74,18 @@ combine context and todos controllers
 
 //change it so todos belong to contexts and contexts belong to users?
 //only query the db for context where the user is the owner
-migrate three default contexts and one todo into each user's account on signup - the internet, home, and work
+//migrate three default contexts into each user's account on signup - the internet, home, and work
+
+//test
 
 //change land/auth to a post request
-explore flash messages
 
 //create todos controller
 todos front end validation
 write front end coffeescript to axios crud the todos
 print todos to page
 
+explore flash messages
 
 learn less
 style login and signup pages

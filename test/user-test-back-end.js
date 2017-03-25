@@ -58,8 +58,9 @@ describe('UsersWithUndefinedCookie', function() {
 
     let newSession = {
       sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
-      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10)) + '"}'
+      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10)) + ',"userId":1"}'
     }
+    models.Context.sync({force: true});
     models.ConnectSession.sync({force: true})
     .then(function() {
       return models.ConnectSession
@@ -339,10 +340,15 @@ describe('UserWithWrongCookie', function() {
         console.log(data);
       });
     });
-
+    Nightmare()
+      .goto('localhost:5000')
+      .evaluate(function() {
+        document.cookies = '; do-it=9om6W8WICmE_gyrEjckhG_a9ijWNekZD'
+      });
+    models.Context.sync({force: true});
     let newSession = {
       sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
-      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10)) + '"}'
+      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10)) + ',"userId":1"}'
     }
     models.ConnectSession.sync({force: true})
     .then(function() {
@@ -353,11 +359,6 @@ describe('UserWithWrongCookie', function() {
         done();
       });
     });
-    Nightmare()
-      .goto('localhost:5000')
-      .evaluate(function() {
-        document.cookies = '; do-it=9om6W8WICmE_gyrEjckhG_a9ijWNekZD'
-      });
   });
 
   it('should render the login page if the cookie is invalid on land', function(done) {
@@ -453,10 +454,14 @@ describe('UserWithRightCookie', function() {
         console.log(data);
       });
     });
-
+    const toEvaluate = function() {
+      document.cookies = '; do-it=WDfAv8WICmE_gyrEjckhG_a9ijWNekZD';
+    }
+    myNightmare(toEvaluate);
+    models.Context.sync({force: true});
     let newSession = {
       sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
-      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10)) + '"}'
+      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10)) + ',"userId":1"}'
     }
     models.ConnectSession.sync({force: true})
     .then(function() {
@@ -467,10 +472,6 @@ describe('UserWithRightCookie', function() {
         done();
       });
     });
-    const toEvaluate = function() {
-      document.cookies = '; do-it=WDfAv8WICmE_gyrEjckhG_a9ijWNekZD';
-    }
-    myNightmare(toEvaluate);
   });
 
   it('should render the todos page if the cookie is valid on land', function(done) {
