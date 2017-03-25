@@ -3,7 +3,7 @@
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, deleteAccount, formToJSON, getDelete, getLogin, getSettings, getSignup, logout, postContexts, postLogin, postPut, postSignup, putSettings, readCookie;
+var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, logout, postContexts, postLogin, postSignup, putSettings, readCookie;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -41,23 +41,13 @@ formToJSON = function(elements) {
   }, {});
 };
 
-getDelete = function(event, getDeleteTo) {
+cruds = function(event, getDeleteTo) {
   if (event) {
     event.preventDefault();
   }
   return getDeleteTo.then(function(result) {
     console.log(result);
-    return $('body').html(result.data);
-  })["catch"](function(error) {
-    return console.log(error);
-  });
-};
-
-postPut = function(event, postPutTo) {
-  event.preventDefault();
-  return postPutTo.then(function(result) {
-    console.log(result);
-    $('body').html(result.data);
+    $('#content').html(result.data);
     if (result.headers.cookie) {
       return createCookie('do-it', result.headers.cookie, 3);
     }
@@ -70,8 +60,10 @@ auth = function(cookie) {
   var address;
   if (cookie && cookie !== 'undefined') {
     console.log('auth fired');
-    address = axios.get("/auth/" + cookie);
-    return getDelete(event, address);
+    address = axios.post("/auth", {
+      cookie: cookie
+    });
+    return cruds(event, address);
   } else {
     return getLogin(null);
   }
@@ -80,20 +72,20 @@ auth = function(cookie) {
 getSignup = function(event) {
   var address;
   address = axios.get('/user/signup');
-  return getDelete(event, address);
+  return cruds(event, address);
 };
 
 getLogin = function(event) {
   var address;
   address = axios.get('/user/login');
-  return getDelete(event, address);
+  return cruds(event, address);
 };
 
 getSettings = function(event) {
   var address, cookie;
   cookie = readCookie('do-it');
   address = axios.get("/user/" + cookie);
-  return getDelete(event, address);
+  return cruds(event, address);
 };
 
 postSignup = function(event) {
@@ -101,14 +93,14 @@ postSignup = function(event) {
   data = formToJSON(event.target.elements);
   console.log(data);
   address = axios.post('/user/signup', data);
-  return postPut(event, address);
+  return cruds(event, address);
 };
 
 postLogin = function(event) {
   var address, data;
   data = formToJSON(event.target.elements);
   address = axios.post('/user/login', data);
-  return postPut(event, address);
+  return cruds(event, address);
 };
 
 putSettings = function(event) {
@@ -117,13 +109,13 @@ putSettings = function(event) {
   data.cookie = readCookie('do-it');
   console.log(data);
   address = axios.put('/user', data);
-  return postPut(event, address);
+  return cruds(event, address);
 };
 
 logout = function(event) {
   var address;
   address = axios["delete"]('/user/logout');
-  return getDelete(event, address);
+  return cruds(event, address);
 };
 
 deleteAccount = function(event) {
@@ -134,7 +126,7 @@ deleteAccount = function(event) {
   };
   console.log(data);
   address = axios.put("/user/delete", data);
-  return getDelete(event, address);
+  return cruds(event, address);
 };
 
 postContexts = function(event) {
@@ -142,21 +134,18 @@ postContexts = function(event) {
   data = formToJSON(event.target.elements);
   console.log(data);
   address = axios.post('/context', data);
-  return postPut(event, address);
+  return cruds(event, address);
+};
+
+getTodos = function(event) {
+  var address;
+  address = axios.get('/context');
+  return cruds(event, address);
 };
 
 $(document).ready(function() {
   console.log($('#intro').text().trim());
   if ($('#intro').text().trim() === 'Welcome to the do-It task management application') {
-    auth(readCookie('do-it'));
+    return auth(readCookie('do-it'));
   }
-  $('#sign-up').click(getSignup);
-  $('#log-in').click(getLogin);
-  $('#settings').click(getSettings);
-  $('#signup-form').submit(postSignup);
-  $('#login-form').submit(postLogin);
-  $('#change-form').submit(putSettings);
-  $('#log-out').click(logout);
-  $('#delete-account').click(deleteAccount);
-  return $('#add-context').submit(postContexts);
 });

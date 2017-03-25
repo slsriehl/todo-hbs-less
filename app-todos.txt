@@ -64,14 +64,24 @@
 combine context and todos controllers
 
 //create contexts controller
-contexts front end validation
-print contexts to page
-write coffeescript to crud adding contexts
+//contexts front end validation
+//print contexts to page
+//write coffeescript to crud adding contexts
+troubleshoot front end adding contexts and rerendering
 
-create todos controller
+change it so todos belong to contexts and contexts belong to users?
+migrate three default contexts and one todo into each user's account on signup - the internet, home, and work
+
+//change land/auth to a post request
+explore flash messages
+
+//create todos controller
 todos front end validation
-write front end coffeescript to axios crud the todos
-print todos to page
+//write front end coffeescript to axios crud the todos
+//print todos to page
+//append without layout
+//troubleshoot click handlers
+write function to get the todos/contexts page from settings
 
 learn less
 style login and signup pages
