@@ -14,6 +14,8 @@ const bcrypt = require('bcryptjs');
 const chaiDOM = require('chai-dom');
 const Nightmare = require('nightmare');
 
+require('mocha-generators').install();
+
 chai.use(chaiHTTP);
 chai.use(chaiDOM);
 
