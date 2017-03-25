@@ -95,6 +95,7 @@ const helpers = {
 	saveSession: function(req, res, data) {
     req.session.email = data.dataValues.email;
 		req.session.password = data.dataValues.password;
+		req.session.userId = data.dataValues.id;
     req.session.cookie.expires = 1000 * 60 * 60 * 24 * 3;
     req.session.save();
   },

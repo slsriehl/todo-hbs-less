@@ -1,8 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Item = sequelize.define('Item', {
-    context_id: DataTypes.INTEGER,
-    user_id: DataTypes.INTEGER,
 		name: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -26,8 +24,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-				Item.belongsTo(models.User, {foreignKey: Item.user_id, onDelete: 'CASCADE'});
-				Item.belongsTo(models.Context, {foreignKey: Item.context_id, onDelete: 'CASCADE'});
+				Item.belongsTo(models.Context, {foreignKey: 'ContextId', onDelete: 'CASCADE'});
         // associations can be defined here
       }
     }

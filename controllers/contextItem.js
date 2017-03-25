@@ -8,7 +8,7 @@ const controller = {
 		.then(() => {
 			return models.Context
 			//obj destructuring doesn't work
-			.create({name: req.body.name})
+			.create({name: req.body.name, UserId: req.session.userId})
 			.then((data) => {
 				console.log(data.dataValues);
 				controller.readContexts(req, res);
@@ -27,7 +27,9 @@ const controller = {
 		models.Context.sync()
 		.then(() => {
 			return models.Context
-			.findAll({})
+			.findAll({
+				where: {UserId: req.session.userId}
+			})
 			.then((data) => {
 				console.log(data);
 				let contextObj;

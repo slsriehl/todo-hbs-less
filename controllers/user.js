@@ -82,7 +82,7 @@ const controller = {
 				where: { email: req.body.email }
 			})
 			.then((data) => {
-				//console.log(`data ${util.inspect(data)}`);
+				console.log(`data ${util.inspect(data)}`);
 				//sequelize call succeeded
 				//compare stored hash to password sent in post request
 				const hash = helpers.getHash(req.body.password, data.dataValues.password);
