@@ -57,22 +57,40 @@
 
 //test front end validation
 
-test all user api routes
-test user html
-test user front end javascript
+//test all user api routes
+//test user html
+//test user front end javascript
 
-create contexts controller
-contexts front end validation
-print contexts to page
-write coffeescript to crud adding contexts
+combine context and todos controllers
 
-create todos controller
+//create contexts controller
+//contexts front end validation
+//print contexts to page
+//write coffeescript to crud adding contexts
+//troubleshoot front end adding contexts and rerendering
+//append without layout
+//troubleshoot click handlers
+//write function to get the todos/contexts page from settings
+
+//change it so todos belong to contexts and contexts belong to users?
+//only query the db for context where the user is the owner
+//migrate three default contexts into each user's account on signup - the internet, home, and work
+
+//test
+
+//change land/auth to a post request
+
+//create todos controller
 todos front end validation
 write front end coffeescript to axios crud the todos
 print todos to page
 
+explore flash messages
+
 learn less
 style login and signup pages
 write coffeescript and less to create dynamic, interactive todos with adding contexts
+
+consider adding tests with nightmare navigating to the page and entering the info
 
 add nodemailer functionality to reset password

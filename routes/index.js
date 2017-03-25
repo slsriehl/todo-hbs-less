@@ -4,29 +4,28 @@ const express = require('express');
 const router = new express.Router;
 
 const userController = require('../controllers/user'),
-			itemController = require('../controllers/item'),
-			contextController = require('../controllers/context');
+			contextItemController = require('../controllers/contextItem');
 
 
 //++++++ ITEM routes ++++++
 //Create new to-do
 router.post('/item', (req, res) => {
-	itemController.createItem(req, res);
+	contextItemController.createItem(req, res);
 });
 
 //Read to-dos
 router.get('/item', (req, res) => {
-	itemController.readItems(req, res);
+	contextItemController.readItems(req, res);
 });
 
 //Update to-do
 router.put('/item', (req, res) => {
-	itemController.updateItem(req, res);
+	contextItemController.updateItem(req, res);
 });
 
 //Delete to-do
 router.delete('/item/:id', (req, res) => {
-	itemController.deleteItem(req, res);
+	contextItemController.deleteItem(req, res);
 });
 
 //++++++ USER routes ++++++
@@ -36,14 +35,14 @@ router.get('/', (req, res) => {
 	res.render('index.hbs');
 });
 
-router.get('/auth/:cookie', (req, res) => {
+router.post('/auth', (req, res) => {
 	console.log('auth cookie fired');
-	userController.land(req, res);
+	userController.auth(req, res);
 });
 
 //render signup page
 router.get('/user/signup', (req, res) => {
-	res.render('signup.hbs');
+	res.render('signup.hbs', {layout: false});
 });
 
 //Create new user
@@ -53,7 +52,7 @@ router.post('/user/signup', (req, res) => {
 
 //render login page
 router.get('/user/login', (req, res) => {
-	res.render('login.hbs');
+	res.render('login.hbs', {layout: false});
 });
 
 //Login new user
@@ -83,12 +82,12 @@ router.delete('/user/logout', (req, res) => {
 //++++++ CONTEXT routes ++++++
 //Create new context
 router.post('/context', (req, res) => {
-	contextController.createContext(req, res);
+	contextItemController.createContext(req, res);
 });
 
 //Read contexts
 router.get('/context', (req, res) => {
-	contextController.readContexts(req, res);
+	contextItemController.readContexts(req, res);
 });
 
 

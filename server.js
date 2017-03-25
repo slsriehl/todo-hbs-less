@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(express.static("./public"));
+app.use(express.static("./src"));
 
 //++++++ Handlebars config ++++++
 app.engine('hbs', hbs({

@@ -95,6 +95,7 @@ const helpers = {
 	saveSession: function(req, res, data) {
     req.session.email = data.dataValues.email;
 		req.session.password = data.dataValues.password;
+		req.session.userId = data.dataValues.id;
     req.session.cookie.expires = 1000 * 60 * 60 * 24 * 3;
     req.session.save();
   },
@@ -103,12 +104,12 @@ const helpers = {
 	sessionMessage: (req, res, message, render) => {
 		req.session.message = message;
 		req.session.save();
-		res.render(render, {data: req.session.message});
+		res.render(render, {data: req.session.message, layout: false});
 	},
 	settingsSessMessage: (req, res, message) => {
 		req.session.message = message;
 		req.session.save();
-		res.render('settings.hbs', {data: req.session.message, email: req.session.email})
+		res.render('settings.hbs', {data: req.session.message, email: req.session.email, layout: false})
 	}
 }
 

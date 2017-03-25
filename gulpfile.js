@@ -2,10 +2,11 @@ var gulp = require('gulp');
 var less = require('gulp-less');
 var header = require('gulp-header');
 var cleanCSS = require('gulp-clean-css');
-var rename = require("gulp-rename");
+var rename = require('gulp-rename');
 var coffee = require('gulp-coffee');
 var pkg = require('./package.json');
 var uglify = require('gulp-uglify');
+var concat = require('gulp-concat');
 
 // Set the banner content
 var banner = ['/*!\n',
@@ -33,6 +34,7 @@ gulp.task('coffee', function() {
     .pipe(coffee({bare: true}))
     .pipe(header(banner, { pkg: pkg }))
     .pipe(gulp.dest('./src/js'))
+    .pipe(concat('index.js'))
     .pipe(uglify())
     .pipe(header(banner, { pkg: pkg }))
     .pipe(rename({ suffix: '.min' }))

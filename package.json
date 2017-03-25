@@ -38,13 +38,13 @@
     "gulp": "^3.9.1",
     "gulp-clean-css": "^3.0.3",
     "gulp-coffee": "^2.3.4",
+    "gulp-concat": "^2.6.1",
     "gulp-header": "^1.8.8",
     "gulp-less": "^3.3.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^2.1.0",
-    "jsdom": "^9.12.0",
     "mocha": "^3.2.0",
-    "mocha-phantomjs-core": "^2.1.1",
+    "mocha-generators": "^2.0.0",
     "nightmare": "^2.10.0"
   }
 }
