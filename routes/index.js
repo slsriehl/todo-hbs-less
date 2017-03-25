@@ -35,9 +35,9 @@ router.get('/', (req, res) => {
 	res.render('index.hbs');
 });
 
-router.get('/auth/:cookie', (req, res) => {
+router.post('/auth', (req, res) => {
 	console.log('auth cookie fired');
-	userController.land(req, res);
+	userController.auth(req, res);
 });
 
 //render signup page
