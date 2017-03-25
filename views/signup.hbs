@@ -17,6 +17,7 @@
 			type="email"
 			placeholder="email"
 			name="email"
+			id="signup-email-1"
 			onchange="if(this.checkValidity()) form.emailConf.pattern = this.value;"
 			required
 			title="Please enter a valid email."
@@ -25,6 +26,7 @@
 			type="email"
 			placeholder="email"
 			name="emailConf"
+			id="signup-email-2"
 			onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same email as above.' : '');"
 			required
 		/>
@@ -32,6 +34,7 @@
 			type="password"
 			placeholder="password"
 			name="password"
+			id="signup-password-1"
 			pattern="^\S{8,}$"
 			onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 8 characters.' : ''); if(this.checkValidity()) form.passwordConf.pattern = this.value;"
 			required
@@ -40,6 +43,7 @@
 			type="password"
 			placeholder="password"
 			name="passwordConf"
+			id="signup-password-2"
 			pattern="^\S{8,}$"
 			onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same password as above.' : '');"
 			required

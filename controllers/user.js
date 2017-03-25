@@ -11,14 +11,14 @@ const controller = {
 	// and load the signin page or the todo page accordingly
 	// solved this problem with a landing page that sends cookie based on presence
 	// of h2 dom element
-	land: (req, res) => {
-		console.log(`this is req.params.cookie ${req.params.cookie}`);
+	auth: (req, res) => {
+		console.log(`this is req.body.cookie ${req.body.cookie}`);
 		//search the session store for the user's cookie
 		models.ConnectSession.sync()
 		.then(() => {
 			return models.ConnectSession
 			.findOne({
-				where: { sid: req.params.cookie }
+				where: { sid: req.body.cookie }
 			})
 			//render todo or login page depending on login status from cookie check
 			.then((data) => {
@@ -29,7 +29,7 @@ const controller = {
 		//in case the cookie check fails, redirect user to login page
 		.catch((error) => {
 			console.log(error);
-			res.render('login.hbs');
+			res.render('login.hbs', {layout: false});
 		})
 
 	},
