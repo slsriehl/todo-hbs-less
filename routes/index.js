@@ -21,12 +21,12 @@ router.post('/item/read', (req, res) => {
 });
 
 //Update to-do
-router.put('/item', (req, res) => {
+router.put('/item/change', (req, res) => {
 	itemController.updateItem(req, res);
 });
 
 //Delete to-do
-router.delete('/item/:id', (req, res) => {
+router.put('/item/delete', (req, res) => {
 	itemController.deleteItem(req, res);
 });
 

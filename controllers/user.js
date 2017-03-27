@@ -8,33 +8,6 @@ const util = require('util');
 
 
 const controller = {
-	//when the root route loads, check the cookie against the session store
-	// and load the signin page or the todo page accordingly
-	// solved this problem with a landing page that sends cookie based on presence
-	// of h2 dom element
-	// auth: (req, res) => {
-	// 	console.log(`this is req.body.cookie ${req.body.cookie}`);
-	// 	//search the session store for the user's cookie
-	// 	models.ConnectSession.sync()
-	// 	.then(() => {
-	// 		return models.ConnectSession
-	// 		.findOne({
-	// 			where: { sid: req.body.cookie }
-	// 		})
-	// 		//render todo or login page depending on login status from cookie check
-	// 		.then((data) => {
-	// 			console.log(`data.dataValues ${data.dataValues}`);
-	// 			readController.readTodos(req, res, cookie);
-	// 		});
-	// 	})
-	// 	//in case the cookie check fails, redirect user to login page
-	// 	.catch((error) => {
-	// 		console.log(error);
-	// 		res.render('login.hbs', {layout: false});
-	// 	})
-	//
-	// },
-
 	//save a new user to the db
 	signupUser: (req, res) => {
 		//body elements are email and password

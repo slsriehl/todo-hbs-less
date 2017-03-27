@@ -80,10 +80,10 @@ combine context and todos controllers
 
 //change land/auth to a post request
 
-create todos controller
+//create todos controller
 todos front end validation
 write front end coffeescript to axios crud the todos
-print todos to page
+//print todos to page
 
 fix promises, remove syncs
 replace ids with uuids
