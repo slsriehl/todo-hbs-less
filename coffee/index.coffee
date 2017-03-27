@@ -47,7 +47,7 @@ cruds = (event, getDeleteTo) ->
 auth = (cookie) ->
 	if cookie and cookie != 'undefined'
 		console.log 'auth fired'
-		address = axios.post "/auth", {cookie: cookie}
+		address = axios.post '/item/read', {cookie: cookie}
 		cruds event, address
 	else
 		getLogin null
@@ -100,7 +100,7 @@ deleteAccount = (event) ->
 		password: $('#password').val()
 		cookie: readCookie 'do-it'
 	console.log data
-	address = axios.put "/user/delete", data
+	address = axios.put '/user/delete', data
 	cruds event, address
 
 # post new contexts from todos page with submit handler
@@ -113,6 +113,7 @@ postContexts = (event) ->
 getTodos = (event) ->
 	address = axios.get '/context'
 	cruds event, address
+
 
 # $(document).click '#log-out', logout
 #$(document).click '#sign-up', getSignup
