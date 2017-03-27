@@ -34,13 +34,13 @@
 		<h3>{{contextName}}</h3>
 			{{#each items}}
 				<div id="{{itemId}}">
-				<h4>itemName</h4>
+				<h4>{{itemName}}</h4>
 					{{#if doneness}}
 						<p>complete</p>
 					{{else}}
 						<p>ready to do!</p>
 					{{/if}}
-				<p>description</p>
+				<p>{{description}}</p>
 				</div>
 			{{/each}}
 		</div>
