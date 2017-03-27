@@ -1,7 +1,8 @@
 const models = require('../models');
 const helpers = require('./user-helpers');
 
-const contextItemController = require('./contextItem');
+const readController = require('./read');
+const contextController = require('./context');
 
 const util = require('util');
 
@@ -23,7 +24,7 @@ const controller = {
 			//render todo or login page depending on login status from cookie check
 			.then((data) => {
 				console.log(`data.dataValues ${data.dataValues}`);
-				contextItemController.readContexts(req, res);
+				readController.readTodos(req, res);
 			});
 		})
 		//in case the cookie check fails, redirect user to login page
@@ -58,7 +59,7 @@ const controller = {
 					req.session.message = 'Signup successful!  Start saving to-dos now.';
 					helpers.saveSession(req, res, data);
 					res.header('Cookie', req.session.id);
-					contextItemController.addInitialContexts(req, res);
+					contextController.addInitialContexts(req, res);
 				//console.log(`data from user save ${util.inspect(data)}`);
 			});
 		})
@@ -92,7 +93,7 @@ const controller = {
 					req.session.message = `You have successfully logged in.`;
 					helpers.saveSession(req, res, data);
 					res.header('Cookie', req.session.id);
-					contextItemController.readContexts(req, res);
+					readController.readTodos(req, res);
 				} else {
 					//if there's data but the hash doesn't match the entered password
 					helpers.sessionMessage(req, res, `Sorry, your credentials don't match any users.  Please check them and try again.`, 'login.hbs');

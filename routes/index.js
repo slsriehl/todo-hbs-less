@@ -4,28 +4,30 @@ const express = require('express');
 const router = new express.Router;
 
 const userController = require('../controllers/user'),
-			contextItemController = require('../controllers/contextItem');
+			contextController = require('../controllers/context'),
+			itemController = require('../controllers/item'),
+			readController = require('../controllers/read');
 
 
 //++++++ ITEM routes ++++++
 //Create new to-do
 router.post('/item', (req, res) => {
-	contextItemController.createItem(req, res);
+	itemController.createItem(req, res);
 });
 
 //Read to-dos
-router.get('/item', (req, res) => {
-	contextItemController.readItems(req, res);
+router.get('/item/:cookie', (req, res) => {
+	readController.readTodos(req, res);
 });
 
 //Update to-do
 router.put('/item', (req, res) => {
-	contextItemController.updateItem(req, res);
+	itemController.updateItem(req, res);
 });
 
 //Delete to-do
 router.delete('/item/:id', (req, res) => {
-	contextItemController.deleteItem(req, res);
+	itemController.deleteItem(req, res);
 });
 
 //++++++ USER routes ++++++
@@ -75,6 +77,7 @@ router.put('/user/delete', (req, res) => {
 	userController.deleteUser(req, res);
 });
 
+//logout user
 router.delete('/user/logout', (req, res) => {
 	userController.logoutUser(req, res);
 });
@@ -82,12 +85,12 @@ router.delete('/user/logout', (req, res) => {
 //++++++ CONTEXT routes ++++++
 //Create new context
 router.post('/context', (req, res) => {
-	contextItemController.createContext(req, res);
+	contextController.createContext(req, res);
 });
 
 //Read contexts
 router.get('/context', (req, res) => {
-	contextItemController.readContexts(req, res);
+	contextController.readContexts(req, res);
 });
 
 

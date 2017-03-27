@@ -1,5 +1,5 @@
 const models = require('../models');
-
+const readController = require('./read.js');
 
 const controller = {
 	createContext: (req, res) => {
@@ -51,43 +51,10 @@ const controller = {
 		})
 	},
 
-	readContexts: (req, res) => {
-		models.Context.sync()
-		.then(() => {
-			return models.Context
-			.findAll({
-				where: {UserId: req.session.userId}
-			})
-			.then((data) => {
-				console.log(data);
-				let contextObj;
-				let contexts = [];
-				for(let obj of data) {
-					contextObj = {id, name} = obj.dataValues
-					contexts.push(contextObj);
-				}
-				res.render('todos.hbs', {contexts, data: req.session.message, layout: false});
-			})
-			.catch((error) => {
-				console.log('find all contexts failed');
-				throw error;
-			});
-		})
-		.catch((error) => {
-			console.log('read contexts sync failed');
-			throw error;
-		});
-	},
-	createItem: (req, res) => {
+	updateContext: (req, res) => {
 
 	},
-	readItems: (req, res) => {
-
-	},
-	updateItem: (req, res) => {
-
-	},
-	deleteItem: (req, res) => {
+	deleteContext: (req, res) => {
 
 	}
 }
