@@ -10,7 +10,7 @@
 
 <form id="add-todo">
 	<select id="context-select">
-		{{#each contexts}}
+		{{#each User.contexts}}
 			<option value="{{id}}">{{name}}</option>
 		{{/each}}
 	</select>
@@ -27,6 +27,26 @@
 	/>
 	<button type="submit">Add New Context</button>
 </form>
+
+<section>
+		{{#each userContextItem.contexts}}
+		<div id="{{contextId}}">
+		<h3>{{contextName}}</h3>
+			{{#each items}}
+				<div id="{{itemId}}">
+				<h4>itemName</h4>
+					{{#if doneness}}
+						<p>complete</p>
+					{{else}}
+						<p>ready to do!</p>
+					{{/if}}
+				<p>description</p>
+				</div>
+			{{/each}}
+		</div>
+		{{/each}}
+</section>
+
 
 <script>
 	$('#log-out').click(logout);

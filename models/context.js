@@ -7,6 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
 				Context.hasMany(models.Item)
         Context.belongsTo(models.User, {foreignKey: 'UserId', onDelete: 'CASCADE'});
+				//Context.hasOne(models.User, {foreignKey: 'UserId', onDelete: 'CASCADE'});
         // associations can be defined here
       }
     }
