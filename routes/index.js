@@ -11,12 +11,12 @@ const userController = require('../controllers/user'),
 
 //++++++ ITEM routes ++++++
 //Create new to-do
-router.post('/item', (req, res) => {
+router.post('/item/create', (req, res) => {
 	itemController.createItem(req, res);
 });
 
 //Read to-dos
-router.get('/item/:cookie', (req, res) => {
+router.post('/item/read', (req, res) => {
 	readController.readTodos(req, res);
 });
 

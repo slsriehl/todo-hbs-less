@@ -1,5 +1,5 @@
 const models = require('../models');
-
+readController = require('./read')
 
 const controller = {
 	createItem: (req, res) => {
@@ -16,7 +16,7 @@ const controller = {
 			.create(newItem)
 			.then((data) => {
 				console.log(data);
-				controller.readItems(req, res);
+				readController.readTodos(req, res);
 			})
 			.catch((error) => {
 				console.log('fail create');

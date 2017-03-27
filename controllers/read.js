@@ -1,12 +1,11 @@
 const models = require('../models');
-util = require('util');
+const util = require('util');
 
 const controller = {
 	readTodos: (req, res) => {
-		console.log(req.params);
 		//use cookie to locate session
 		return models.ConnectSession.findOne({
-			where: { sid: req.params.cookie }
+			where: { sid: req.body.cookie }
 		})
 		.then(data => {
 			console.log(data);
@@ -43,7 +42,7 @@ const controller = {
 						})
 					});
 				})
-			})
+			});
 			res.render('todos.hbs', {userContextItem, layout: false});
 		})
 		.catch((error) => {
