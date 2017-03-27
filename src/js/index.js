@@ -3,7 +3,7 @@
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, logout, postContexts, postLogin, postSignup, putSettings, readCookie;
+var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -140,6 +140,15 @@ postContexts = function(event) {
 getTodos = function(event) {
   var address;
   address = axios.get('/context');
+  return cruds(event, address);
+};
+
+postItems = function(event) {
+  var address, data;
+  data = formToJSON(event.target.elements);
+  data.cookie = readCookie('do-it');
+  console.log(data);
+  address = axios.post('/item/create', data);
   return cruds(event, address);
 };
 

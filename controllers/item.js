@@ -5,14 +5,16 @@ const controller = {
 	createItem: (req, res) => {
 		console.log(req.body);
 		const newItem = {
-			name: req.body.name,
+			name: req.body.item,
 			description: req.body.description,
 			ContextId: parseInt(req.body.context),
 			done: 0
 		}
+		console.log(newItem);
 		return models.ConnectSession
 		.findOne({ where: { sid: req.body.cookie } })
 		.then((data) => {
+			console.log(data);
 			return models.Item
 			.create(newItem)
 		})

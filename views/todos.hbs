@@ -9,11 +9,14 @@
 <!-- todos -->
 
 <form id="add-todo">
-	<select id="context-select">
+	<input type="text" name="item" placeholder="to-do item" />
+	<textarea placeholder="description" name="description"></textarea>
 		{{#each userContextItem.contexts}}
-			<option value="{{contextId}}">{{contextName}}</option>
+		<div>
+			<input type="radio" value="{{contextId}}" name="context" />  {{contextName}}
+		</div>
 		{{/each}}
-	</select>
+	<button type="submit">Add New Item</button>
 </form>
 
 <form id="add-context">
@@ -41,6 +44,7 @@
 						<p>ready to do!</p>
 					{{/if}}
 				<p>{{description}}</p>
+				<button id="{{itemId}}">Edit Item</button>
 				</div>
 			{{/each}}
 		</div>
@@ -52,4 +56,5 @@
 	$('#log-out').click(logout);
 	$('#settings').click(getSettings);
 	$('#add-context').submit(postContexts);
+	$('#add-todo').submit(postItems);
 </script>

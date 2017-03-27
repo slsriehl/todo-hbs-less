@@ -114,6 +114,12 @@ getTodos = (event) ->
 	address = axios.get '/context'
 	cruds event, address
 
+postItems = (event) ->
+	data = formToJSON event.target.elements
+	data.cookie = readCookie 'do-it'
+	console.log data
+	address = axios.post '/item/create', data
+	cruds event, address
 
 # $(document).click '#log-out', logout
 #$(document).click '#sign-up', getSignup
@@ -133,7 +139,9 @@ $(document).ready(() ->
 	# $('#log-out').click logout
 	# $('#delete-account').click deleteAccount
 
-	# context submit handler
+	# context & item submit handler
 	# $('#add-context').submit postContexts
 	# $('#go-to-dos').click getTodos
+	#
+
 )
