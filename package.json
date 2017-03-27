@@ -27,7 +27,8 @@
     "morgan": "^1.8.1",
     "mysql": "^2.13.0",
     "sequelize": "^3.30.2",
-    "util": "^0.10.3"
+    "util": "^0.10.3",
+    "vex-js": "^3.1.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

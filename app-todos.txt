@@ -85,6 +85,10 @@ todos front end validation
 write front end coffeescript to axios crud the todos
 //print todos to page
 
+vex with flat theme?  or remodal?
+implement edit item with a modal
+add modal to add contexts
+
 fix promises, remove syncs
 replace ids with uuids
 create a fresh migration and reform the db
