@@ -10,8 +10,8 @@
 
 <form id="add-todo">
 	<select id="context-select">
-		{{#each User.contexts}}
-			<option value="{{id}}">{{name}}</option>
+		{{#each userContextItem.contexts}}
+			<option value="{{contextId}}">{{contextName}}</option>
 		{{/each}}
 	</select>
 </form>
