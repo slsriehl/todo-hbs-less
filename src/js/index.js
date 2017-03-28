@@ -138,8 +138,11 @@ postContexts = function(event) {
 };
 
 getTodos = function(event) {
-  var address;
-  address = axios.get('/context');
+  var address, data;
+  data = {
+    cookie: readCookie('do-it')
+  };
+  address = axios.post('/item/read', data);
   return cruds(event, address);
 };
 

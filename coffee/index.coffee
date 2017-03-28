@@ -111,7 +111,9 @@ postContexts = (event) ->
 	cruds event, address
 
 getTodos = (event) ->
-	address = axios.get '/context'
+	data =
+		cookie: readCookie 'do-it'
+	address = axios.post '/item/read', data
 	cruds event, address
 
 postItems = (event) ->
