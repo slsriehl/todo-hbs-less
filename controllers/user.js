@@ -84,24 +84,21 @@ const controller = {
 	},
 	//display settings page
 	userSettings: (req, res) => {
-		console.log(req.params);
+		console.log(req.headers);
 		//query the session store for the user's session
 		//to display their email address on the settings page
-		models.ConnectSession.sync()
-		.then(() => {
-			return models.ConnectSession
-			.findOne({
-				where: { sid: req.params.cookie }
-			})
-			.then((data) => {
-				console.log(data.dataValues);
-				//the data in the session store is saved as a string,
-				//so parse it into an object
-				sessionObj = JSON.parse(data.dataValues.data);
-				console.log(sessionObj.email);
-				//render email on settings page
-				res.render('settings.hbs', {email: sessionObj.email, layout: false});
-			});
+		return models.ConnectSession
+		.findOne({
+			where: { sid: req.headers.clientcookie }
+		})
+		.then((data) => {
+			console.log(data.dataValues);
+			//the data in the session store is saved as a string,
+			//so parse it into an object
+			sessionObj = JSON.parse(data.dataValues.data);
+			console.log(sessionObj.email);
+			//render email on settings page
+			res.render('settings.hbs', {email: sessionObj.email, layout: false});
 		})
 		//if the call to the session store fails
 		.catch((error) => {

@@ -12,7 +12,7 @@ const controller = {
 		}
 		console.log(newItem);
 		return models.ConnectSession
-		.findOne({ where: { sid: req.body.cookie } })
+		.findOne({ where: { sid: req.headers.clientcookie } })
 		.then((data) => {
 			console.log(data);
 			return models.Item
@@ -32,7 +32,7 @@ const controller = {
 		console.log(req.body);
 		//send item id and doneness and other items
 		return models.ConnectSession
-		.findOne({ where: { sid: req.body.cookie } })
+		.findOne({ where: { sid: req.headers.clientcookie } })
 		.then((data) => {
 			return models.Item
 			.update(req.body, {
@@ -65,7 +65,7 @@ const controller = {
 	deleteItem: (req, res) => {
 		console.log(req.body);
 		return models.ConnectSession
-		.findOne({ where: { sid: req.body.cookie } })
+		.findOne({ where: { sid: req.headers.clientcookie } })
 		.then((data) => {
 			return models.Item
 			.destroy({ where: { id: req.body.id } })

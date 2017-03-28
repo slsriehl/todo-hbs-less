@@ -7,7 +7,7 @@ const helpers = {
 	updateUser: (req, res, objToUpdate) => {
 		return models.ConnectSession
 		.findOne({
-			where: { sid: req.body.cookie }
+			where: { sid: req.headers.clientcookie }
 		})
 		.then((data) => {
 			console.log(data.dataValues);

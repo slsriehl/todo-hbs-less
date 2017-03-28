@@ -9,7 +9,7 @@ const controller = {
 		.create({name: req.body.name, UserId: req.session.userId})
 		.then((data) => {
 			console.log(data.dataValues);
-			controller.readContexts(req, res);
+			readController.readTodos(req, res);
 		})
 		.catch((error) => {
 			console.log("create function failed");
