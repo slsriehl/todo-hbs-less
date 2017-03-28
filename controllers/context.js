@@ -24,7 +24,7 @@ const controller = {
 		});
 	},
 
-	addInitialContexts: (req, res) => {
+	addInitialContexts: (req, res, cookie) => {
 		models.Context.sync()
 		.then(() => {
 			return models.Context
@@ -42,7 +42,7 @@ const controller = {
 				UserId: req.session.userId
 			}])
 			.then(function(data) {
-				controller.readContexts(req, res);
+				readController.readTodos(req, res, cookie);
 			});
 		})
 		.catch((error) => {

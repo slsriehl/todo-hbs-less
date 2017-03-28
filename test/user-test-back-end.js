@@ -45,32 +45,54 @@ describe('UsersWithUndefinedCookie', function() {
     myNightmare(toEvaluate);
     let newUser = {
       email: 'susan@example.com',
-      password: 'spaz5713'
+      password: bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10))
     }
-		models.User.sync({ force: true })
-		.then(function() {
-			return models.User
-			.create(newUser)
-			.then(function(data) {
-        console.log(data);
-			});
-		});
-
     let newSession = {
       sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
-      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10)) + ',"userId":1"}'
+      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + newUser.password + ',"userId":1"}'
     }
-    models.Context.sync({force: true});
-    models.ConnectSession.sync({force: true})
-    .then(function() {
-      return models.ConnectSession
-      .create(newSession)
-      .then(function(data) {
-        console.log(data);
-        done();
-      });
-    });
-  });
+
+		models.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
+		.then(function(){
+			models.sequelize.options.maxConcurrentQueries = 1;
+			return models.sequelize.sync({ force: true });
+		})
+		.then(function(){
+			return models.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+		})
+		.then(function() {
+			return models.User
+			.create(newUser);
+		})
+		.then(function(data) {
+			return models.ConnectSession
+			.create(newSession);
+		})
+		.then(function(data) {
+			return models.Context
+			.bulkCreate([{
+				name: 'Home',
+				UserId: 1
+			}, {
+				name: 'Work',
+				UserId: 1
+			}, {
+				name: 'Phone',
+				UserId: 1
+			}, {
+				name: 'Computer',
+				UserId: 1
+			}])
+		})
+		.then(function(data) {
+			done();
+		})
+		.catch(function(error) {
+			console.log('table sync error');
+			throw error;
+			done();
+		});
+	});
 
   it('should render the landing page', function(done) {
     chai.request(server)
@@ -129,8 +151,8 @@ describe('UsersWithUndefinedCookie', function() {
 	      res.should.have.status(200);
 	      res.should.be.html;
         const toEvaluate = function(res) {
-          document.querySelector('#add-todo').should.have.length(0);
-          document.querySelector('#add-context').should.have.length(0);
+          document.querySelector('#add-todo').should.have.length(4);
+          document.querySelector('#add-context').should.have.length(2);
           document.querySelector('.data').should.have.text('Signup successful!  Start saving to-dos now.');
           document.should.have.html(res.text);
         }
@@ -328,37 +350,44 @@ describe('UsersWithUndefinedCookie', function() {
 //the cookie in the session
 describe('UserWithWrongCookie', function() {
   beforeEach('clear and add', function(done) {
-    let newUser = {
-      email: 'susan@example.com',
-      password: 'spaz5713'
-    }
-    models.User.sync({ force: true })
-    .then(function() {
-      return models.User
-      .create(newUser)
-      .then(function(data) {
-        console.log(data);
-      });
-    });
     Nightmare()
       .goto('localhost:5000')
       .evaluate(function() {
         document.cookies = '; do-it=9om6W8WICmE_gyrEjckhG_a9ijWNekZD'
       });
-    models.Context.sync({force: true});
+		let newUser = {
+      email: 'susan@example.com',
+      password: bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10))
+    }
     let newSession = {
       sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
-      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10)) + ',"userId":1"}'
+      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + newUser.password + ',"userId":1"}'
     }
-    models.ConnectSession.sync({force: true})
-    .then(function() {
-      return models.ConnectSession
-      .create(newSession)
-      .then(function(data) {
-        console.log(data);
-        done();
-      });
-    });
+
+		models.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
+		.then(function(){
+			models.sequelize.options.maxConcurrentQueries = 1;
+			return models.sequelize.sync({ force: true });
+		})
+		.then(function(){
+			return models.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+		})
+		.then(function() {
+			return models.User
+			.create(newUser);
+		})
+		.then(function(data) {
+			return models.ConnectSession
+			.create(newSession);
+		})
+		.then(function(data) {
+			done();
+		})
+		.catch(function(error) {
+			console.log('table sync error');
+			throw error;
+			done();
+		});
   });
 
   it('should render the login page if the cookie is invalid on land', function(done) {
@@ -442,36 +471,43 @@ describe('UserWithWrongCookie', function() {
 //tests where the user has the right cookie
 describe('UserWithRightCookie', function() {
   beforeEach('clear and add', function(done) {
-    let newUser = {
-      email: 'susan@example.com',
-      password: 'spaz5713'
-    }
-    models.User.sync({ force: true })
-    .then(function() {
-      return models.User
-      .create(newUser)
-      .then(function(data) {
-        console.log(data);
-      });
-    });
     const toEvaluate = function() {
       document.cookies = '; do-it=WDfAv8WICmE_gyrEjckhG_a9ijWNekZD';
     }
     myNightmare(toEvaluate);
-    models.Context.sync({force: true});
+		let newUser = {
+      email: 'susan@example.com',
+      password: bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10))
+    }
     let newSession = {
       sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
-      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10)) + ',"userId":1"}'
+      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + newUser.password + ',"userId":1"}'
     }
-    models.ConnectSession.sync({force: true})
-    .then(function() {
-      return models.ConnectSession
-      .create(newSession)
-      .then(function(data) {
-        console.log(data);
-        done();
-      });
-    });
+
+		models.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
+		.then(function(){
+			models.sequelize.options.maxConcurrentQueries = 1;
+			return models.sequelize.sync({ force: true });
+		})
+		.then(function(){
+			return models.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+		})
+		.then(function() {
+			return models.User
+			.create(newUser);
+		})
+		.then(function(data) {
+			return models.ConnectSession
+			.create(newSession);
+		})
+		.then(function(data) {
+			done();
+		})
+		.catch(function(error) {
+			console.log('table sync error');
+			throw error;
+			done();
+		});
   });
 
   it('should render the todos page if the cookie is valid on land', function(done) {

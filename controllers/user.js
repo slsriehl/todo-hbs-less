@@ -32,7 +32,8 @@ const controller = {
 					req.session.message = 'Signup successful!  Start saving to-dos now.';
 					helpers.saveSession(req, res, data);
 					res.header('Cookie', req.session.id);
-					contextController.addInitialContexts(req, res);
+					const cookie = req.session.id;
+					contextController.addInitialContexts(req, res, cookie);
 				//console.log(`data from user save ${util.inspect(data)}`);
 			});
 		})
@@ -66,7 +67,8 @@ const controller = {
 					req.session.message = `You have successfully logged in.`;
 					helpers.saveSession(req, res, data);
 					res.header('Cookie', req.session.id);
-					readController.readTodos(req, res);
+					const cookie = req.session.id;
+					readController.readTodos(req, res, cookie);
 				} else {
 					//if there's data but the hash doesn't match the entered password
 					helpers.sessionMessage(req, res, `Sorry, your credentials don't match any users.  Please check them and try again.`, 'login.hbs');
