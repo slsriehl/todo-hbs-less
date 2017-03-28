@@ -4,49 +4,39 @@ const readController = require('./read.js');
 const controller = {
 	createContext: (req, res) => {
 		console.log(req.body);
-		models.Context.sync()
-		.then(() => {
-			return models.Context
-			//obj destructuring doesn't work
-			.create({name: req.body.name, UserId: req.session.userId})
-			.then((data) => {
-				console.log(data.dataValues);
-				controller.readContexts(req, res);
-			})
-			.catch((error) => {
-				console.log("create function failed");
-				throw error;
-			});
+		return models.Context
+		//obj destructuring doesn't work
+		.create({name: req.body.name, UserId: req.session.userId})
+		.then((data) => {
+			console.log(data.dataValues);
+			controller.readContexts(req, res);
 		})
 		.catch((error) => {
-			console.log("context model didn't sync");
+			console.log("create function failed");
 			throw error;
 		});
 	},
 
 	addInitialContexts: (req, res, cookie) => {
-		models.Context.sync()
-		.then(() => {
-			return models.Context
-			.bulkCreate([{
-				name: 'Home',
-				UserId: req.session.userId
-			}, {
-				name: 'Work',
-				UserId: req.session.userId
-			}, {
-				name: 'Phone',
-				UserId: req.session.userId
-			}, {
-				name: 'Computer',
-				UserId: req.session.userId
-			}])
-			.then(function(data) {
-				readController.readTodos(req, res, cookie);
-			});
+		return models.Context
+		.bulkCreate([{
+			name: 'Home',
+			UserId: req.session.userId
+		}, {
+			name: 'Work',
+			UserId: req.session.userId
+		}, {
+			name: 'Phone',
+			UserId: req.session.userId
+		}, {
+			name: 'Computer',
+			UserId: req.session.userId
+		}])
+		.then(function(data) {
+			readController.readTodos(req, res, cookie);
 		})
 		.catch((error) => {
-			console.log('context model sync or bulk create failed');
+			console.log('context bulk create failed');
 			throw error;
 		})
 	},
