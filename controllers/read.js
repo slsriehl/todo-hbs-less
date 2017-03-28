@@ -17,6 +17,7 @@ const controller = {
 			.catch((error) => {
 				console.log('cookie present but no page returned');
 				throw error;
+				res.render('login.hbs');
 			})
 		} else if(cookie === req.session.id) {
 			helpers.lookupTodos(req, res, null);
