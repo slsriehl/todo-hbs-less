@@ -11,22 +11,22 @@ const userController = require('../controllers/user'),
 
 //++++++ ITEM routes ++++++
 //Create new to-do
-router.post('/item/create', (req, res) => {
+router.post('/item', (req, res) => {
 	itemController.createItem(req, res);
 });
 
 //Read to-dos
-router.post('/item/read', (req, res) => {
+router.get('/item', (req, res) => {
 	readController.readTodos(req, res);
 });
 
 //Update to-do
-router.put('/item/change', (req, res) => {
+router.put('/item', (req, res) => {
 	itemController.updateItem(req, res);
 });
 
 //Delete to-do
-router.put('/item/delete', (req, res) => {
+router.delete('/item', (req, res) => {
 	itemController.deleteItem(req, res);
 });
 
@@ -35,11 +35,6 @@ router.put('/item/delete', (req, res) => {
 //render landing page based on logged in status
 router.get('/', (req, res) => {
 	res.render('index.hbs');
-});
-
-router.post('/auth', (req, res) => {
-	console.log('auth cookie fired');
-	userController.auth(req, res);
 });
 
 //render signup page
@@ -63,7 +58,7 @@ router.post('/user/login', (req, res) => {
 });
 
 //get user settings
-router.get('/user/:cookie', (req, res) => {
+router.get('/user', (req, res) => {
 	userController.userSettings(req, res);
 });
 
@@ -73,7 +68,7 @@ router.put('/user', (req, res) => {
 });
 
 //Delete user
-router.put('/user/delete', (req, res) => {
+router.delete('/user', (req, res) => {
 	userController.deleteUser(req, res);
 });
 
@@ -88,10 +83,10 @@ router.post('/context', (req, res) => {
 	contextController.createContext(req, res);
 });
 
-//Read contexts
-router.get('/context', (req, res) => {
-	contextController.readContexts(req, res);
-});
+// //Read contexts
+// router.get('/context', (req, res) => {
+// 	contextController.readContexts(req, res);
+// });
 
 
 

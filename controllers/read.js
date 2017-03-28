@@ -5,9 +5,9 @@ const helpers = require('./read-helpers');
 const controller = {
 	readTodos: (req, res, cookie) => {
 		//use cookie to locate session
-		if(req.body.cookie) {
+		if(req.headers.clientcookie) {
 			return models.ConnectSession.findOne({
-				where: { sid: req.body.cookie }
+				where: { sid: req.headers.clientcookie }
 			})
 			.then(data => {
 				console.log(data);

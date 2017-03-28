@@ -31,9 +31,9 @@ formToJSON = (elements) ->
 	, {})
 
 # the root of all axios calls in the front end script
-cruds = (event, getDeleteTo) ->
+cruds = (event, address) ->
 	event.preventDefault() if event
-	getDeleteTo
+	address
 	.then (result) ->
 		console.log result
 		$('#content').html result.data
@@ -47,7 +47,7 @@ cruds = (event, getDeleteTo) ->
 auth = (cookie) ->
 	if cookie and cookie != 'undefined'
 		console.log 'auth fired'
-		address = axios.post '/item/read', {cookie: cookie}
+		address = axios.get '/item', {headers: {'clientcookie': cookie}}
 		cruds event, address
 	else
 		getLogin null
@@ -65,7 +65,7 @@ getLogin = (event) ->
 # load settings page from any logged in page with click handler
 getSettings = (event) ->
 	cookie = readCookie('do-it')
-	address = axios.get "/user/#{cookie}"
+	address = axios.get '/user', {headers: {'clientcookie': cookie}}
 	cruds event, address
 
 # signup from signup page with submit handler
@@ -84,9 +84,9 @@ postLogin = (event) ->
 # change email or password from settings page with submit handler
 putSettings = (event) ->
 	data = formToJSON event.target.elements
-	data.cookie = readCookie 'do-it'
+	cookie = readCookie 'do-it'
 	console.log data
-	address = axios.put '/user', data
+	address = axios.put '/user', data, {headers: {'clientcookie': cookie}}
 	cruds event, address
 
 # logout from any logged in page with click handler
@@ -98,29 +98,29 @@ logout = (event) ->
 deleteAccount = (event) ->
 	data =
 		password: $('#password').val()
-		cookie: readCookie 'do-it'
+	cookie = readCookie 'do-it'
 	console.log data
-	address = axios.put '/user/delete', data
+	address = axios.delete '/user', data, {headers: {'clientcookie': cookie}}
 	cruds event, address
 
 # post new contexts from todos page with submit handler
 postContexts = (event) ->
 	data = formToJSON event.target.elements
 	console.log data
-	address = axios.post '/context', data
+	cookie = readCookie 'do-it'
+	address = axios.post '/context', data, {headers: {'clientcookie': cookie}}
 	cruds event, address
 
 getTodos = (event) ->
-	data =
-		cookie: readCookie 'do-it'
-	address = axios.post '/item/read', data
+	cookie = readCookie 'do-it'
+	address = axios.get '/item', {headers: {'clientcookie': cookie}}
 	cruds event, address
 
 postItems = (event) ->
 	data = formToJSON event.target.elements
-	data.cookie = readCookie 'do-it'
+	cookie = readCookie 'do-it'
 	console.log data
-	address = axios.post '/item/create', data
+	address = axios.post '/item', data, {headers: {'clientcookie': cookie}}
 	cruds event, address
 
 # $(document).click '#log-out', logout
