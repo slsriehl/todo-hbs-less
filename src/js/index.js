@@ -3,7 +3,7 @@
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie;
+var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -104,6 +104,8 @@ postSignup = function(event) {
 
 postLogin = function(event) {
   var address, data;
+  $('.hide-show span').text('Show').addClass('show');
+  $('.hide-show').parent().find('[name="password"]').attr('type', 'password');
   data = formToJSON(event.target.elements);
   address = axios.post('/user/login', data);
   return cruds(event, address);
@@ -178,6 +180,19 @@ postItems = function(event) {
     }
   });
   return cruds(event, address);
+};
+
+hideShow = function(event) {
+  console.log('foo');
+  if ($(this).hasClass('show')) {
+    $(this).text('Hide');
+    $('[name="password"]').attr('type', 'text');
+    return $(this).removeClass('show');
+  } else {
+    $(this).text('Show');
+    $('[name="password"]').attr('type', 'password');
+    return $(this).addClass('show');
+  }
 };
 
 $(document).ready(function() {

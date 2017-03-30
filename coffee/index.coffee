@@ -77,6 +77,8 @@ postSignup = (event) ->
 
 # login from login page with submit handler
 postLogin = (event) ->
+	$('.hide-show span').text('Show').addClass('show')
+	$('.hide-show').parent().find('[name="password"]').attr('type','password')
 	data = formToJSON event.target.elements
 	address = axios.post '/user/login', data
 	cruds event, address
@@ -111,11 +113,13 @@ postContexts = (event) ->
 	address = axios.post '/context', data, {headers: {'clientcookie': cookie}}
 	cruds event, address
 
+# show todos and contexts
 getTodos = (event) ->
 	cookie = readCookie 'do-it'
 	address = axios.get '/item', {headers: {'clientcookie': cookie}}
 	cruds event, address
 
+# post new todo items
 postItems = (event) ->
 	data = formToJSON event.target.elements
 	cookie = readCookie 'do-it'
@@ -123,8 +127,18 @@ postItems = (event) ->
 	address = axios.post '/item', data, {headers: {'clientcookie': cookie}}
 	cruds event, address
 
-# $(document).click '#log-out', logout
-#$(document).click '#sign-up', getSignup
+# show/hide passwords
+hideShow = (event) ->
+	console.log 'foo'
+	if($(this).hasClass 'show')
+		$(this).text 'Hide'
+		$('[name="password"]').attr 'type', 'text'
+		$(this).removeClass 'show'
+	else
+		$(this).text 'Show'
+		$('[name="password"]').attr 'type', 'password'
+		$(this).addClass 'show'
+
 
 $(document).ready(() ->
 	# redirect to login or todos based on cookie presence

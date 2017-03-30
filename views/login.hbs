@@ -13,8 +13,25 @@
 	<!-- <form id="deleteTask" method="POST" action="/todos/{{id}}?_method=DELETE" /> -->
 	<form id="login-form">
 		<h3>Login</h3>
-		<input type="email" placeholder="email" name="email" />
-		<input type="password" placeholder="password" name="password" />
+		<div>
+			<label>Email</label>
+			<input
+				type="email"
+				name="email"
+				autocapitalize="off"
+				autocorrect="off"
+			/>
+		</div>
+		<div>
+			<label>Password</label>
+			<input
+				type="password"
+				name="password"
+			/>
+			<div class="hide-show">
+				<span class="show">Show</span>
+			</div>
+		</div>
 		<button type="submit">Login</button>
 	</form>
 
@@ -22,4 +39,5 @@
 <script>
 	$('#login-form').submit(postLogin);
 	$('#sign-up').click(getSignup);
+	$('.hide-show span').click(hideShow);
 </script>
