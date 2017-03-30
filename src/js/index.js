@@ -96,6 +96,8 @@ getSettings = function(event) {
 
 postSignup = function(event) {
   var address, data;
+  $('.hide-show span').text('Show').addClass('show');
+  $('.hide-show').parent().find('[name="password"]').attr('type', 'password');
   data = formToJSON(event.target.elements);
   console.log(data);
   address = axios.post('/user/signup', data);
@@ -113,6 +115,9 @@ postLogin = function(event) {
 
 putSettings = function(event) {
   var address, cookie, data;
+  $('.hide-show span').text('Show').addClass('show');
+  $('.hide-show').parent().find('[name="password"]').attr('type', 'password');
+  $('.hide-show').parent().find('[name="newPassword"]').attr('type', 'password');
   data = formToJSON(event.target.elements);
   cookie = readCookie('do-it');
   console.log(data);
@@ -187,10 +192,12 @@ hideShow = function(event) {
   if ($(this).hasClass('show')) {
     $(this).text('Hide');
     $('[name="password"]').attr('type', 'text');
+    $('[name="newPassword"]').attr('type', 'text');
     return $(this).removeClass('show');
   } else {
     $(this).text('Show');
     $('[name="password"]').attr('type', 'password');
+    $('[name="newPassword"]').attr('type', 'password');
     return $(this).addClass('show');
   }
 };
