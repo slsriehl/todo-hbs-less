@@ -3,7 +3,7 @@
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie;
+var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -96,8 +96,7 @@ getSettings = function(event) {
 
 postSignup = function(event) {
   var address, data;
-  $('.hide-show span').text('Show').addClass('show');
-  $('.hide-show').parent().find('[name="password"]').attr('type', 'password');
+  hideShowSubmit();
   data = formToJSON(event.target.elements);
   console.log(data);
   address = axios.post('/user/signup', data);
@@ -106,8 +105,7 @@ postSignup = function(event) {
 
 postLogin = function(event) {
   var address, data;
-  $('.hide-show span').text('Show').addClass('show');
-  $('.hide-show').parent().find('[name="password"]').attr('type', 'password');
+  hideShowSubmit();
   data = formToJSON(event.target.elements);
   address = axios.post('/user/login', data);
   return cruds(event, address);
@@ -115,8 +113,7 @@ postLogin = function(event) {
 
 putSettings = function(event) {
   var address, cookie, data;
-  $('.hide-show span').text('Show').addClass('show');
-  $('.hide-show').parent().find('[name="password"]').attr('type', 'password');
+  hideShowSubmit();
   $('.hide-show').parent().find('[name="newPassword"]').attr('type', 'password');
   data = formToJSON(event.target.elements);
   cookie = readCookie('do-it');
@@ -200,6 +197,11 @@ hideShow = function(event) {
     $('[name="newPassword"]').attr('type', 'password');
     return $(this).addClass('show');
   }
+};
+
+hideShowSubmit = function() {
+  $('.hide-show span').text('Show').addClass('show');
+  return $('.hide-show').parent().find('[name="password"]').attr('type', 'password');
 };
 
 $(document).ready(function() {

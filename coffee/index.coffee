@@ -70,8 +70,7 @@ getSettings = (event) ->
 
 # signup from signup page with submit handler
 postSignup = (event) ->
-	$('.hide-show span').text('Show').addClass('show')
-	$('.hide-show').parent().find('[name="password"]').attr('type','password')
+	hideShowSubmit()
 	data = formToJSON event.target.elements
 	console.log data
 	address = axios.post '/user/signup', data
@@ -79,17 +78,15 @@ postSignup = (event) ->
 
 # login from login page with submit handler
 postLogin = (event) ->
-	$('.hide-show span').text('Show').addClass('show')
-	$('.hide-show').parent().find('[name="password"]').attr('type','password')
+	hideShowSubmit()
 	data = formToJSON event.target.elements
 	address = axios.post '/user/login', data
 	cruds event, address
 
 # change email or password from settings page with submit handler
 putSettings = (event) ->
-	$('.hide-show span').text('Show').addClass('show')
-	$('.hide-show').parent().find('[name="password"]').attr('type','password')
-	$('.hide-show').parent().find('[name="newPassword"]').attr('type','password')
+	hideShowSubmit()
+	$('.hide-show').parent().find('[name="newPassword"]').attr 'type','password'
 	data = formToJSON event.target.elements
 	cookie = readCookie 'do-it'
 	console.log data
@@ -146,6 +143,10 @@ hideShow = (event) ->
 		$('[name="newPassword"]').attr 'type', 'password'
 		$(this).addClass 'show'
 
+# change the password fields back to password input type on submit
+hideShowSubmit = ->
+	$('.hide-show span').text('Show').addClass 'show'
+	$('.hide-show').parent().find('[name="password"]').attr 'type','password'
 
 $(document).ready(() ->
 	# redirect to login or todos based on cookie presence
