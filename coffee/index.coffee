@@ -132,7 +132,7 @@ postItems = (event) ->
 # show/hide passwords
 hideShow = (event) ->
 	console.log 'foo'
-	if($(this).hasClass 'show')
+	if $(this).hasClass 'show'
 		$(this).text 'Hide'
 		$('[name="password"]').attr 'type', 'text'
 		$('[name="newPassword"]').attr 'type', 'text'
@@ -147,6 +147,15 @@ hideShow = (event) ->
 hideShowSubmit = ->
 	$('.hide-show span').text('Show').addClass 'show'
 	$('.hide-show').parent().find('[name="password"]').attr 'type','password'
+
+# toggle radio buttons by clicking the div around their labels
+toggleRadios = (event) ->
+	if $(this).hasClass 'checked'
+		$(this).children('input').prop 'checked', false
+		$(this).removeClass 'checked'
+	else
+		$(this).children('input').prop 'checked', true
+		$(this).addClass 'checked'
 
 $(document).ready(() ->
 	# redirect to login or todos based on cookie presence

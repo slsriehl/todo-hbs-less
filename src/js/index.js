@@ -3,7 +3,7 @@
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie;
+var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie, toggleRadios;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -202,6 +202,16 @@ hideShow = function(event) {
 hideShowSubmit = function() {
   $('.hide-show span').text('Show').addClass('show');
   return $('.hide-show').parent().find('[name="password"]').attr('type', 'password');
+};
+
+toggleRadios = function(event) {
+  if ($(this).hasClass('checked')) {
+    $(this).children('input').prop('checked', false);
+    return $(this).removeClass('checked');
+  } else {
+    $(this).children('input').prop('checked', true);
+    return $(this).addClass('checked');
+  }
 };
 
 $(document).ready(function() {

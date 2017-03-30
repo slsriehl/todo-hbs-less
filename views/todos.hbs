@@ -18,7 +18,7 @@
 		<textarea name="description"></textarea>
 	</div>
 	{{#each userContextItem.contexts}}
-		<div>
+		<div class="context-radio" style="background-color: #ccc;">
 			<input type="radio" value="{{contextId}}" name="context" />  <label>{{contextName}}</label>
 		</div>
 	{{/each}}
@@ -66,4 +66,5 @@
 	$('#settings').click(getSettings);
 	$('#add-context').submit(postContexts);
 	$('#add-todo').submit(postItems);
+	$('.context-radio').click(toggleRadios);
 </script>
