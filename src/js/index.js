@@ -187,15 +187,15 @@ postItems = function(event) {
 hideShow = function(event) {
   console.log('foo');
   if ($(this).hasClass('show')) {
-    $(this).text('Hide');
+    $('.hide-show span').text('Hide');
     $('[name="password"]').attr('type', 'text');
     $('[name="newPassword"]').attr('type', 'text');
-    return $(this).removeClass('show');
+    return $('.hide-show span').removeClass('show');
   } else {
-    $(this).text('Show');
+    $('.hide-show span').text('Show');
     $('[name="password"]').attr('type', 'password');
     $('[name="newPassword"]').attr('type', 'password');
-    return $(this).addClass('show');
+    return $('.hide-show span').addClass('show');
   }
 };
 

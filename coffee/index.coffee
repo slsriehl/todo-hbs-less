@@ -133,15 +133,15 @@ postItems = (event) ->
 hideShow = (event) ->
 	console.log 'foo'
 	if $(this).hasClass 'show'
-		$(this).text 'Hide'
+		$('.hide-show span').text 'Hide'
 		$('[name="password"]').attr 'type', 'text'
 		$('[name="newPassword"]').attr 'type', 'text'
-		$(this).removeClass 'show'
+		$('.hide-show span').removeClass 'show'
 	else
-		$(this).text 'Show'
+		$('.hide-show span').text 'Show'
 		$('[name="password"]').attr 'type', 'password'
 		$('[name="newPassword"]').attr 'type', 'password'
-		$(this).addClass 'show'
+		$('.hide-show span').addClass 'show'
 
 # change the password fields back to password input type on submit
 hideShowSubmit = ->
