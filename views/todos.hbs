@@ -9,30 +9,39 @@
 <!-- todos -->
 
 <form id="add-todo">
-	<input type="text" name="item" placeholder="to-do item" />
-	<textarea placeholder="description" name="description"></textarea>
-		{{#each userContextItem.contexts}}
-		<div>
-			<input type="radio" value="{{contextId}}" name="context" />  {{contextName}}
+	<div>
+		<label>New To-Do Item</label>
+		<input type="text" name="item" />
+	</div>
+	<div>
+		<label>Description</label>
+		<textarea name="description"></textarea>
+	</div>
+	{{#each userContextItem.contexts}}
+		<div class="context-radio" style="background-color: #ccc;">
+			<input type="radio" value="{{contextId}}" name="context" />  <label>{{contextName}}</label>
 		</div>
-		{{/each}}
+	{{/each}}
 	<button type="submit">Add New Item</button>
 </form>
 
 <form id="add-context">
-	<input
-		type="text"
-		name="name"
-		placeholder="new context"
-		pattern="^\S{3,}$"
-		required
-		title="Your context must be at least 3 characters."
-	/>
+	<div>
+		<label>New Context</label>
+		<input
+			type="text"
+			name="name"
+			pattern="^\S{3,}$"
+			required
+			title="Your context must be at least 3 characters."
+		/>
+	</div>
+
 	<button type="submit">Add New Context</button>
 </form>
 
-<section>
-		{{#each userContextItem.contexts}}
+<div>
+	{{#each userContextItem.contexts}}
 		<div id="{{contextId}}">
 		<h3>{{contextName}}</h3>
 			{{#each items}}
@@ -48,8 +57,8 @@
 				</div>
 			{{/each}}
 		</div>
-		{{/each}}
-</section>
+	{{/each}}
+</div>
 
 
 <script>
@@ -57,4 +66,5 @@
 	$('#settings').click(getSettings);
 	$('#add-context').submit(postContexts);
 	$('#add-todo').submit(postItems);
+	$('.context-radio').click(toggleRadios);
 </script>

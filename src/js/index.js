@@ -3,7 +3,7 @@
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie;
+var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie, toggleRadios;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -96,6 +96,7 @@ getSettings = function(event) {
 
 postSignup = function(event) {
   var address, data;
+  hideShowSubmit();
   data = formToJSON(event.target.elements);
   console.log(data);
   address = axios.post('/user/signup', data);
@@ -104,6 +105,7 @@ postSignup = function(event) {
 
 postLogin = function(event) {
   var address, data;
+  hideShowSubmit();
   data = formToJSON(event.target.elements);
   address = axios.post('/user/login', data);
   return cruds(event, address);
@@ -111,6 +113,8 @@ postLogin = function(event) {
 
 putSettings = function(event) {
   var address, cookie, data;
+  hideShowSubmit();
+  $('.hide-show').parent().find('[name="newPassword"]').attr('type', 'password');
   data = formToJSON(event.target.elements);
   cookie = readCookie('do-it');
   console.log(data);
@@ -178,6 +182,36 @@ postItems = function(event) {
     }
   });
   return cruds(event, address);
+};
+
+hideShow = function(event) {
+  console.log('foo');
+  if ($(this).hasClass('show')) {
+    $('.hide-show span').text('Hide');
+    $('[name="password"]').attr('type', 'text');
+    $('[name="newPassword"]').attr('type', 'text');
+    return $('.hide-show span').removeClass('show');
+  } else {
+    $('.hide-show span').text('Show');
+    $('[name="password"]').attr('type', 'password');
+    $('[name="newPassword"]').attr('type', 'password');
+    return $('.hide-show span').addClass('show');
+  }
+};
+
+hideShowSubmit = function() {
+  $('.hide-show span').text('Show').addClass('show');
+  return $('.hide-show').parent().find('[name="password"]').attr('type', 'password');
+};
+
+toggleRadios = function(event) {
+  if ($(this).hasClass('checked')) {
+    $(this).children('input').prop('checked', false);
+    return $(this).removeClass('checked');
+  } else {
+    $(this).children('input').prop('checked', true);
+    return $(this).addClass('checked');
+  }
 };
 
 $(document).ready(function() {

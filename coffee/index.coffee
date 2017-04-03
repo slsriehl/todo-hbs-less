@@ -70,6 +70,7 @@ getSettings = (event) ->
 
 # signup from signup page with submit handler
 postSignup = (event) ->
+	hideShowSubmit()
 	data = formToJSON event.target.elements
 	console.log data
 	address = axios.post '/user/signup', data
@@ -77,12 +78,15 @@ postSignup = (event) ->
 
 # login from login page with submit handler
 postLogin = (event) ->
+	hideShowSubmit()
 	data = formToJSON event.target.elements
 	address = axios.post '/user/login', data
 	cruds event, address
 
 # change email or password from settings page with submit handler
 putSettings = (event) ->
+	hideShowSubmit()
+	$('.hide-show').parent().find('[name="newPassword"]').attr 'type','password'
 	data = formToJSON event.target.elements
 	cookie = readCookie 'do-it'
 	console.log data
@@ -111,11 +115,13 @@ postContexts = (event) ->
 	address = axios.post '/context', data, {headers: {'clientcookie': cookie}}
 	cruds event, address
 
+# show todos and contexts
 getTodos = (event) ->
 	cookie = readCookie 'do-it'
 	address = axios.get '/item', {headers: {'clientcookie': cookie}}
 	cruds event, address
 
+# post new todo items
 postItems = (event) ->
 	data = formToJSON event.target.elements
 	cookie = readCookie 'do-it'
@@ -123,8 +129,33 @@ postItems = (event) ->
 	address = axios.post '/item', data, {headers: {'clientcookie': cookie}}
 	cruds event, address
 
-# $(document).click '#log-out', logout
-#$(document).click '#sign-up', getSignup
+# show/hide passwords
+hideShow = (event) ->
+	console.log 'foo'
+	if $(this).hasClass 'show'
+		$('.hide-show span').text 'Hide'
+		$('[name="password"]').attr 'type', 'text'
+		$('[name="newPassword"]').attr 'type', 'text'
+		$('.hide-show span').removeClass 'show'
+	else
+		$('.hide-show span').text 'Show'
+		$('[name="password"]').attr 'type', 'password'
+		$('[name="newPassword"]').attr 'type', 'password'
+		$('.hide-show span').addClass 'show'
+
+# change the password fields back to password input type on submit
+hideShowSubmit = ->
+	$('.hide-show span').text('Show').addClass 'show'
+	$('.hide-show').parent().find('[name="password"]').attr 'type','password'
+
+# toggle radio buttons by clicking the div around their labels
+toggleRadios = (event) ->
+	if $(this).hasClass 'checked'
+		$(this).children('input').prop 'checked', false
+		$(this).removeClass 'checked'
+	else
+		$(this).children('input').prop 'checked', true
+		$(this).addClass 'checked'
 
 $(document).ready(() ->
 	# redirect to login or todos based on cookie presence

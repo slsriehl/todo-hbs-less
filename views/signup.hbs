@@ -13,37 +13,38 @@
 	<!-- <form id="deleteTask" method="POST" action="/todos/{{id}}?_method=DELETE" /> -->
 	<form id="signup-form">
 		<h3>Sign Up</h3>
-		<input
-			type="email"
-			placeholder="email"
-			name="email"
-			onchange="if(this.checkValidity()) form.emailConf.pattern = this.value;"
-			required
-			title="Please enter a valid email."
-		/>
-		<input
-			type="email"
-			placeholder="email"
-			name="emailConf"
-			onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same email as above.' : '');"
-			required
-		/>
-		<input
-			type="password"
-			placeholder="password"
-			name="password"
-			pattern="^\S{8,}$"
-			onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 8 characters.' : ''); if(this.checkValidity()) form.passwordConf.pattern = this.value;"
-			required
-		/>
-		<input
-			type="password"
-			placeholder="password"
-			name="passwordConf"
-			pattern="^\S{8,}$"
-			onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same password as above.' : '');"
-			required
-		/>
+		<div>
+			<label>Email Address</label>
+			<input
+				type="email"
+				name="email"
+				onchange="if(this.checkValidity()) form.emailConf.pattern = this.value;"
+				required
+				title="Please enter a valid email."
+			/>
+		</div>
+		<div>
+			<label>Repeat Email Address</label>
+			<input
+				type="email"
+				name="emailConf"
+				onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same email as above.' : '');"
+				required
+			/>
+		</div>
+		<div>
+			<label>Password</label>
+			<input
+				type="password"
+				name="password"
+				pattern="^\S{8,}$"
+				required
+				text="Password must have at least 8 characters."
+			/>
+			<div class="hide-show">
+				<span class="show">Show</span>
+			</div>
+		</div>
 		<button type="submit">Sign Up</button>
 	</form>
 
@@ -52,4 +53,5 @@
 <script>
 	$('#log-in').click(getLogin);
 	$('#signup-form').submit(postSignup);
+	$('.hide-show span').click(hideShow);
 </script>
