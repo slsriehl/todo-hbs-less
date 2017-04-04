@@ -11,15 +11,23 @@
 <form id="add-todo">
 	<div>
 		<label>New To-Do Item</label>
-		<input type="text" name="item" />
+		<input
+			type="text"
+			name="item"
+			pattern=".{3,50}"
+			required
+			title="Your to-do item must be 3-50 characters."
+		/>
 	</div>
 	<div>
 		<label>Description</label>
-		<textarea name="description"></textarea>
+		<textarea
+			name="description"
+		></textarea>
 	</div>
 	{{#each userContextItem.contexts}}
 		<div class="context-radio" style="background-color: #ccc;">
-			<input type="radio" value="{{contextId}}" name="context" />  <label>{{contextName}}</label>
+			<input type="radio" value="{{contextId}}" name="context" required />  <label>{{contextName}}</label>
 		</div>
 	{{/each}}
 	<button type="submit">Add New Item</button>
@@ -31,7 +39,7 @@
 		<input
 			type="text"
 			name="name"
-			pattern="^\S{3,}$"
+			pattern=".{3,50}"
 			required
 			title="Your context must be at least 3 characters."
 		/>

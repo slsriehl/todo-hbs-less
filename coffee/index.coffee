@@ -23,10 +23,19 @@ readCookie = (cookieName) ->
 			return b[1]
 	return null
 
+# validate the fields sent to form to JSON so they're excluded if blank
+isValidElement = (element) ->
+	return element.name and element.value
+
+# check if a checkbox is checked and include in formToJSON
+isValidValue = (element) ->
+	return (!['checkbox', 'radio'].includes(element.type) or element.checked)
+
 # convert the input in the form inputs into a json object
 formToJSON = (elements) ->
 	[].reduce.call(elements, (data, element) ->
-		data[element.name] = element.value
+		if isValidElement(element) and isValidValue(element)
+			data[element.name] = element.value
 		return data
 	, {})
 
@@ -131,7 +140,6 @@ postItems = (event) ->
 
 # show/hide passwords
 hideShow = (event) ->
-	console.log 'foo'
 	if $(this).hasClass 'show'
 		$('.hide-show span').text 'Hide'
 		$('[name="password"]').attr 'type', 'text'

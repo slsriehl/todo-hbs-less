@@ -19,13 +19,7 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		done: DataTypes.BOOLEAN,
     description: {
-			type: DataTypes.TEXT,
-			validate: {
-				len: {
-					args: [5, 150],
-					msg: "Your description must be between 5 and 150 characters.  Please try again."
-				}
-			}
+			type: DataTypes.TEXT
 		}
   }, {
     classMethods: {

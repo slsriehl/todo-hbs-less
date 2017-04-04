@@ -3,7 +3,7 @@
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie, toggleRadios;
+var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, isValidElement, isValidValue, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie, toggleRadios;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -34,9 +34,19 @@ readCookie = function(cookieName) {
   return null;
 };
 
+isValidElement = function(element) {
+  return element.name && element.value;
+};
+
+isValidValue = function(element) {
+  return !['checkbox', 'radio'].includes(element.type) || element.checked;
+};
+
 formToJSON = function(elements) {
   return [].reduce.call(elements, function(data, element) {
-    data[element.name] = element.value;
+    if (isValidElement(element) && isValidValue(element)) {
+      data[element.name] = element.value;
+    }
     return data;
   }, {});
 };
@@ -185,7 +195,6 @@ postItems = function(event) {
 };
 
 hideShow = function(event) {
-  console.log('foo');
   if ($(this).hasClass('show')) {
     $('.hide-show span').text('Hide');
     $('[name="password"]').attr('type', 'text');
