@@ -12,6 +12,7 @@ const helpers = {
 		}
 		//do the join to get the nested object of the user's contexts and items
 		if(userId) {
+
 			return models.User.findOne({
 				where: { id: userId },
 				include: [{

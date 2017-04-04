@@ -22,6 +22,7 @@ const controller = {
 			password: hash
 		}
 		//sequelize call to save user
+
 		return models.User
 		.create(newUser)
 		.then((data) => {

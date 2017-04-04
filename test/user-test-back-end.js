@@ -47,9 +47,10 @@ describe('UsersWithUndefinedCookie', function() {
       email: 'susan@example.com',
       password: bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10))
     }
+		let susansId;
     let newSession = {
       sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
-      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + newUser.password + ',"userId":1"}'
+      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + newUser.password + ',"userId":' + susansId + '"}'
     }
 
 		models.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
@@ -65,6 +66,7 @@ describe('UsersWithUndefinedCookie', function() {
 			.create(newUser);
 		})
 		.then(function(data) {
+			susansId = data.dataValues.id;
 			return models.ConnectSession
 			.create(newSession);
 		})
@@ -72,16 +74,16 @@ describe('UsersWithUndefinedCookie', function() {
 			return models.Context
 			.bulkCreate([{
 				name: 'Home',
-				UserId: 1
+				UserId: susansId
 			}, {
 				name: 'Work',
-				UserId: 1
+				UserId: susansId
 			}, {
 				name: 'Phone',
-				UserId: 1
+				UserId: susansId
 			}, {
 				name: 'Computer',
-				UserId: 1
+				UserId: susansId
 			}])
 		})
 		.then(function(data) {
@@ -366,10 +368,11 @@ describe('UserWithWrongCookie', function() {
       email: 'susan@example.com',
       password: bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10))
     }
-    let newSession = {
-      sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
-      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + newUser.password + ',"userId":1"}'
-    }
+		let susansId;
+    // let newSession = {
+    //   sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
+    //   data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + newUser.password + ',"userId":' + susansId + '"}'
+    // }
 
 		models.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
 		.then(function(){
@@ -384,8 +387,12 @@ describe('UserWithWrongCookie', function() {
 			.create(newUser);
 		})
 		.then(function(data) {
+			susansId = data.dataValues.id;
 			return models.ConnectSession
-			.create(newSession);
+			.create({
+	      sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
+	      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + newUser.password + ',"userId":' + susansId + '"}'
+	    });
 		})
 		.then(function(data) {
 			done();
@@ -487,10 +494,11 @@ describe('UserWithRightCookie', function() {
       email: 'susan@example.com',
       password: bcrypt.hashSync("spaz5713", bcrypt.genSaltSync(10))
     }
-    let newSession = {
-      sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
-      data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + newUser.password + ',"userId":1"}'
-    }
+		let susansId;
+    // let newSession = {
+    //   sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
+    //   data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + newUser.password + ',"userId":' + susansId + '"}'
+    // }
 
 		models.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
 		.then(function(){
@@ -505,8 +513,12 @@ describe('UserWithRightCookie', function() {
 			.create(newUser);
 		})
 		.then(function(data) {
+			susansId = data.dataValues.id;
 			return models.ConnectSession
-			.create(newSession);
+			.create({
+				sid: 'WDfAv8WICmE_gyrEjckhG_a9ijWNekZD',
+				data: '{"cookie":{"originalMaxAge":259200000,"expires":"' + currentDate.addDays(3) + '","httpOnly":true,"path":"/"},"email":"susan@example.com","password":"' + newUser.password + ',"userId":' + susansId + '"}'
+			});
 		})
 		.then(function(data) {
 			done();
