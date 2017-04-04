@@ -1,6 +1,12 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Item = sequelize.define('Item', {
+		id: {
+			allowNull: false,
+			primaryKey: true,
+			type: DataTypes.UUID,
+			defaultValue: DataTypes.UUIDV4
+		},
 		name: {
 			type: DataTypes.STRING,
 			allowNull: false,

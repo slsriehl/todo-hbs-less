@@ -81,23 +81,24 @@ combine context and todos controllers
 //change land/auth to a post request
 
 //create todos controller
-todos front end validation
-write front end coffeescript to axios crud the todos
+//todos front end validation
+//write front end coffeescript to axios crud the todos
 //print todos to page
 
 vex with flat theme?  or remodal?
 implement edit item with a modal
 add modal to add contexts
 
-fix promises, remove syncs
+//fix promises, remove syncs
 replace ids with uuids
 create a fresh migration and reform the db
 read up on the reduce function
 use immutable objects
 explore flash messages
 
-learn less
-style login and signup pages
+//learn less
+look for design inspiration
+style login, signup, and settings pages
 write coffeescript and less to create dynamic, interactive todos with adding contexts
 
 consider adding tests with nightmare navigating to the page and entering the info
