@@ -7,7 +7,7 @@ const controller = {
 		const newItem = {
 			name: req.body.item,
 			description: req.body.description,
-			ContextId: parseInt(req.body.context),
+			ContextId: req.body.context,
 			done: 0
 		}
 		console.log(newItem);
