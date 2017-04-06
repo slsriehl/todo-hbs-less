@@ -85,16 +85,19 @@ combine context and todos controllers
 //write front end coffeescript to axios crud the todos
 //print todos to page
 
+//fix promises, remove syncs
+//replace ids with uuids
+//create a fresh migration and reform the db
+//read up on the reduce function
+//use immutable objects
+//explore flash messages  -- not better for a single page app
+//contexts can't have spaces in them?
+//fix front end to-do validation
+//update form to json to handle radio buttons
+
 vex with flat theme?  or remodal?
 implement edit item with a modal
 add modal to add contexts
-
-//fix promises, remove syncs
-replace ids with uuids
-create a fresh migration and reform the db
-read up on the reduce function
-use immutable objects
-explore flash messages
 
 //learn less
 look for design inspiration
