@@ -229,3 +229,125 @@ $(document).ready(function() {
     return auth(readCookie('do-it'));
   }
 });
+
+/*!
+ * Studio Riehl -  v1.0.0 (https://github.com/slsriehl/todo-hbs-less#readme)
+ * Copyright 2017-2017 Sarah Schieffer Riehl
+ * Licensed under  ()
+ */
+var Modal, extendDefaults, getModalContent;
+
+Modal = (function(_this) {
+  return function(optionsObj) {
+    var defaults;
+    ({
+      closeButton: null,
+      modal: null,
+      overlay: null
+    });
+    defaults = {
+      className: 'fade-and-drop',
+      closeButton: true,
+      content: "",
+      maxWidth: 1000,
+      minWidth: 400,
+      overlay: true
+    };
+    return {
+      options: extendDefaults(defaults, optionsObj),
+      close: function() {
+        var _;
+        _ = this;
+        this.modal.className = this.modal.className.replace(" modal-is-open", "");
+        this.overlay.className = this.overlay.className.replace(" modal-is-open", "");
+        this.modal.addEventListener(this.transitionSelect, function() {
+          return _.modal.parentNode.removeChild(_.modal);
+        });
+        return this.overlay.addEventListener(this.transitionSelect, function() {
+          if (_.overlay.parentNode) {
+            return _.overlay.parentNode.removeChild(_.overlay);
+          }
+        });
+      },
+      open: function() {
+        console.log(this.options);
+        this.buildOut.call(this);
+        this.initializeEvents.call(this);
+        window.getComputedStyle(this.modal).height;
+        this.modal.className = this.modal.className + "  " + (this.modal.offsetHeight > window.innerHeight ? 'modal-is-open anchored' : 'modal-is-open');
+        if (this.options.overlay) {
+          return this.overlay.className = this.overlay.className + " modal-is-open";
+        }
+      },
+      buildOut: function() {
+        var content, contentHolder, docFrag;
+        content = this.options.content.innerHTML;
+        docFrag = document.createDocumentFragment();
+        this.modal = document.createElement("div");
+        this.modal.className = "project-modal " + this.options.className;
+        this.modal.style.minWidth = this.options.minWidth + " px";
+        this.modal.style.maxWidth = this.options.maxWidth + " px";
+        if (this.options.closeButton) {
+          this.closeButton = document.createElement("button");
+          this.closeButton.className = "project-close close-button";
+          this.closeButton.innerHTML = "<i class='fa fa-times'></i>";
+          this.modal.appendChild(this.closeButton);
+        }
+        if (this.options.overlay) {
+          this.overlay = document.createElement("div");
+          this.overlay.className = "project-overlay " + this.options.className;
+          docFrag.appendChild(this.overlay);
+        }
+        contentHolder = document.createElement("div");
+        contentHolder.className = "project-content";
+        contentHolder.innerHTML = content;
+        this.modal.appendChild(contentHolder);
+        docFrag.appendChild(this.modal);
+        return document.body.appendChild(docFrag);
+      },
+      initializeEvents: function() {
+        if (this.closeButton) {
+          this.closeButton.addEventListener('click', this.close.bind(this));
+        }
+        if (this.overlay) {
+          return this.overlay.addEventListener('click', this.close.bind(this));
+        }
+      },
+      transitionSelect: function() {
+        var el;
+        el = document.createElement("div");
+        if (el.style.WebkitTransition) {
+          return "webkitTransitionEnd";
+        }
+        if (el.style.OTransition) {
+          return "oTransitionEnd";
+        }
+      }
+    };
+  };
+})(this);
+
+extendDefaults = function(source, properties) {
+  var i, len, property;
+  for (i = 0, len = properties.length; i < len; i++) {
+    property = properties[i];
+    if (properties.hasOwnProperty(property)) {
+      source[property] = properties[property];
+    }
+  }
+  return source;
+};
+
+getModalContent = function(itemId) {
+  return axios.get("/editItemModal/" + itemId).then(function(data) {
+    var editItemModal, options;
+    options = {
+      content: data.data
+    };
+    editItemModal = new Modal(options);
+    return editItemModal.open();
+  })["catch"](function(error) {
+    console.log(error);
+    return error;
+  });
+};
