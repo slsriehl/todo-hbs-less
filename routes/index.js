@@ -30,6 +30,11 @@ router.delete('/item', (req, res) => {
 	itemController.deleteItem(req, res);
 });
 
+//get edit item modal content
+router.get('/editItemModal/:id', (req, res) => {
+	readController.editItemModal(req, res);
+});
+
 //++++++ USER routes ++++++
 
 //render landing page based on logged in status

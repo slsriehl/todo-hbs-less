@@ -22,6 +22,10 @@ const controller = {
 		} else if(cookie === req.session.id) {
 			helpers.lookupTodos(req, res, null);
 		}
+	},
+	editItemModal: (req, res) => {
+		console.log(req.params);
+		res.render('edit-item-modal.hbs', {test: "foo", layout: false});
 	}
 }
 

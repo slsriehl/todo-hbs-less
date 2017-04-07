@@ -61,7 +61,7 @@
 						<p>ready to do!</p>
 					{{/if}}
 				<p>{{description}}</p>
-				<button id="{{itemId}}">Edit Item</button>
+				<button class="edit-item" id="{{itemId}}">Edit Item</button>
 				</div>
 			{{/each}}
 		</div>
@@ -75,4 +75,7 @@
 	$('#add-context').submit(postContexts);
 	$('#add-todo').submit(postItems);
 	$('.context-radio').click(toggleRadios);
+	$('.edit-item').click(function() {
+		getModalContent(this.id)
+	});
 </script>
