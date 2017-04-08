@@ -1,3 +1,41 @@
-<div>
-	<p>{{test}}</p>
-</div>
+<h2>Edit To-Do Item</h2>
+
+<form id="add-todo">
+	<div>
+		<label>Current To-Do Item</label>
+		<input
+			type="text"
+			name="item"
+			value="{{item.itemName}}"
+			pattern=".{3,50}"
+			required
+			title="Your to-do item must be 3-50 characters."
+		/>
+	</div>
+	<div>
+		<label>Description</label>
+		<textarea
+			name="description"
+		>{{item.description}}</textarea>
+	</div>
+	<div>
+		{{#if item.doneness}}
+			<input type="radio" value="1" name="yes" checked="checked" required />  <label>Done</label>
+			<input type="radio" value="0" name="no" required />  <label>Not Done</label>
+		{{else}}
+			<input type="radio" value="1" name="yes" required />  <label>Done</label>
+			<input type="radio" value="0" name="no" checked="checked" required />  <label>Not Done</label>
+		{{/if}}
+	</div>
+	<div>
+		<div class="context-radio" style="background-color: #aaa;">
+			<input type="radio" value="{{item.itemContextId}}" checked="checked" name="context" required />  <label>{{item.itemContextName}}</label>
+		</div>
+	{{#each contexts}}
+		<div class="context-radio" style="background-color: #ccc;">
+			<input type="radio" value="{{contextId}}" name="context" required />  <label>{{contextName}}</label>
+		</div>
+	{{/each}}
+	</div>
+	<button type="submit">Add New Item</button>
+</form>

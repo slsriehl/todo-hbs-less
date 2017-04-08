@@ -235,7 +235,8 @@ $(document).ready(function() {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var Modal, extendDefaults, getModalContent;
+var Modal, extendDefaults, getModalContent,
+  hasProp = {}.hasOwnProperty;
 
 Modal = (function(_this) {
   return function(optionsObj) {
@@ -280,8 +281,7 @@ Modal = (function(_this) {
         }
       },
       buildOut: function() {
-        var content, contentHolder, docFrag;
-        content = this.options.content.innerHTML;
+        var contentHolder, docFrag;
         docFrag = document.createDocumentFragment();
         this.modal = document.createElement("div");
         this.modal.className = "project-modal " + this.options.className;
@@ -300,7 +300,7 @@ Modal = (function(_this) {
         }
         contentHolder = document.createElement("div");
         contentHolder.className = "project-content";
-        contentHolder.innerHTML = content;
+        contentHolder.innerHTML = this.options.content;
         this.modal.appendChild(contentHolder);
         docFrag.appendChild(this.modal);
         return document.body.appendChild(docFrag);
@@ -327,23 +327,31 @@ Modal = (function(_this) {
   };
 })(this);
 
-extendDefaults = function(source, properties) {
-  var i, len, property;
-  for (i = 0, len = properties.length; i < len; i++) {
-    property = properties[i];
-    if (properties.hasOwnProperty(property)) {
-      source[property] = properties[property];
-    }
+extendDefaults = function(sourceOptions, passedOptions) {
+  var property, sourceCopy;
+  sourceCopy = sourceOptions;
+  for (property in passedOptions) {
+    if (!hasProp.call(passedOptions, property)) continue;
+    sourceCopy[property] = passedOptions[property];
   }
-  return source;
+  return sourceCopy;
 };
 
 getModalContent = function(itemId) {
-  return axios.get("/editItemModal/" + itemId).then(function(data) {
+  var cookie;
+  cookie = readCookie('do-it');
+  console.log(itemId);
+  return axios.get("/editItemModal/" + itemId, {
+    headers: {
+      'clientcookie': cookie
+    }
+  }).then(function(data) {
     var editItemModal, options;
+    console.log(data);
     options = {
       content: data.data
     };
+    console.log(options);
     editItemModal = new Modal(options);
     return editItemModal.open();
   })["catch"](function(error) {

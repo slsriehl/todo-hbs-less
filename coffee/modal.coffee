@@ -8,7 +8,7 @@ Modal = (optionsObj) =>
 	overlay: null
 
 	#define option defaults
-	defaults=
+	defaults =
 		className: 'fade-and-drop'
 		closeButton: true
 		content: ""
@@ -24,7 +24,7 @@ Modal = (optionsObj) =>
 		_ = @
 		@.modal.className = @.modal.className.replace " modal-is-open", ""
 		@.overlay.className = @.overlay.className.replace " modal-is-open", ""
-		@modal.addEventListener(@.transitionSelect, ->
+		@.modal.addEventListener(@.transitionSelect, ->
 			_.modal.parentNode.removeChild _.modal
 		)
 		@.overlay.addEventListener(@.transitionSelect, ->
@@ -41,10 +41,6 @@ Modal = (optionsObj) =>
 
 
 	buildOut: ->
-		# if typeof @.options.content == "string"
-		# 	content = @.options.content
-		# else
-		content = @.options.content.innerHTML
 
 		docFrag = document.createDocumentFragment()
 
@@ -68,7 +64,7 @@ Modal = (optionsObj) =>
 		#create content area and append to modal
 		contentHolder = document.createElement "div"
 		contentHolder.className = "project-content"
-		contentHolder.innerHTML = content
+		contentHolder.innerHTML = @.options.content
 		@.modal.appendChild contentHolder
 
 		#append modal to document fragment
@@ -88,20 +84,24 @@ Modal = (optionsObj) =>
 		return "webkitTransitionEnd" if el.style.WebkitTransition
 		return "oTransitionEnd" if el.style.OTransition
 
-extendDefaults = (source, properties) ->
-	for property in properties
-		if properties.hasOwnProperty property
-			source[property] = properties[property]
-	return source
+extendDefaults = (sourceOptions, passedOptions) ->
+	sourceCopy = sourceOptions
+	for own property of passedOptions
+		sourceCopy[property] = passedOptions[property]
+	return sourceCopy
 
 #define content for the editItemModal options
 #by getting server-side hbs template
 #then instantiate modal and open
 getModalContent = (itemId) ->
-	axios.get "/editItemModal/#{itemId}"
+	cookie = readCookie('do-it')
+	console.log itemId
+	axios.get "/editItemModal/#{itemId}", {headers: {'clientcookie': cookie}}
 	.then (data) ->
+		console.log data
 		options =
 			content: data.data
+		console.log options
 		editItemModal = new Modal options
 		editItemModal.open()
 	.catch (error) ->

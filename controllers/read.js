@@ -6,7 +6,8 @@ const controller = {
 	readTodos: (req, res, cookie) => {
 		//use cookie to locate session
 		if(req.headers.clientcookie) {
-			return models.ConnectSession.findOne({
+			return models.ConnectSession
+			.findOne({
 				where: { sid: req.headers.clientcookie }
 			})
 			.then(data => {
@@ -24,8 +25,20 @@ const controller = {
 		}
 	},
 	editItemModal: (req, res) => {
-		console.log(req.params);
-		res.render('edit-item-modal.hbs', {test: "foo", layout: false});
+		console.log(req.params.id);
+		return models.ConnectSession
+		.findOne({
+			where: { sid: req.headers.clientcookie }
+		})
+		.then(data => {
+			console.log(data);
+			helpers.lookupEdits(req, res, data);
+		})
+		.catch(error => {
+			console.log('cookie present but no page returned');
+			throw error;
+			res.render('login.hbs');
+		});
 	}
 }
 
