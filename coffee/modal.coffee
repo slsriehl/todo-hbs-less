@@ -21,15 +21,17 @@ Modal = (optionsObj) =>
 
 #public methods
 	close: ->
-		_ = @
-		@.modal.className = @.modal.className.replace " modal-is-open", ""
-		@.overlay.className = @.overlay.className.replace " modal-is-open", ""
-		@.modal.addEventListener(@.transitionSelect, ->
-			_.modal.parentNode.removeChild _.modal
-		)
-		@.overlay.addEventListener(@.transitionSelect, ->
-			_.overlay.parentNode.removeChild _.overlay if _.overlay.parentNode
-		)
+		@.modal.parentNode.removeChild @.modal
+		@.overlay.parentNode.removeChild @.overlay
+		# _ = @
+		# @.modal.className = @.modal.className.replace " modal-is-open", ""
+		# @.overlay.className = @.overlay.className.replace " modal-is-open", ""
+		# @.modal.addEventListener(@.transitionSelect, ->
+		# 	_.modal.parentNode.removeChild _.modal
+		# )
+		# @.overlay.addEventListener(@.transitionSelect, ->
+		# 	_.overlay.parentNode.removeChild _.overlay
+		# )
 
 	open: ->
 		console.log @.options
@@ -42,7 +44,7 @@ Modal = (optionsObj) =>
 
 	buildOut: ->
 
-		docFrag = document.createDocumentFragment()
+		# docFrag = document.createDocumentFragment()
 
 		@.modal = document.createElement "div"
 		@.modal.className = "project-modal #{@.options.className}"
@@ -59,7 +61,7 @@ Modal = (optionsObj) =>
 		if @.options.overlay
 			@.overlay = document.createElement "div"
 			@.overlay.className = "project-overlay #{@.options.className}"
-			docFrag.appendChild @.overlay
+			document.body.appendChild @.overlay
 
 		#create content area and append to modal
 		contentHolder = document.createElement "div"
@@ -68,9 +70,9 @@ Modal = (optionsObj) =>
 		@.modal.appendChild contentHolder
 
 		#append modal to document fragment
-		docFrag.appendChild @.modal
+		# docFrag.appendChild @.modal
 
-		document.body.appendChild docFrag
+		document.body.appendChild @.modal
 
 	initializeEvents: ->
 		if @.closeButton
@@ -90,6 +92,8 @@ extendDefaults = (sourceOptions, passedOptions) ->
 		sourceCopy[property] = passedOptions[property]
 	return sourceCopy
 
+editItemModal = null
+
 #define content for the editItemModal options
 #by getting server-side hbs template
 #then instantiate modal and open
@@ -104,6 +108,33 @@ getModalContent = (itemId) ->
 		console.log options
 		editItemModal = new Modal options
 		editItemModal.open()
+	.catch (error) ->
+		console.log error
+		return error
+
+editTodoSubmit = (event) ->
+	event.preventDefault()
+	cookie = readCookie('do-it')
+	data = formToJSON event.target.elements
+	address = axios.put "/item", data, {headers: {'clientcookie': cookie}}
+	closeAndRefresh event, address
+
+deleteTodo = (event) ->
+	event.preventDefault()
+	cookie = readCookie('do-it')
+	data = $("[name='id']").val()
+	console.log data
+	address = axios.delete "/item/#{data}", {headers: {'clientcookie': cookie}}
+	closeAndRefresh event, address
+
+closeAndRefresh = (event, address) ->
+	address
+	.then (result) ->
+		editItemModal.close()
+		console.log result
+		$('#content').html result.data
+		if result.headers.cookie
+			createCookie 'do-it', result.headers.cookie, 3
 	.catch (error) ->
 		console.log error
 		return error

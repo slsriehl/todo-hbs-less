@@ -1,11 +1,12 @@
 <h2>Edit To-Do Item</h2>
 
-<form id="add-todo">
+<form id="edit-todo">
 	<div>
+		<input type="hidden" name="id" value="{{item.itemId}}" />
 		<label>Current To-Do Item</label>
 		<input
 			type="text"
-			name="item"
+			name="name"
 			value="{{item.itemName}}"
 			pattern=".{3,50}"
 			required
@@ -20,22 +21,33 @@
 	</div>
 	<div>
 		{{#if item.doneness}}
-			<input type="radio" value="1" name="yes" checked="checked" required />  <label>Done</label>
-			<input type="radio" value="0" name="no" required />  <label>Not Done</label>
+		<div class="context-radio" style="background-color: #aaa;">
+			<input type="radio" value="1" name="done" checked="checked" required />  <label>Done</label>
+		</div>
+		<div class="context-radio" style="background-color: #ccc;">
+			<input type="radio" value="0" name="done" required />  <label>Not Done</label>
+		</div>
 		{{else}}
-			<input type="radio" value="1" name="yes" required />  <label>Done</label>
-			<input type="radio" value="0" name="no" checked="checked" required />  <label>Not Done</label>
+		<div class="context-radio" style="background-color: #ccc;">
+			<input type="radio" value="1" name="done" required />  <label>Done</label>
+		</div>
+		<div class="context-radio" style="background-color: #aaa;">
+			<input type="radio" value="0" name="done" checked="checked" required />  <label>Not Done</label>
+		</div>
 		{{/if}}
 	</div>
+
+
 	<div>
 		<div class="context-radio" style="background-color: #aaa;">
-			<input type="radio" value="{{item.itemContextId}}" checked="checked" name="context" required />  <label>{{item.itemContextName}}</label>
+			<input type="radio" value="{{item.itemContextId}}" checked="checked" name="ContextId" required />  <label>{{item.itemContextName}}</label>
 		</div>
 	{{#each contexts}}
 		<div class="context-radio" style="background-color: #ccc;">
-			<input type="radio" value="{{contextId}}" name="context" required />  <label>{{contextName}}</label>
+			<input type="radio" value="{{contextId}}" name="ContextId" required />  <label>{{contextName}}</label>
 		</div>
 	{{/each}}
 	</div>
-	<button type="submit">Add New Item</button>
+	<button type="submit">Edit Item</button>
+	<button type="button" id="delete-todo">Delete Item</button>
 </form>

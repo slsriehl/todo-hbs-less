@@ -74,7 +74,6 @@ const helpers = {
 					});
 					userContextArr = userContextArr.concat(userContexts);
 				}
-
 			}
 			console.log(userContextArr);
 			console.log(editItemObj);

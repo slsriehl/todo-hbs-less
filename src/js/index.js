@@ -235,7 +235,7 @@ $(document).ready(function() {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var Modal, extendDefaults, getModalContent,
+var Modal, closeAndRefresh, deleteTodo, editItemModal, editTodoSubmit, extendDefaults, getModalContent,
   hasProp = {}.hasOwnProperty;
 
 Modal = (function(_this) {
@@ -257,18 +257,8 @@ Modal = (function(_this) {
     return {
       options: extendDefaults(defaults, optionsObj),
       close: function() {
-        var _;
-        _ = this;
-        this.modal.className = this.modal.className.replace(" modal-is-open", "");
-        this.overlay.className = this.overlay.className.replace(" modal-is-open", "");
-        this.modal.addEventListener(this.transitionSelect, function() {
-          return _.modal.parentNode.removeChild(_.modal);
-        });
-        return this.overlay.addEventListener(this.transitionSelect, function() {
-          if (_.overlay.parentNode) {
-            return _.overlay.parentNode.removeChild(_.overlay);
-          }
-        });
+        this.modal.parentNode.removeChild(this.modal);
+        return this.overlay.parentNode.removeChild(this.overlay);
       },
       open: function() {
         console.log(this.options);
@@ -281,8 +271,7 @@ Modal = (function(_this) {
         }
       },
       buildOut: function() {
-        var contentHolder, docFrag;
-        docFrag = document.createDocumentFragment();
+        var contentHolder;
         this.modal = document.createElement("div");
         this.modal.className = "project-modal " + this.options.className;
         this.modal.style.minWidth = this.options.minWidth + " px";
@@ -296,14 +285,13 @@ Modal = (function(_this) {
         if (this.options.overlay) {
           this.overlay = document.createElement("div");
           this.overlay.className = "project-overlay " + this.options.className;
-          docFrag.appendChild(this.overlay);
+          document.body.appendChild(this.overlay);
         }
         contentHolder = document.createElement("div");
         contentHolder.className = "project-content";
         contentHolder.innerHTML = this.options.content;
         this.modal.appendChild(contentHolder);
-        docFrag.appendChild(this.modal);
-        return document.body.appendChild(docFrag);
+        return document.body.appendChild(this.modal);
       },
       initializeEvents: function() {
         if (this.closeButton) {
@@ -337,6 +325,8 @@ extendDefaults = function(sourceOptions, passedOptions) {
   return sourceCopy;
 };
 
+editItemModal = null;
+
 getModalContent = function(itemId) {
   var cookie;
   cookie = readCookie('do-it');
@@ -346,7 +336,7 @@ getModalContent = function(itemId) {
       'clientcookie': cookie
     }
   }).then(function(data) {
-    var editItemModal, options;
+    var options;
     console.log(data);
     options = {
       content: data.data
@@ -354,6 +344,47 @@ getModalContent = function(itemId) {
     console.log(options);
     editItemModal = new Modal(options);
     return editItemModal.open();
+  })["catch"](function(error) {
+    console.log(error);
+    return error;
+  });
+};
+
+editTodoSubmit = function(event) {
+  var address, cookie, data;
+  event.preventDefault();
+  cookie = readCookie('do-it');
+  data = formToJSON(event.target.elements);
+  address = axios.put("/item", data, {
+    headers: {
+      'clientcookie': cookie
+    }
+  });
+  return closeAndRefresh(event, address);
+};
+
+deleteTodo = function(event) {
+  var address, cookie, data;
+  event.preventDefault();
+  cookie = readCookie('do-it');
+  data = $("[name='id']").val();
+  console.log(data);
+  address = axios["delete"]("/item/" + data, {
+    headers: {
+      'clientcookie': cookie
+    }
+  });
+  return closeAndRefresh(event, address);
+};
+
+closeAndRefresh = function(event, address) {
+  return address.then(function(result) {
+    editItemModal.close();
+    console.log(result);
+    $('#content').html(result.data);
+    if (result.headers.cookie) {
+      return createCookie('do-it', result.headers.cookie, 3);
+    }
   })["catch"](function(error) {
     console.log(error);
     return error;
