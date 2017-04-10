@@ -164,25 +164,3 @@ toggleRadios = (event) ->
 	else
 		$(this).children('input').prop 'checked', true
 		$(this).addClass 'checked'
-
-$(document).ready(() ->
-	# redirect to login or todos based on cookie presence
-	console.log $('#intro').text().trim()
-	auth readCookie 'do-it' if $('#intro').text().trim() == 'Welcome to the do-It task management application'
-
-	# users get and submit handlers
-	# $('#sign-up').click getSignup
-	# $('#log-in').click getLogin
-	# $('#settings').click getSettings
-	# $('#signup-form').submit postSignup
-	# $('#login-form').submit postLogin
-	# $('#change-form').submit putSettings
-	# $('#log-out').click logout
-	# $('#delete-account').click deleteAccount
-
-	# context & item submit handler
-	# $('#add-context').submit postContexts
-	# $('#go-to-dos').click getTodos
-	#
-
-)

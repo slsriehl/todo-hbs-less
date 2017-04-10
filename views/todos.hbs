@@ -67,15 +67,3 @@
 		</div>
 	{{/each}}
 </div>
-
-
-<script>
-	$('#log-out').click(logout);
-	$('#settings').click(getSettings);
-	$('#add-context').submit(postContexts);
-	$('#add-todo').submit(postItems);
-	$('.context-radio').click(toggleRadios);
-	$('.edit-item').click(function() { getModalContent(this.id); });
-	$(document).submit('#edit-todo', editTodoSubmit);
-	//$(document).click('#delete-todo', deleteTodo);
-</script>

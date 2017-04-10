@@ -3,6 +3,36 @@
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
+$(document).ready(function() {
+  console.log($('#intro').text().trim());
+  if ($('#intro').text().trim() === 'Welcome to the do-It task management application') {
+    auth(readCookie('do-it'));
+  }
+  $(document).on('click', '#go-to-dos', getTodos);
+  $(document).on('click', '#log-out', logout);
+  $(document).on('click', '.hide-show span', hideShow);
+  $(document).on('submit', '#add-context', postContexts);
+  $(document).on('submit', '#add-todo', postItems);
+  $(document).on('click', '.context-radio', toggleRadios);
+  $(document).on('click', '.edit-item', function() {
+    return getModalContent(this.id);
+  });
+  $(document).on('submit', '#edit-todo', editTodoSubmit);
+  $(document).on('click', '#delete-todo', deleteTodo);
+  $(document).on('click', '#log-in', getLogin);
+  $(document).on('submit', '#login-form', postLogin);
+  $(document).on('click', '#sign-up', getSignup);
+  $(document).on('submit', '#signup-form', postSignup);
+  $(document).on('click', '#settings', getSettings);
+  $(document).on('submit', '#change-form', putSettings);
+  return $(document).on('click', '#delete-account', deleteAccount);
+});
+
+/*!
+ * Studio Riehl -  v1.0.0 (https://github.com/slsriehl/todo-hbs-less#readme)
+ * Copyright 2017-2017 Sarah Schieffer Riehl
+ * Licensed under  ()
+ */
 var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, isValidElement, isValidValue, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie, toggleRadios;
 
 createCookie = function(name, value, days) {
@@ -222,13 +252,6 @@ toggleRadios = function(event) {
     return $(this).addClass('checked');
   }
 };
-
-$(document).ready(function() {
-  console.log($('#intro').text().trim());
-  if ($('#intro').text().trim() === 'Welcome to the do-It task management application') {
-    return auth(readCookie('do-it'));
-  }
-});
 
 /*!
  * Studio Riehl -  v1.0.0 (https://github.com/slsriehl/todo-hbs-less#readme)
