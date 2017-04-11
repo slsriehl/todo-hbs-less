@@ -93,11 +93,13 @@ extendDefaults = (sourceOptions, passedOptions) ->
 	return sourceCopy
 
 editItemModal = null
-
+editContextModal = null
 #define content for the editItemModal options
 #by getting server-side hbs template
 #then instantiate modal and open
-getModalContent = (itemId) ->
+
+
+getItemModalContent = (itemId) ->
 	console.log itemId
 	axios.get "/editItemModal/#{itemId}"
 	.then (data) ->
@@ -107,6 +109,19 @@ getModalContent = (itemId) ->
 		console.log options
 		editItemModal = new Modal options
 		editItemModal.open()
+	.catch (error) ->
+		console.log error
+		return error
+
+getContextModalContent = ->
+	axios.get "/editContextModal"
+	.then (data) ->
+		console.log data
+		options =
+			content: data.data
+		console.log options
+		editContextModal = new Modal options
+		editContextModal.open()
 	.catch (error) ->
 		console.log error
 		return error

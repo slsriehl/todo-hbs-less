@@ -15,8 +15,9 @@ $(document).ready(function() {
   $(document).off('submit', '#add-todo').on('submit', '#add-todo', postItems);
   $(document).off('click', '.context-radio').on('click', '.context-radio', toggleRadios);
   $(document).off('click', '.edit-item').on('click', '.edit-item', function() {
-    return getModalContent(this.id);
+    return getItemModalContent(this.id);
   });
+  $(document).off('click', '#edit-contexts').on('click', '#edit-contexts', getContextModalContent);
   $(document).off('submit', '#edit-todo').on('submit', '#edit-todo', editTodoSubmit);
   $(document).off('click', '#delete-todo').on('click', '#delete-todo', deleteTodo);
   $(document).off('click', '#log-in').on('click', '#log-in', getLogin);
@@ -226,7 +227,7 @@ toggleRadios = function(event) {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var Modal, closeAndRefresh, deleteTodo, editItemModal, editTodoSubmit, extendDefaults, getModalContent,
+var Modal, closeAndRefresh, deleteTodo, editContextModal, editItemModal, editTodoSubmit, extendDefaults, getContextModalContent, getItemModalContent,
   hasProp = {}.hasOwnProperty;
 
 Modal = (function(_this) {
@@ -318,7 +319,9 @@ extendDefaults = function(sourceOptions, passedOptions) {
 
 editItemModal = null;
 
-getModalContent = function(itemId) {
+editContextModal = null;
+
+getItemModalContent = function(itemId) {
   console.log(itemId);
   return axios.get("/editItemModal/" + itemId).then(function(data) {
     var options;
@@ -329,6 +332,22 @@ getModalContent = function(itemId) {
     console.log(options);
     editItemModal = new Modal(options);
     return editItemModal.open();
+  })["catch"](function(error) {
+    console.log(error);
+    return error;
+  });
+};
+
+getContextModalContent = function() {
+  return axios.get("/editContextModal").then(function(data) {
+    var options;
+    console.log(data);
+    options = {
+      content: data.data
+    };
+    console.log(options);
+    editContextModal = new Modal(options);
+    return editContextModal.open();
   })["catch"](function(error) {
     console.log(error);
     return error;

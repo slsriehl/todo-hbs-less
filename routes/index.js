@@ -88,6 +88,11 @@ router.post('/context', (req, res) => {
 	contextController.createContext(req, res);
 });
 
+//context edit modal
+router.get('/editContextModal', (req, res) => {
+	readController.editContextModal(req, res);
+});
+
 // //Read contexts
 // router.get('/context', (req, res) => {
 // 	contextController.readContexts(req, res);
