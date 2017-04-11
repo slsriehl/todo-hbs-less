@@ -1,14 +1,17 @@
 const models = require('../models');
 const util = require('util');
 const helpers = require('./read-helpers');
+const cookieHelpers = require('./cookie-helpers');
 
 const controller = {
 	readTodos: (req, res, cookie) => {
 		//use cookie to locate session
-		if(req.headers.clientcookie) {
+		console.log(req.headers);
+		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
+		if(sentCookie) {
 			return models.ConnectSession
 			.findOne({
-				where: { sid: req.headers.clientcookie }
+				where: { sid: sentCookie }
 			})
 			.then(data => {
 				console.log(data);
@@ -26,9 +29,10 @@ const controller = {
 	},
 	editItemModal: (req, res) => {
 		console.log(req.params.id);
+		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
 		return models.ConnectSession
 		.findOne({
-			where: { sid: req.headers.clientcookie }
+			where: { sid: sentCookie }
 		})
 		.then(data => {
 			console.log(data);

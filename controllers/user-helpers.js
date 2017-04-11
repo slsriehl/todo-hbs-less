@@ -3,11 +3,14 @@ const models = require('../models');
 const bcrypt = require('bcryptjs');
 const util = require('util');
 
+const cookieHelpers = require('./cookie-helpers');
+
 const helpers = {
 	updateUser: (req, res, objToUpdate) => {
+		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
 		return models.ConnectSession
 		.findOne({
-			where: { sid: req.headers.clientcookie }
+			where: { sid: sentCookie }
 		})
 		.then((data) => {
 			console.log(data.dataValues);

@@ -99,12 +99,7 @@ cruds = function(event, address) {
 auth = function(cookie) {
   var address;
   if (cookie && cookie !== 'undefined') {
-    console.log('auth fired');
-    address = axios.get('/item', {
-      headers: {
-        'clientcookie': cookie
-      }
-    });
+    address = axios.get('/item');
     return cruds(event, address);
   } else {
     return getLogin(null);
@@ -124,13 +119,8 @@ getLogin = function(event) {
 };
 
 getSettings = function(event) {
-  var address, cookie;
-  cookie = readCookie('do-it');
-  address = axios.get('/user', {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
+  var address;
+  address = axios.get('/user');
   return cruds(event, address);
 };
 
@@ -152,17 +142,12 @@ postLogin = function(event) {
 };
 
 putSettings = function(event) {
-  var address, cookie, data;
+  var address, data;
   hideShowSubmit();
   $('.hide-show').parent().find('[name="newPassword"]').attr('type', 'password');
   data = formToJSON(event.target.elements);
-  cookie = readCookie('do-it');
   console.log(data);
-  address = axios.put('/user', data, {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
+  address = axios.put('/user', data);
   return cruds(event, address);
 };
 
@@ -185,39 +170,24 @@ deleteAccount = function(event) {
 };
 
 postContexts = function(event) {
-  var address, cookie, data;
+  var address, data;
   data = formToJSON(event.target.elements);
   console.log(data);
-  cookie = readCookie('do-it');
-  address = axios.post('/context', data, {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
+  address = axios.post('/context', data);
   return cruds(event, address);
 };
 
 getTodos = function(event) {
-  var address, cookie;
-  cookie = readCookie('do-it');
-  address = axios.get('/item', {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
+  var address;
+  address = axios.get('/item');
   return cruds(event, address);
 };
 
 postItems = function(event) {
-  var address, cookie, data;
+  var address, data;
   data = formToJSON(event.target.elements);
-  cookie = readCookie('do-it');
   console.log(data);
-  address = axios.post('/item', data, {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
+  address = axios.post('/item', data);
   return cruds(event, address);
 };
 
@@ -349,14 +319,8 @@ extendDefaults = function(sourceOptions, passedOptions) {
 editItemModal = null;
 
 getModalContent = function(itemId) {
-  var cookie;
-  cookie = readCookie('do-it');
   console.log(itemId);
-  return axios.get("/editItemModal/" + itemId, {
-    headers: {
-      'clientcookie': cookie
-    }
-  }).then(function(data) {
+  return axios.get("/editItemModal/" + itemId).then(function(data) {
     var options;
     console.log(data);
     options = {
@@ -372,33 +336,21 @@ getModalContent = function(itemId) {
 };
 
 editTodoSubmit = function(event) {
-  var address, cookie, data;
-  event.preventDefault();
-  cookie = readCookie('do-it');
+  var address, data;
   data = formToJSON(event.target.elements);
-  address = axios.put("/item", data, {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
+  address = axios.put("/item", data);
   return closeAndRefresh(event, address);
 };
 
 deleteTodo = function(event) {
-  var address, cookie, data;
-  event.preventDefault();
-  cookie = readCookie('do-it');
+  var address, data;
   data = $("[name='id']").val();
-  console.log(data);
-  address = axios["delete"]("/item/" + data, {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
+  address = axios["delete"]("/item/" + data);
   return closeAndRefresh(event, address);
 };
 
 closeAndRefresh = function(event, address) {
+  event.preventDefault();
   return address.then(function(result) {
     editItemModal.close();
     console.log(result);

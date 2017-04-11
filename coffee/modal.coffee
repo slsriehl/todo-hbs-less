@@ -98,9 +98,8 @@ editItemModal = null
 #by getting server-side hbs template
 #then instantiate modal and open
 getModalContent = (itemId) ->
-	cookie = readCookie('do-it')
 	console.log itemId
-	axios.get "/editItemModal/#{itemId}", {headers: {'clientcookie': cookie}}
+	axios.get "/editItemModal/#{itemId}"
 	.then (data) ->
 		console.log data
 		options =
@@ -113,21 +112,17 @@ getModalContent = (itemId) ->
 		return error
 
 editTodoSubmit = (event) ->
-	event.preventDefault()
-	cookie = readCookie('do-it')
 	data = formToJSON event.target.elements
-	address = axios.put "/item", data, {headers: {'clientcookie': cookie}}
+	address = axios.put "/item", data
 	closeAndRefresh event, address
 
 deleteTodo = (event) ->
-	event.preventDefault()
-	cookie = readCookie('do-it')
 	data = $("[name='id']").val()
-	console.log data
-	address = axios.delete "/item/#{data}", {headers: {'clientcookie': cookie}}
+	address = axios.delete "/item/#{data}"
 	closeAndRefresh event, address
 
 closeAndRefresh = (event, address) ->
+	event.preventDefault()
 	address
 	.then (result) ->
 		editItemModal.close()
