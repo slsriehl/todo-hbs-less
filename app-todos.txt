@@ -95,11 +95,17 @@ combine context and todos controllers
 //fix front end to-do validation
 //update form to json to handle radio buttons
 
-custom modal
+//custom modal
 //write modal coffeescript
-write modal less
-implement edit/delete item (including item context) with a modal
-implement edit/delete contexts with a modal (change name, move all todos in a context to another context, delete)
+edit modal less
+//implement edit/delete item (including item context) with a modal
+implement edit/delete contexts with a modal
+	change name of a context
+	batch move all todos in a context to another context
+	delete context with confirm stating it will remove all your todos in that context
+actually cascade deletes
+
+add confirm about deleting user irretrievably deleting all todos
 
 //learn less
 look for design inspiration

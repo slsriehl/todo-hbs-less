@@ -32,7 +32,12 @@ module.exports = {
 				type: Sequelize.BOOLEAN
 			},
 			ContextId: {
-				type: Sequelize.UUID
+				type: Sequelize.UUID,
+				onDelete: 'CASCADE',
+				references: {
+					model: 'Contexts',
+					key: 'id'
+				}
 			},
 			createdAt: {
 				allowNull: false,
