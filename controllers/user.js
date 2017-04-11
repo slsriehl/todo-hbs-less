@@ -1,8 +1,11 @@
 const models = require('../models');
 const helpers = require('./user-helpers');
 
+const cookieHelpers = require('./cookie-helpers');
+
 const readController = require('./read');
 const contextController = require('./context');
+
 
 const util = require('util');
 
@@ -137,13 +140,14 @@ const controller = {
 	},
 	//to delete the user and all her todos in the db
 	deleteUser: (req, res) => {
-		console.log(`req.body ${util.inspect(req.body)}`);
+		console.log(`req.headers.cookie ${util.inspect(req.headers.cookie)}`);
+		console.log(`req.headers.password ${req.headers.password}`);
 		//sync the users table
 			//query the session store for the user's email address based on the
 			//cookie stored on the client side
 		return models.ConnectSession
 		.findOne({
-			where: { sid: req.body.cookie }
+			where: { sid: cookieHelpers.readCookie(req, 'do-it') }
 		})
 		.then((data) => {
 			//if the cookie is found
@@ -153,7 +157,7 @@ const controller = {
 			//query the Users table for the user stored in the session
 			//if the user is found
 			console.log(`found user? ${util.inspect(emailObj)}`);
-			const hash = helpers.getHash(req.body.password, emailObj.password);
+			const hash = helpers.getHash(req.headers.password, emailObj.password);
 			//if the password sent to authorize delete matches the stored hash
 			if(hash) {
 				console.log('password is correct');

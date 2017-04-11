@@ -109,12 +109,13 @@ logout = (event) ->
 
 # delete account from settings page with click handler
 deleteAccount = (event) ->
-	data =
-		password: $('#password').val()
-	cookie = readCookie 'do-it'
-	console.log data
-	address = axios.delete '/user', data, {headers: {'clientcookie': cookie}}
+	password = $('[name="password"]').val()
+	#cookie = readCookie 'do-it'
+	console.log password
+	#console.log cookie
+	address = axios.delete '/user', {headers: {'password': password}}
 	cruds event, address
+
 
 # post new contexts from todos page with submit handler
 postContexts = (event) ->
@@ -140,6 +141,7 @@ postItems = (event) ->
 
 # show/hide passwords
 hideShow = (event) ->
+	console.log 'hide show fired'
 	if $(this).hasClass 'show'
 		$('.hide-show span').text 'Hide'
 		$('[name="password"]').attr 'type', 'text'
@@ -164,25 +166,3 @@ toggleRadios = (event) ->
 	else
 		$(this).children('input').prop 'checked', true
 		$(this).addClass 'checked'
-
-$(document).ready(() ->
-	# redirect to login or todos based on cookie presence
-	console.log $('#intro').text().trim()
-	auth readCookie 'do-it' if $('#intro').text().trim() == 'Welcome to the do-It task management application'
-
-	# users get and submit handlers
-	# $('#sign-up').click getSignup
-	# $('#log-in').click getLogin
-	# $('#settings').click getSettings
-	# $('#signup-form').submit postSignup
-	# $('#login-form').submit postLogin
-	# $('#change-form').submit putSettings
-	# $('#log-out').click logout
-	# $('#delete-account').click deleteAccount
-
-	# context & item submit handler
-	# $('#add-context').submit postContexts
-	# $('#go-to-dos').click getTodos
-	#
-
-)

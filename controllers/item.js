@@ -63,12 +63,12 @@ const controller = {
 		})
 	},
 	deleteItem: (req, res) => {
-		console.log(req.body);
+		console.log(req.params);
 		return models.ConnectSession
 		.findOne({ where: { sid: req.headers.clientcookie } })
 		.then((data) => {
 			return models.Item
-			.destroy({ where: { id: req.body.id } })
+			.destroy({ where: { id: req.params.id } })
 		})
 		.then((data) => {
 			console.log(data);

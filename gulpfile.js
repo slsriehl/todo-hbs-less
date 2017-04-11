@@ -19,7 +19,7 @@ var banner = ['/*!\n',
 
 // Compile LESS files from /less into /css
 gulp.task('styles', function() {
-  return gulp.src('./less/style.less')
+  return gulp.src('./less/*.less')
     .pipe(less())
     .pipe(header(banner, { pkg: pkg }))
     .pipe(gulp.dest('./src/css'))
@@ -33,8 +33,8 @@ gulp.task('coffee', function() {
   return gulp.src('./coffee/*.coffee')
     .pipe(coffee({bare: true}))
     .pipe(header(banner, { pkg: pkg }))
+		.pipe(concat('index.js'))
     .pipe(gulp.dest('./src/js'))
-    .pipe(concat('index.js'))
     .pipe(uglify())
     .pipe(header(banner, { pkg: pkg }))
     .pipe(rename({ suffix: '.min' }))
@@ -43,5 +43,5 @@ gulp.task('coffee', function() {
 
 gulp.task('watch', function() {
   gulp.watch('./coffee/*.coffee', ['coffee']);
-  gulp.watch('./less/style.less', ['styles']);
+  gulp.watch('./less/styles.less', ['styles']);
 });

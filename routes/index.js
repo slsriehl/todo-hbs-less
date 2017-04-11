@@ -26,8 +26,13 @@ router.put('/item', (req, res) => {
 });
 
 //Delete to-do
-router.delete('/item', (req, res) => {
+router.delete('/item/:id', (req, res) => {
 	itemController.deleteItem(req, res);
+});
+
+//get edit item modal content
+router.get('/editItemModal/:id', (req, res) => {
+	readController.editItemModal(req, res);
 });
 
 //++++++ USER routes ++++++

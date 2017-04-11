@@ -61,18 +61,9 @@
 						<p>ready to do!</p>
 					{{/if}}
 				<p>{{description}}</p>
-				<button id="{{itemId}}">Edit Item</button>
+				<button class="edit-item" id="{{itemId}}">Edit Item</button>
 				</div>
 			{{/each}}
 		</div>
 	{{/each}}
 </div>
-
-
-<script>
-	$('#log-out').click(logout);
-	$('#settings').click(getSettings);
-	$('#add-context').submit(postContexts);
-	$('#add-todo').submit(postItems);
-	$('.context-radio').click(toggleRadios);
-</script>
