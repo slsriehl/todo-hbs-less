@@ -109,12 +109,13 @@ logout = (event) ->
 
 # delete account from settings page with click handler
 deleteAccount = (event) ->
-	data =
-		password: $('#password').val()
-	cookie = readCookie 'do-it'
-	console.log data
-	address = axios.delete '/user', data, {headers: {'clientcookie': cookie}}
+	password = $('[name="password"]').val()
+	#cookie = readCookie 'do-it'
+	console.log password
+	#console.log cookie
+	address = axios.delete '/user', {headers: {'password': password}}
 	cruds event, address
+
 
 # post new contexts from todos page with submit handler
 postContexts = (event) ->
@@ -140,6 +141,7 @@ postItems = (event) ->
 
 # show/hide passwords
 hideShow = (event) ->
+	console.log 'hide show fired'
 	if $(this).hasClass 'show'
 		$('.hide-show span').text 'Hide'
 		$('[name="password"]').attr 'type', 'text'

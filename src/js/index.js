@@ -8,24 +8,24 @@ $(document).ready(function() {
   if ($('#intro').text().trim() === 'Welcome to the do-It task management application') {
     auth(readCookie('do-it'));
   }
-  $(document).on('click', '#go-to-dos', getTodos);
-  $(document).on('click', '#log-out', logout);
-  $(document).on('click', '.hide-show span', hideShow);
-  $(document).on('submit', '#add-context', postContexts);
-  $(document).on('submit', '#add-todo', postItems);
-  $(document).on('click', '.context-radio', toggleRadios);
-  $(document).on('click', '.edit-item', function() {
+  $(document).off('click', '#go-to-dos').on('click', '#go-to-dos', getTodos);
+  $(document).off('click', '#log-out').on('click', '#log-out', logout);
+  $(document).off('click', '.hide-show span').on('click', '.hide-show span', hideShow);
+  $(document).off('submit', '#add-context').on('submit', '#add-context', postContexts);
+  $(document).off('submit', '#add-todo').on('submit', '#add-todo', postItems);
+  $(document).off('click', '.context-radio').on('click', '.context-radio', toggleRadios);
+  $(document).off('click', '.edit-item').on('click', '.edit-item', function() {
     return getModalContent(this.id);
   });
-  $(document).on('submit', '#edit-todo', editTodoSubmit);
-  $(document).on('click', '#delete-todo', deleteTodo);
-  $(document).on('click', '#log-in', getLogin);
-  $(document).on('submit', '#login-form', postLogin);
-  $(document).on('click', '#sign-up', getSignup);
-  $(document).on('submit', '#signup-form', postSignup);
-  $(document).on('click', '#settings', getSettings);
-  $(document).on('submit', '#change-form', putSettings);
-  return $(document).on('click', '#delete-account', deleteAccount);
+  $(document).off('submit', '#edit-todo').on('submit', '#edit-todo', editTodoSubmit);
+  $(document).off('click', '#delete-todo').on('click', '#delete-todo', deleteTodo);
+  $(document).off('click', '#log-in').on('click', '#log-in', getLogin);
+  $(document).off('submit', '#login-form').on('submit', '#login-form', postLogin);
+  $(document).off('click', '#sign-up').on('click', '#sign-up', getSignup);
+  $(document).off('submit', '#signup-form').on('submit', '#signup-form', postSignup);
+  $(document).off('click', '#settings').on('click', '#settings', getSettings);
+  $(document).off('submit', '#change-form').on('submit', '#change-form', putSettings);
+  return $(document).off('click', '#delete-account').on('click', '#delete-account', deleteAccount);
 });
 
 /*!
@@ -173,15 +173,12 @@ logout = function(event) {
 };
 
 deleteAccount = function(event) {
-  var address, cookie, data;
-  data = {
-    password: $('#password').val()
-  };
-  cookie = readCookie('do-it');
-  console.log(data);
-  address = axios["delete"]('/user', data, {
+  var address, password;
+  password = $('[name="password"]').val();
+  console.log(password);
+  address = axios["delete"]('/user', {
     headers: {
-      'clientcookie': cookie
+      'password': password
     }
   });
   return cruds(event, address);
@@ -225,6 +222,7 @@ postItems = function(event) {
 };
 
 hideShow = function(event) {
+  console.log('hide show fired');
   if ($(this).hasClass('show')) {
     $('.hide-show span').text('Hide');
     $('[name="password"]').attr('type', 'text');
