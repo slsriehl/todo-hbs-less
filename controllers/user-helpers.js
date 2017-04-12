@@ -25,7 +25,7 @@ const helpers = {
 				//password, or both, where the email matches the session email
 				return models.User
 				.update(objToUpdate, {
-					where: { email: req.session.email }
+					where: { email: sessionObj.email }
 				})
 				.then((result) => {
 					//returned object from the update call
@@ -33,8 +33,8 @@ const helpers = {
 					//stringify the data object so that we can check the value
 					//to determine the message to send
 					//can't compare objects/arrays for equality
-					dataStr = JSON.stringify(result);
-					console.log(dataStr)
+					let dataStr = JSON.stringify(result);
+					console.log(dataStr);
 					if(dataStr === '[0]') {
 						//if no User record was updated
 						helpers.settingsSessMessage(req, res, `Info not updated.  Try again.`);

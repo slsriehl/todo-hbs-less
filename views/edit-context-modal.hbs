@@ -1,4 +1,23 @@
 <div>
+	<div>
+		<p>Add a context:</p>
+		<form id="add-context">
+			<div>
+				<label>New Context</label>
+				<input
+					type="text"
+					name="name"
+					pattern=".{3,50}"
+					required
+					title="Your context must be at least 3 characters."
+				/>
+			</div>
+			<div>
+				<button type="submit">Add New Context</button>
+			</div>
+		</form>
+	</div>
+
 	<span id="rename-context">Rename a context</span> |
 	<span id="change-context">Move all items in one context to another context</span> |
 	<span id="delete-context">Delete a context</span>

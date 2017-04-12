@@ -14,7 +14,7 @@ $(document).ready () ->
 	$(document).off('click', '.context-radio').on 'click', '.context-radio', toggleRadios
 	$(document).off('click', '.edit-item').on 'click', '.edit-item', -> getItemModalContent this.id
 	$(document).off('click', '#edit-contexts').on 'click', '#edit-contexts', getContextModalContent
-	$(document).off('submit', '#edit-todo').on 'submit', '#edit-todo', editTodoSubmit
+	$(document).off('submit', '#edit-todo').on 'submit', '#edit-todo', putTodo
 	$(document).off('click', '#delete-todo').on 'click', '#delete-todo', deleteTodo
 
 #login, signup, settings
@@ -30,3 +30,7 @@ $(document).ready () ->
 	$(document).off('click', '#rename-context').on 'click', '#rename-context', getRenameContext
 	$(document).off('click', '#change-context').on 'click', '#change-context', getChangeContext
 	$(document).off('click', '#delete-context').on 'click', '#delete-context', getDeleteContext
+
+	$(document).off('submit', '#context-rename').on 'submit', '#context-rename', putRenameContext
+	$(document).off('submit', '#context-change').on 'submit', '#context-change', putChangeContext
+	$(document).off('submit', '#context-delete').on 'submit', '#context-delete', deleteContext

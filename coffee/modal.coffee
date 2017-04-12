@@ -119,14 +119,14 @@ getItemModalContent = (itemId) ->
 	modalActions = (options) ->
 		editItemModal = new Modal options
 		editItemModal.open()
-	modalCruds(address, modalActions)
+	modalCruds address, modalActions
 
 getContextModalContent = ->
 	address = axios.get "/editContextModal"
 	modalActions = (options) ->
 		editContextModal = new Modal options
 		editContextModal.open()
-	modalCruds(address, modalActions)
+	modalCruds address, modalActions
 
 getRenameContext = ->
 	address = axios.get "/renameContext"
@@ -134,7 +134,7 @@ getRenameContext = ->
 		renameContextModal = new Modal options
 		editContextModal.close()
 		renameContextModal.open()
-	modalCruds(address, modalActions)
+	modalCruds address, modalActions
 
 getChangeContext = ->
 	address = axios.get "/changeContext"
@@ -142,7 +142,7 @@ getChangeContext = ->
 		changeContextModal = new Modal options
 		editContextModal.close()
 		changeContextModal.open()
-	modalCruds(address, modalActions)
+	modalCruds address, modalActions
 
 getDeleteContext = ->
 	address = axios.get "/deleteContext"
@@ -150,23 +150,57 @@ getDeleteContext = ->
 		deleteContextModal = new Modal options
 		editContextModal.close()
 		deleteContextModal.open()
-	modalCruds(address, modalActions)
+	modalCruds address, modalActions
 
-editTodoSubmit = (event) ->
+putTodo = (event) ->
 	data = formToJSON event.target.elements
 	address = axios.put "/item", data
-	closeAndRefresh event, address
+	modalActions =  ->
+		editItemModal.close()
+	closeAndRefresh event, address, modalActions
 
 deleteTodo = (event) ->
 	data = $("[name='id']").val()
 	address = axios.delete "/item/#{data}"
-	closeAndRefresh event, address
+	modalActions = ->
+		editItemModal.close()
+	closeAndRefresh event, address, modalActions
 
-closeAndRefresh = (event, address) ->
+# post new contexts from modal with submit handler
+postContexts = (event) ->
+	data = formToJSON event.target.elements
+	address = axios.post '/context', data
+	modalActions = ->
+		editItemModal.close()
+	closeAndRefresh event, address, modalActions
+
+
+putRenameContext = (event) ->
+	data = formToJSON event.target.elements
+	address = axios.put '/renameContext', data
+	modalActions = ->
+		renameContextModal.close()
+	closeAndRefresh event, address, modalActions
+
+putChangeContext = (event) ->
+	data = formToJSON event.target.elements
+	address = axios.put '/changeContext', data
+	modalActions = ->
+		changeContextModal.close()
+	closeAndRefresh event, address, modalActions
+
+deleteContext = (event) ->
+	data = $("[name='contextToDelete']:checked").val()
+	address = axios.delete "/deleteContext/#{data}"
+	modalActions = ->
+		deleteContextModal.close()
+	closeAndRefresh event, address, modalActions
+
+closeAndRefresh = (event, address, modalActions) ->
 	event.preventDefault()
 	address
 	.then (result) ->
-		editItemModal.close()
+		modalActions()
 		console.log result
 		$('#content').html result.data
 		if result.headers.cookie

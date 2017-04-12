@@ -105,11 +105,17 @@ router.get('/deleteContext', (req, res) => {
 	readController.getDeleteContext(req, res);
 });
 
-// //Read contexts
-// router.get('/context', (req, res) => {
-// 	contextController.readContexts(req, res);
-// });
+router.put('/renameContext', (req, res) => {
+	contextController.renameContext(req, res);
+});
 
+router.put('/changeContext', (req, res) => {
+	contextController.changeContext(req, res);
+});
+
+router.delete('/deleteContext/:id', (req, res) => {
+	contextController.deleteContext(req, res);
+});
 
 
 module.exports = router;

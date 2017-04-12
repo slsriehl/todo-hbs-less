@@ -113,14 +113,6 @@ deleteAccount = (event) ->
 	address = axios.delete '/user', {headers: {'password': password}}
 	cruds event, address
 
-
-# post new contexts from todos page with submit handler
-postContexts = (event) ->
-	data = formToJSON event.target.elements
-	console.log data
-	address = axios.post '/context', data
-	cruds event, address
-
 # show todos and contexts
 getTodos = (event) ->
 	address = axios.get '/item'
