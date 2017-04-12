@@ -26,7 +26,10 @@ $(document).ready(function() {
   $(document).off('submit', '#signup-form').on('submit', '#signup-form', postSignup);
   $(document).off('click', '#settings').on('click', '#settings', getSettings);
   $(document).off('submit', '#change-form').on('submit', '#change-form', putSettings);
-  return $(document).off('click', '#delete-account').on('click', '#delete-account', deleteAccount);
+  $(document).off('click', '#delete-account').on('click', '#delete-account', deleteAccount);
+  $(document).off('click', '#rename-context').on('click', '#rename-context', getRenameContext);
+  $(document).off('click', '#change-context').on('click', '#change-context', getChangeContext);
+  return $(document).off('click', '#delete-context').on('click', '#delete-context', getDeleteContext);
 });
 
 /*!
@@ -227,7 +230,7 @@ toggleRadios = function(event) {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var Modal, closeAndRefresh, deleteTodo, editContextModal, editItemModal, editTodoSubmit, extendDefaults, getContextModalContent, getItemModalContent,
+var Modal, changeContextModal, closeAndRefresh, deleteContextModal, deleteTodo, editContextModal, editItemModal, editTodoSubmit, extendDefaults, getChangeContext, getContextModalContent, getDeleteContext, getItemModalContent, getRenameContext, modalCruds, renameContextModal,
   hasProp = {}.hasOwnProperty;
 
 Modal = (function(_this) {
@@ -321,37 +324,79 @@ editItemModal = null;
 
 editContextModal = null;
 
-getItemModalContent = function(itemId) {
-  console.log(itemId);
-  return axios.get("/editItemModal/" + itemId).then(function(data) {
+renameContextModal = null;
+
+changeContextModal = null;
+
+deleteContextModal = null;
+
+modalCruds = function(address, modalActions) {
+  return address.then(function(data) {
     var options;
     console.log(data);
     options = {
       content: data.data
     };
     console.log(options);
-    editItemModal = new Modal(options);
-    return editItemModal.open();
+    return modalActions(options);
   })["catch"](function(error) {
     console.log(error);
     return error;
   });
 };
 
+getItemModalContent = function(itemId) {
+  var address, modalActions;
+  console.log(itemId);
+  address = axios.get("/editItemModal/" + itemId);
+  modalActions = function(options) {
+    editItemModal = new Modal(options);
+    return editItemModal.open();
+  };
+  return modalCruds(address, modalActions);
+};
+
 getContextModalContent = function() {
-  return axios.get("/editContextModal").then(function(data) {
-    var options;
-    console.log(data);
-    options = {
-      content: data.data
-    };
-    console.log(options);
+  var address, modalActions;
+  address = axios.get("/editContextModal");
+  modalActions = function(options) {
     editContextModal = new Modal(options);
     return editContextModal.open();
-  })["catch"](function(error) {
-    console.log(error);
-    return error;
-  });
+  };
+  return modalCruds(address, modalActions);
+};
+
+getRenameContext = function() {
+  var address, modalActions;
+  address = axios.get("/renameContext");
+  modalActions = function(options) {
+    renameContextModal = new Modal(options);
+    editContextModal.close();
+    return renameContextModal.open();
+  };
+  return modalCruds(address, modalActions);
+};
+
+getChangeContext = function() {
+  var address, modalActions;
+  address = axios.get("/changeContext");
+  modalActions = function(options) {
+    changeContextModal = new Modal(options);
+    editContextModal.close();
+    return changeContextModal.open();
+  };
+  return modalCruds(address, modalActions);
+};
+
+getDeleteContext = function() {
+  var address, modalActions;
+  address = axios.get("/deleteContext");
+  modalActions = function(options) {
+    deleteContextModal = new Modal(options);
+    editContextModal.close();
+    return deleteContextModal.open();
+  };
+  return modalCruds(address, modalActions);
 };
 
 editTodoSubmit = function(event) {

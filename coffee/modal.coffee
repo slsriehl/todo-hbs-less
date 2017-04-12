@@ -94,37 +94,63 @@ extendDefaults = (sourceOptions, passedOptions) ->
 
 editItemModal = null
 editContextModal = null
+renameContextModal = null
+changeContextModal = null
+deleteContextModal = null
 #define content for the editItemModal options
 #by getting server-side hbs template
 #then instantiate modal and open
 
+modalCruds = (address, modalActions) ->
+	address
+	.then (data) ->
+		console.log data
+		options =
+			content: data.data
+		console.log options
+		modalActions(options)
+	.catch (error) ->
+		console.log error
+		return error
 
 getItemModalContent = (itemId) ->
 	console.log itemId
-	axios.get "/editItemModal/#{itemId}"
-	.then (data) ->
-		console.log data
-		options =
-			content: data.data
-		console.log options
+	address = axios.get "/editItemModal/#{itemId}"
+	modalActions = (options) ->
 		editItemModal = new Modal options
 		editItemModal.open()
-	.catch (error) ->
-		console.log error
-		return error
+	modalCruds(address, modalActions)
 
 getContextModalContent = ->
-	axios.get "/editContextModal"
-	.then (data) ->
-		console.log data
-		options =
-			content: data.data
-		console.log options
+	address = axios.get "/editContextModal"
+	modalActions = (options) ->
 		editContextModal = new Modal options
 		editContextModal.open()
-	.catch (error) ->
-		console.log error
-		return error
+	modalCruds(address, modalActions)
+
+getRenameContext = ->
+	address = axios.get "/renameContext"
+	modalActions = (options) ->
+		renameContextModal = new Modal options
+		editContextModal.close()
+		renameContextModal.open()
+	modalCruds(address, modalActions)
+
+getChangeContext = ->
+	address = axios.get "/changeContext"
+	modalActions = (options) ->
+		changeContextModal = new Modal options
+		editContextModal.close()
+		changeContextModal.open()
+	modalCruds(address, modalActions)
+
+getDeleteContext = ->
+	address = axios.get "/deleteContext"
+	modalActions = (options) ->
+		deleteContextModal = new Modal options
+		editContextModal.close()
+		deleteContextModal.open()
+	modalCruds(address, modalActions)
 
 editTodoSubmit = (event) ->
 	data = formToJSON event.target.elements

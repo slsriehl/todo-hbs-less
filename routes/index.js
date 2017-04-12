@@ -93,6 +93,18 @@ router.get('/editContextModal', (req, res) => {
 	readController.editContextModal(req, res);
 });
 
+router.get('/renameContext', (req, res) => {
+	readController.getRenameContext(req, res);
+});
+
+router.get('/changeContext', (req, res) => {
+	readController.getChangeContext(req, res);
+});
+
+router.get('/deleteContext', (req, res) => {
+	readController.getDeleteContext(req, res);
+});
+
 // //Read contexts
 // router.get('/context', (req, res) => {
 // 	contextController.readContexts(req, res);

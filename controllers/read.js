@@ -9,10 +9,7 @@ const controller = {
 		console.log(req.headers);
 		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
 		if(sentCookie) {
-			return models.ConnectSession
-			.findOne({
-				where: { sid: sentCookie }
-			})
+			helpers.findSession(sentCookie)
 			.then(data => {
 				console.log(data);
 				//parse the data object from the ConnectSessions table
@@ -30,10 +27,7 @@ const controller = {
 	editItemModal: (req, res) => {
 		console.log(req.params.id);
 		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
-		return models.ConnectSession
-		.findOne({
-			where: { sid: sentCookie }
-		})
+		helpers.findSession(sentCookie)
 		.then(data => {
 			console.log(data);
 			helpers.lookupEdits(req, res, data);
@@ -45,30 +39,16 @@ const controller = {
 		});
 	},
 	editContextModal: (req, res) => {
-		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
-		return models.ConnectSession
-		.findOne({
-			where: { sid: sentCookie }
-		})
-		.then(data => {
-			console.log(data.dataValues);
-			const sessionObj = JSON.parse(data.dataValues.data);
-			return models.User
-			.findOne({
-				where: { id: sessionObj.userId },
-				include: [{
-					model: models.Context
-				}]
-			})
-		})
-		.then(data => {
-			console.log(data);
-			res.render('edit-context-modal.hbs', {test: 'foo', layout: false})
-		})
-		.catch(error => {
-			console.log('edit context modal lookup failed');
-			throw error;
-		})
+		res.render('edit-context-modal.hbs');
+	},
+	getRenameContext: (req, res) => {
+		helpers.getContextModals(req, res, 'context-rename.hbs');
+	},
+	getChangeContext: (req, res) => {
+		helpers.getContextModals(req, res, 'context-change.hbs');
+	},
+	getDeleteContext: (req, res) => {
+		helpers.getContextModals(req, res, 'context-delete.hbs');
 	}
 }
 

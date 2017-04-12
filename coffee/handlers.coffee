@@ -25,3 +25,8 @@ $(document).ready () ->
 	$(document).off('click', '#settings').on 'click', '#settings', getSettings
 	$(document).off('submit', '#change-form').on 'submit', '#change-form', putSettings
 	$(document).off('click', '#delete-account').on 'click', '#delete-account', deleteAccount
+
+#contexts
+	$(document).off('click', '#rename-context').on 'click', '#rename-context', getRenameContext
+	$(document).off('click', '#change-context').on 'click', '#change-context', getChangeContext
+	$(document).off('click', '#delete-context').on 'click', '#delete-context', getDeleteContext

@@ -83,6 +83,44 @@ const helpers = {
 			throw error;
 		});
 	},
+	getContextModals: (req, res, templateName) => {
+		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
+		helpers.findSession(sentCookie)
+		.then(data => {
+			console.log(data.dataValues);
+			const sessionObj = JSON.parse(data.dataValues.data);
+			console.log(sessionObj);
+			return models.User
+			.findOne({
+				where: { id: sessionObj.userId },
+				include: [{
+					model: models.Context
+				}]
+			})
+		})
+		.then(user => {
+			console.log(user);
+			const contextObj = helpers.makeContextObj(user.dataValues.Contexts);
+			console.log(contextObj);
+			res.render(templateName, {contexts: contextObj, layout: false});
+		})
+		.catch(error => {
+			console.log(`${templateName} lookup failed`);
+			throw error;
+		})
+	},
+	makeContextObj: (contexts) => {
+		let userContexts;
+		let userContextArr = [];
+		for(let i in contexts) {
+			userContexts = Object.assign({}, {
+				contextId: contexts[i].dataValues.id,
+				contextName: contexts[i].dataValues.name
+			});
+			userContextArr = userContextArr.concat(userContexts);
+		}
+		return userContextArr;
+	},
 	findAllOfThem: userId => {
 		return models.User
 		.findOne({
@@ -95,7 +133,12 @@ const helpers = {
 			}]
 		})
 	},
-
+	findSession: cookie => {
+		return models.ConnectSession
+		.findOne({
+			where: { sid: cookie }
+		})
+	}
 }
 
 module.exports = helpers;
