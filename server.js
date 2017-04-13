@@ -47,7 +47,7 @@ app.use(session({
 app.use(routes);
 
 // ++++++ SERVER LISTEN ++++++
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 6321;
 
 const server = app.listen(PORT, function () {
   const host = server.address().address;

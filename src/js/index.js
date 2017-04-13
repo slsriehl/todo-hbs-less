@@ -11,8 +11,9 @@ $(document).ready(function() {
   $(document).off('click', '#go-to-dos').on('click', '#go-to-dos', getTodos);
   $(document).off('click', '#log-out').on('click', '#log-out', logout);
   $(document).off('click', '.hide-show span').on('click', '.hide-show span', hideShow);
+  $(document).off('click', '#add-todo-menu').on('click', '#add-todo-menu', getAddItemModal);
   $(document).off('submit', '#add-context').on('submit', '#add-context', postContexts);
-  $(document).off('submit', '#add-todo').on('submit', '#add-todo', postItems);
+  $(document).off('submit', '#add-todo').on('submit', '#add-todo', postAddItemModal);
   $(document).off('click', '.context-radio').on('click', '.context-radio', toggleRadios);
   $(document).off('click', '.edit-item').on('click', '.edit-item', function() {
     return getItemModalContent(this.id);
