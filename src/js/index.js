@@ -419,7 +419,7 @@ postContexts = function(event) {
   data = formToJSON(event.target.elements);
   address = axios.post('/context', data);
   modalActions = function() {
-    return editItemModal.close();
+    return editContextModal.close();
   };
   return closeAndRefresh(event, address, modalActions);
 };

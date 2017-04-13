@@ -6,12 +6,33 @@ const helpers = require('./context-helpers');
 const controller = {
 	createContext: (req, res) => {
 		console.log(req.body);
-		return models.Context
-		//obj destructuring doesn't work
-		.create({name: req.body.name, UserId: req.session.userId})
+		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
+		return models.ConnectSession
+		.findOne({
+			where: { sid: sentCookie }
+		})
+		.then((data) => {
+			const sessionObj = JSON.parse(data.dataValues.data);
+			return models.Context
+			.findOne({
+				where: { name: req.body.name }
+			})
+		})
+		.then(data => {
+			if(!data) {
+				return models.Context
+				//obj destructuring doesn't work
+				.create({
+					name: req.body.name,
+					UserId: sessionObj.userId
+				})
+			} else {
+				readController.readTodos(req, res, null);
+			}
+		})
 		.then((data) => {
 			console.log(data.dataValues);
-			readController.readTodos(req, res);
+			readController.readTodos(req, res, null);
 		})
 		.catch((error) => {
 			console.log("create function failed");
@@ -62,7 +83,9 @@ const controller = {
 		console.log(req.params);
 		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
 		return models.ConnectSession
-		.findOne({ where: { sid: sentCookie } })
+		.findOne({
+			where: { sid: sentCookie }
+		})
 		.then((data) => {
 			if(data) {
 				return models.Context

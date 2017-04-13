@@ -171,7 +171,7 @@ postContexts = (event) ->
 	data = formToJSON event.target.elements
 	address = axios.post '/context', data
 	modalActions = ->
-		editItemModal.close()
+		editContextModal.close()
 	closeAndRefresh event, address, modalActions
 
 
