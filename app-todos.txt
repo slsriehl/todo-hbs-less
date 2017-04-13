@@ -120,6 +120,10 @@ look for design inspiration
 style login, signup, and settings pages
 write coffeescript and less to create dynamic, interactive todos with adding contexts
 
+write tests for item controller
+write tests for read controller
+write tests for context controller
+
 consider adding tests with nightmare navigating to the page and entering the info
 
 add nodemailer functionality to reset password

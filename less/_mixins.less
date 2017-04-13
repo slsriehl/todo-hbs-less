@@ -1,0 +1,24 @@
+
+.translate(@vert, @horiz) {
+	-webkit-transform: translate(@vert, @horiz);
+	-moz-transform: translate(@vert, @horiz);
+	-ms-transform: translate(@vert, @horiz);
+	-o-transform: translate(@vert, @horiz);
+	transform: translate(@vert, @horiz);
+}
+
+.three-part-transition(@time, @opacity, @ease) {
+	-webkit-transition: @time @opacity @ease;
+	-moz-transition: @time @opacity @ease;
+	-ms-transition: @time @opacity @ease;
+	-o-transition: @time @opacity @ease;
+	transition: @time @opacity @ease;
+}
+
+.four-part-transition(@time1, @position, @time2, @ease) {
+	-webkit-transition: @time1 @position @time2 @ease;
+	-moz-transition: @time1 @position @time2 @ease;
+	-ms-transition: @time1 @position @time2 @ease;
+	-o-transition: @time1 @position @time2 @ease;
+	transition: @time1 @position @time2 @ease;
+}

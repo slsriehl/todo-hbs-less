@@ -19,7 +19,7 @@ var banner = ['/*!\n',
 
 // Compile LESS files from /less into /css
 gulp.task('styles', function() {
-  return gulp.src('./less/*.less')
+  return gulp.src('./less/styles.less')
     .pipe(less())
     .pipe(header(banner, { pkg: pkg }))
     .pipe(gulp.dest('./src/css'))
