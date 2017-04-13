@@ -1,0 +1,26 @@
+
+
+<form id="add-todo">
+	<div>
+		<label>New Task</label>
+		<input
+			type="text"
+			name="item"
+			pattern=".{3,50}"
+			required
+			title="Your to-do item must be 3-50 characters."
+		/>
+	</div>
+	<div>
+		<label>Description</label>
+		<textarea
+			name="description"
+		></textarea>
+	</div>
+	{{#each contexts}}
+		<div class="context-radio" style="background-color: #ccc;">
+			<input type="radio" value="{{contextId}}" name="context" required />  <label>{{contextName}}</label>
+		</div>
+	{{/each}}
+	<button type="submit">Add New Item</button>
+</form>

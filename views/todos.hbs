@@ -1,5 +1,15 @@
 {{> logged-in}}
 
+<div class="color1"></div>
+<div class="color2"></div>
+<div class="color3"></div>
+<div class="color4"></div>
+<div class="color5"></div>
+<div class="color6"></div>
+<div class="color7"></div>
+<div class="color8"></div>
+<div class="color9"></div>
+
 {{#if data}}
 <div class="data">
 	{{data}}
@@ -7,34 +17,6 @@
 {{/if}}
 
 <!-- todos -->
-
-<form id="add-todo">
-	<div>
-		<label>New To-Do Item</label>
-		<input
-			type="text"
-			name="item"
-			pattern=".{3,50}"
-			required
-			title="Your to-do item must be 3-50 characters."
-		/>
-	</div>
-	<div>
-		<label>Description</label>
-		<textarea
-			name="description"
-		></textarea>
-	</div>
-	{{#each userContextItem.contexts}}
-		<div class="context-radio" style="background-color: #ccc;">
-			<input type="radio" value="{{contextId}}" name="context" required />  <label>{{contextName}}</label>
-		</div>
-	{{/each}}
-	<button type="submit">Add New Item</button>
-</form>
-
-<button id="edit-contexts" type="button">Edit Contexts</button>
-
 <div>
 	{{#each userContextItem.contexts}}
 		<div id="{{contextId}}">

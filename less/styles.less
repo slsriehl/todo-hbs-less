@@ -1,7 +1,47 @@
 
-@import '_extends.less';
-@import '_mixins.less';
+@import '_reset.less';
 @import '_variables.less';
+@import '_mixins.less';
+@import '_extends.less';
+
+body {
+	font-family: @main-font;
+	font-size: 20px;
+	line-height: 1.5;
+	color: @color-text-desat;
+}
+
+h1 {
+	font-size: 1.5em;
+}
+
+h2 {
+	font-size: 1.25em;
+}
+
+header {
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	background-color: darken(@color-bkg-desat, 5%);
+	//background-image: linear-gradient(45deg, darken(@color-bkg-desat, 10%), darken(@color-bkg-desat, 5%));
+
+
+}
+
+header span {
+	padding: 0.25em 0.5em;
+}
+
+.header {
+	display: flex;
+	width: 100%;
+	justify-content: space-around;
+	background-image: linear-gradient(45deg, @color-bkg-desat, saturate(@color-bkg, 10%), @color-bkg-desat);
+}
+.header span {
+	padding: 0.25em 0;
+}
 
 /* Modal Base CSS */
 .project-overlay {
@@ -52,7 +92,6 @@
 
 /* Close Button */
 .project-close {
-	font-family: @main-fonts;
 	font-size: 24px;
 	font-weight: 700;
 	line-height: 12px;

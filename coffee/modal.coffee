@@ -97,6 +97,7 @@ editContextModal = null
 renameContextModal = null
 changeContextModal = null
 deleteContextModal = null
+addItemModal = null
 #define content for the editItemModal options
 #by getting server-side hbs template
 #then instantiate modal and open
@@ -120,6 +121,22 @@ getItemModalContent = (itemId) ->
 		editItemModal = new Modal options
 		editItemModal.open()
 	modalCruds address, modalActions
+
+getAddItemModal = ->
+	address = axios.get "/addItemModal"
+	modalActions = (options) ->
+		addItemModal = new Modal options
+		addItemModal.open()
+	modalCruds address, modalActions
+
+postAddItemModal = (event) ->
+	data = formToJSON event.target.elements
+	console.log data
+	address = axios.post '/item', data
+	modalActions = ->
+		addItemModal.close()
+	closeAndRefresh event, address, modalActions
+
 
 getContextModalContent = ->
 	address = axios.get "/editContextModal"

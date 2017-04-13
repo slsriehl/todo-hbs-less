@@ -118,13 +118,6 @@ getTodos = (event) ->
 	address = axios.get '/item'
 	cruds event, address
 
-# post new todo items
-postItems = (event) ->
-	data = formToJSON event.target.elements
-	console.log data
-	address = axios.post '/item', data
-	cruds event, address
-
 # show/hide passwords
 hideShow = (event) ->
 	console.log 'hide show fired'

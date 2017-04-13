@@ -49,6 +49,9 @@ const controller = {
 	},
 	getDeleteContext: (req, res) => {
 		helpers.getContextModals(req, res, 'context-delete.hbs');
+	},
+	addItemModal: (req, res) => {
+		helpers.getContextModals(req, res, 'add-item-modal.hbs');
 	}
 }
 

@@ -40,7 +40,7 @@ $(document).ready(function() {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, isValidElement, isValidValue, logout, postItems, postLogin, postSignup, putSettings, readCookie, toggleRadios;
+var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, isValidElement, isValidValue, logout, postLogin, postSignup, putSettings, readCookie, toggleRadios;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -182,14 +182,6 @@ getTodos = function(event) {
   return cruds(event, address);
 };
 
-postItems = function(event) {
-  var address, data;
-  data = formToJSON(event.target.elements);
-  console.log(data);
-  address = axios.post('/item', data);
-  return cruds(event, address);
-};
-
 hideShow = function(event) {
   console.log('hide show fired');
   if ($(this).hasClass('show')) {
@@ -225,7 +217,7 @@ toggleRadios = function(event) {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var Modal, changeContextModal, closeAndRefresh, deleteContext, deleteContextModal, deleteTodo, editContextModal, editItemModal, extendDefaults, getChangeContext, getContextModalContent, getDeleteContext, getItemModalContent, getRenameContext, modalCruds, postContexts, putChangeContext, putRenameContext, putTodo, renameContextModal,
+var Modal, addItemModal, changeContextModal, closeAndRefresh, deleteContext, deleteContextModal, deleteTodo, editContextModal, editItemModal, extendDefaults, getAddItemModal, getChangeContext, getContextModalContent, getDeleteContext, getItemModalContent, getRenameContext, modalCruds, postAddItemModal, postContexts, putChangeContext, putRenameContext, putTodo, renameContextModal,
   hasProp = {}.hasOwnProperty;
 
 Modal = (function(_this) {
@@ -325,6 +317,8 @@ changeContextModal = null;
 
 deleteContextModal = null;
 
+addItemModal = null;
+
 modalCruds = function(address, modalActions) {
   return address.then(function(data) {
     var options;
@@ -349,6 +343,27 @@ getItemModalContent = function(itemId) {
     return editItemModal.open();
   };
   return modalCruds(address, modalActions);
+};
+
+getAddItemModal = function() {
+  var address, modalActions;
+  address = axios.get("/addItemModal");
+  modalActions = function(options) {
+    addItemModal = new Modal(options);
+    return addItemModal.open();
+  };
+  return modalCruds(address, modalActions);
+};
+
+postAddItemModal = function(event) {
+  var address, data, modalActions;
+  data = formToJSON(event.target.elements);
+  console.log(data);
+  address = axios.post('/item', data);
+  modalActions = function() {
+    return addItemModal.close();
+  };
+  return closeAndRefresh(event, address, modalActions);
 };
 
 getContextModalContent = function() {
