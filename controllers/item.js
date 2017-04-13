@@ -1,9 +1,11 @@
 const models = require('../models');
-readController = require('./read')
+readController = require('./read');
+cookieHelpers = require('./cookie-helpers');
 
 const controller = {
 	createItem: (req, res) => {
 		console.log(req.body);
+		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
 		const newItem = {
 			name: req.body.item,
 			description: req.body.description,
@@ -12,7 +14,7 @@ const controller = {
 		}
 		console.log(newItem);
 		return models.ConnectSession
-		.findOne({ where: { sid: req.headers.clientcookie } })
+		.findOne({ where: { sid: sentCookie } })
 		.then((data) => {
 			console.log(data);
 			return models.Item
@@ -30,9 +32,10 @@ const controller = {
 	//read items in the read controller
 	updateItem: (req, res) => {
 		console.log(req.body);
+		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
 		//send item id and doneness and other items
 		return models.ConnectSession
-		.findOne({ where: { sid: req.headers.clientcookie } })
+		.findOne({ where: { sid: sentCookie } })
 		.then((data) => {
 			return models.Item
 			.update(req.body, {
@@ -64,8 +67,9 @@ const controller = {
 	},
 	deleteItem: (req, res) => {
 		console.log(req.params);
+		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
 		return models.ConnectSession
-		.findOne({ where: { sid: req.headers.clientcookie } })
+		.findOne({ where: { sid: sentCookie } })
 		.then((data) => {
 			return models.Item
 			.destroy({ where: { id: req.params.id } })

@@ -1,0 +1,13 @@
+<p>Select a context below to rename:</p>
+<form id="context-rename">
+{{#each contexts}}
+<div class="context-radio">
+	<input type="radio" value="{{contextId}}" name="contextToRename" />  <label>{{contextName}}</label>
+</div>
+{{/each}}
+<div>
+	<label>New Name</label>
+	<input type="text" name="newName" />
+</div>
+<button type="submit">Change Context Name</button>
+</form>

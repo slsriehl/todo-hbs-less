@@ -1,15 +1,15 @@
 const models = require('../models');
 const util = require('util');
 const helpers = require('./read-helpers');
+const cookieHelpers = require('./cookie-helpers');
 
 const controller = {
 	readTodos: (req, res, cookie) => {
 		//use cookie to locate session
-		if(req.headers.clientcookie) {
-			return models.ConnectSession
-			.findOne({
-				where: { sid: req.headers.clientcookie }
-			})
+		console.log(req.headers);
+		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
+		if(sentCookie) {
+			helpers.findSession(sentCookie)
 			.then(data => {
 				console.log(data);
 				//parse the data object from the ConnectSessions table
@@ -26,10 +26,8 @@ const controller = {
 	},
 	editItemModal: (req, res) => {
 		console.log(req.params.id);
-		return models.ConnectSession
-		.findOne({
-			where: { sid: req.headers.clientcookie }
-		})
+		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
+		helpers.findSession(sentCookie)
 		.then(data => {
 			console.log(data);
 			helpers.lookupEdits(req, res, data);
@@ -39,6 +37,18 @@ const controller = {
 			throw error;
 			res.render('login.hbs');
 		});
+	},
+	editContextModal: (req, res) => {
+		res.render('edit-context-modal.hbs');
+	},
+	getRenameContext: (req, res) => {
+		helpers.getContextModals(req, res, 'context-rename.hbs');
+	},
+	getChangeContext: (req, res) => {
+		helpers.getContextModals(req, res, 'context-change.hbs');
+	},
+	getDeleteContext: (req, res) => {
+		helpers.getContextModals(req, res, 'context-delete.hbs');
 	}
 }
 

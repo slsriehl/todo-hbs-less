@@ -93,44 +93,114 @@ extendDefaults = (sourceOptions, passedOptions) ->
 	return sourceCopy
 
 editItemModal = null
-
+editContextModal = null
+renameContextModal = null
+changeContextModal = null
+deleteContextModal = null
 #define content for the editItemModal options
 #by getting server-side hbs template
 #then instantiate modal and open
-getModalContent = (itemId) ->
-	cookie = readCookie('do-it')
-	console.log itemId
-	axios.get "/editItemModal/#{itemId}", {headers: {'clientcookie': cookie}}
+
+modalCruds = (address, modalActions) ->
+	address
 	.then (data) ->
 		console.log data
 		options =
 			content: data.data
 		console.log options
-		editItemModal = new Modal options
-		editItemModal.open()
+		modalActions(options)
 	.catch (error) ->
 		console.log error
 		return error
 
-editTodoSubmit = (event) ->
-	event.preventDefault()
-	cookie = readCookie('do-it')
+getItemModalContent = (itemId) ->
+	console.log itemId
+	address = axios.get "/editItemModal/#{itemId}"
+	modalActions = (options) ->
+		editItemModal = new Modal options
+		editItemModal.open()
+	modalCruds address, modalActions
+
+getContextModalContent = ->
+	address = axios.get "/editContextModal"
+	modalActions = (options) ->
+		editContextModal = new Modal options
+		editContextModal.open()
+	modalCruds address, modalActions
+
+getRenameContext = ->
+	address = axios.get "/renameContext"
+	modalActions = (options) ->
+		renameContextModal = new Modal options
+		editContextModal.close()
+		renameContextModal.open()
+	modalCruds address, modalActions
+
+getChangeContext = ->
+	address = axios.get "/changeContext"
+	modalActions = (options) ->
+		changeContextModal = new Modal options
+		editContextModal.close()
+		changeContextModal.open()
+	modalCruds address, modalActions
+
+getDeleteContext = ->
+	address = axios.get "/deleteContext"
+	modalActions = (options) ->
+		deleteContextModal = new Modal options
+		editContextModal.close()
+		deleteContextModal.open()
+	modalCruds address, modalActions
+
+putTodo = (event) ->
 	data = formToJSON event.target.elements
-	address = axios.put "/item", data, {headers: {'clientcookie': cookie}}
-	closeAndRefresh event, address
+	address = axios.put "/item", data
+	modalActions =  ->
+		editItemModal.close()
+	closeAndRefresh event, address, modalActions
 
 deleteTodo = (event) ->
-	event.preventDefault()
-	cookie = readCookie('do-it')
 	data = $("[name='id']").val()
-	console.log data
-	address = axios.delete "/item/#{data}", {headers: {'clientcookie': cookie}}
-	closeAndRefresh event, address
+	address = axios.delete "/item/#{data}"
+	modalActions = ->
+		editItemModal.close()
+	closeAndRefresh event, address, modalActions
 
-closeAndRefresh = (event, address) ->
+# post new contexts from modal with submit handler
+postContexts = (event) ->
+	data = formToJSON event.target.elements
+	address = axios.post '/context', data
+	modalActions = ->
+		editContextModal.close()
+	closeAndRefresh event, address, modalActions
+
+
+putRenameContext = (event) ->
+	data = formToJSON event.target.elements
+	address = axios.put '/renameContext', data
+	modalActions = ->
+		renameContextModal.close()
+	closeAndRefresh event, address, modalActions
+
+putChangeContext = (event) ->
+	data = formToJSON event.target.elements
+	address = axios.put '/changeContext', data
+	modalActions = ->
+		changeContextModal.close()
+	closeAndRefresh event, address, modalActions
+
+deleteContext = (event) ->
+	data = $("[name='contextToDelete']:checked").val()
+	address = axios.delete "/deleteContext/#{data}"
+	modalActions = ->
+		deleteContextModal.close()
+	closeAndRefresh event, address, modalActions
+
+closeAndRefresh = (event, address, modalActions) ->
+	event.preventDefault()
 	address
 	.then (result) ->
-		editItemModal.close()
+		modalActions()
 		console.log result
 		$('#content').html result.data
 		if result.headers.cookie

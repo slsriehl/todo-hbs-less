@@ -1,0 +1,17 @@
+<p>Move all items from one context to another:</p>
+<form id="context-change">
+	<p>Take the items in this context:</p>
+	{{#each contexts}}
+		<div class="context-radio">
+			<input type="radio" value="{{contextId}}" name="oldContext" />  <label>{{contextName}}</label>
+		</div>
+	{{/each}}
+
+	<p>And move them to this other context:</p>
+	{{#each contexts}}
+		<div class="context-radio">
+			<input type="radio" value="{{contextId}}" name="newContext" />  <label>{{contextName}}</label>
+		</div>
+	{{/each}}
+	<button type="submit">Move All Items to New Context</button>
+</form>

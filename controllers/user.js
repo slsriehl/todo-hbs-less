@@ -1,6 +1,6 @@
 const models = require('../models');
-const helpers = require('./user-helpers');
 
+const helpers = require('./user-helpers');
 const cookieHelpers = require('./cookie-helpers');
 
 const readController = require('./read');
@@ -89,11 +89,12 @@ const controller = {
 	//display settings page
 	userSettings: (req, res) => {
 		console.log(req.headers);
+		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
 		//query the session store for the user's session
 		//to display their email address on the settings page
 		return models.ConnectSession
 		.findOne({
-			where: { sid: req.headers.clientcookie }
+			where: { sid: sentCookie }
 		})
 		.then((data) => {
 			console.log(data.dataValues);
@@ -142,12 +143,13 @@ const controller = {
 	deleteUser: (req, res) => {
 		console.log(`req.headers.cookie ${util.inspect(req.headers.cookie)}`);
 		console.log(`req.headers.password ${req.headers.password}`);
+		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
 		//sync the users table
 			//query the session store for the user's email address based on the
 			//cookie stored on the client side
 		return models.ConnectSession
 		.findOne({
-			where: { sid: cookieHelpers.readCookie(req, 'do-it') }
+			where: { sid: sentCookie }
 		})
 		.then((data) => {
 			//if the cookie is found

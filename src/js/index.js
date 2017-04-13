@@ -15,9 +15,10 @@ $(document).ready(function() {
   $(document).off('submit', '#add-todo').on('submit', '#add-todo', postItems);
   $(document).off('click', '.context-radio').on('click', '.context-radio', toggleRadios);
   $(document).off('click', '.edit-item').on('click', '.edit-item', function() {
-    return getModalContent(this.id);
+    return getItemModalContent(this.id);
   });
-  $(document).off('submit', '#edit-todo').on('submit', '#edit-todo', editTodoSubmit);
+  $(document).off('click', '#edit-contexts').on('click', '#edit-contexts', getContextModalContent);
+  $(document).off('submit', '#edit-todo').on('submit', '#edit-todo', putTodo);
   $(document).off('click', '#delete-todo').on('click', '#delete-todo', deleteTodo);
   $(document).off('click', '#log-in').on('click', '#log-in', getLogin);
   $(document).off('submit', '#login-form').on('submit', '#login-form', postLogin);
@@ -25,7 +26,13 @@ $(document).ready(function() {
   $(document).off('submit', '#signup-form').on('submit', '#signup-form', postSignup);
   $(document).off('click', '#settings').on('click', '#settings', getSettings);
   $(document).off('submit', '#change-form').on('submit', '#change-form', putSettings);
-  return $(document).off('click', '#delete-account').on('click', '#delete-account', deleteAccount);
+  $(document).off('click', '#delete-account').on('click', '#delete-account', deleteAccount);
+  $(document).off('click', '#rename-context').on('click', '#rename-context', getRenameContext);
+  $(document).off('click', '#change-context').on('click', '#change-context', getChangeContext);
+  $(document).off('click', '#delete-context').on('click', '#delete-context', getDeleteContext);
+  $(document).off('submit', '#context-rename').on('submit', '#context-rename', putRenameContext);
+  $(document).off('submit', '#context-change').on('submit', '#context-change', putChangeContext);
+  return $(document).off('submit', '#context-delete').on('submit', '#context-delete', deleteContext);
 });
 
 /*!
@@ -33,7 +40,7 @@ $(document).ready(function() {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, isValidElement, isValidValue, logout, postContexts, postItems, postLogin, postSignup, putSettings, readCookie, toggleRadios;
+var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, isValidElement, isValidValue, logout, postItems, postLogin, postSignup, putSettings, readCookie, toggleRadios;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -99,12 +106,7 @@ cruds = function(event, address) {
 auth = function(cookie) {
   var address;
   if (cookie && cookie !== 'undefined') {
-    console.log('auth fired');
-    address = axios.get('/item', {
-      headers: {
-        'clientcookie': cookie
-      }
-    });
+    address = axios.get('/item');
     return cruds(event, address);
   } else {
     return getLogin(null);
@@ -124,13 +126,8 @@ getLogin = function(event) {
 };
 
 getSettings = function(event) {
-  var address, cookie;
-  cookie = readCookie('do-it');
-  address = axios.get('/user', {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
+  var address;
+  address = axios.get('/user');
   return cruds(event, address);
 };
 
@@ -152,17 +149,12 @@ postLogin = function(event) {
 };
 
 putSettings = function(event) {
-  var address, cookie, data;
+  var address, data;
   hideShowSubmit();
   $('.hide-show').parent().find('[name="newPassword"]').attr('type', 'password');
   data = formToJSON(event.target.elements);
-  cookie = readCookie('do-it');
   console.log(data);
-  address = axios.put('/user', data, {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
+  address = axios.put('/user', data);
   return cruds(event, address);
 };
 
@@ -184,40 +176,17 @@ deleteAccount = function(event) {
   return cruds(event, address);
 };
 
-postContexts = function(event) {
-  var address, cookie, data;
-  data = formToJSON(event.target.elements);
-  console.log(data);
-  cookie = readCookie('do-it');
-  address = axios.post('/context', data, {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
-  return cruds(event, address);
-};
-
 getTodos = function(event) {
-  var address, cookie;
-  cookie = readCookie('do-it');
-  address = axios.get('/item', {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
+  var address;
+  address = axios.get('/item');
   return cruds(event, address);
 };
 
 postItems = function(event) {
-  var address, cookie, data;
+  var address, data;
   data = formToJSON(event.target.elements);
-  cookie = readCookie('do-it');
   console.log(data);
-  address = axios.post('/item', data, {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
+  address = axios.post('/item', data);
   return cruds(event, address);
 };
 
@@ -256,7 +225,7 @@ toggleRadios = function(event) {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var Modal, closeAndRefresh, deleteTodo, editItemModal, editTodoSubmit, extendDefaults, getModalContent,
+var Modal, changeContextModal, closeAndRefresh, deleteContext, deleteContextModal, deleteTodo, editContextModal, editItemModal, extendDefaults, getChangeContext, getContextModalContent, getDeleteContext, getItemModalContent, getRenameContext, modalCruds, postContexts, putChangeContext, putRenameContext, putTodo, renameContextModal,
   hasProp = {}.hasOwnProperty;
 
 Modal = (function(_this) {
@@ -348,59 +317,147 @@ extendDefaults = function(sourceOptions, passedOptions) {
 
 editItemModal = null;
 
-getModalContent = function(itemId) {
-  var cookie;
-  cookie = readCookie('do-it');
-  console.log(itemId);
-  return axios.get("/editItemModal/" + itemId, {
-    headers: {
-      'clientcookie': cookie
-    }
-  }).then(function(data) {
+editContextModal = null;
+
+renameContextModal = null;
+
+changeContextModal = null;
+
+deleteContextModal = null;
+
+modalCruds = function(address, modalActions) {
+  return address.then(function(data) {
     var options;
     console.log(data);
     options = {
       content: data.data
     };
     console.log(options);
-    editItemModal = new Modal(options);
-    return editItemModal.open();
+    return modalActions(options);
   })["catch"](function(error) {
     console.log(error);
     return error;
   });
 };
 
-editTodoSubmit = function(event) {
-  var address, cookie, data;
-  event.preventDefault();
-  cookie = readCookie('do-it');
+getItemModalContent = function(itemId) {
+  var address, modalActions;
+  console.log(itemId);
+  address = axios.get("/editItemModal/" + itemId);
+  modalActions = function(options) {
+    editItemModal = new Modal(options);
+    return editItemModal.open();
+  };
+  return modalCruds(address, modalActions);
+};
+
+getContextModalContent = function() {
+  var address, modalActions;
+  address = axios.get("/editContextModal");
+  modalActions = function(options) {
+    editContextModal = new Modal(options);
+    return editContextModal.open();
+  };
+  return modalCruds(address, modalActions);
+};
+
+getRenameContext = function() {
+  var address, modalActions;
+  address = axios.get("/renameContext");
+  modalActions = function(options) {
+    renameContextModal = new Modal(options);
+    editContextModal.close();
+    return renameContextModal.open();
+  };
+  return modalCruds(address, modalActions);
+};
+
+getChangeContext = function() {
+  var address, modalActions;
+  address = axios.get("/changeContext");
+  modalActions = function(options) {
+    changeContextModal = new Modal(options);
+    editContextModal.close();
+    return changeContextModal.open();
+  };
+  return modalCruds(address, modalActions);
+};
+
+getDeleteContext = function() {
+  var address, modalActions;
+  address = axios.get("/deleteContext");
+  modalActions = function(options) {
+    deleteContextModal = new Modal(options);
+    editContextModal.close();
+    return deleteContextModal.open();
+  };
+  return modalCruds(address, modalActions);
+};
+
+putTodo = function(event) {
+  var address, data, modalActions;
   data = formToJSON(event.target.elements);
-  address = axios.put("/item", data, {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
-  return closeAndRefresh(event, address);
+  address = axios.put("/item", data);
+  modalActions = function() {
+    return editItemModal.close();
+  };
+  return closeAndRefresh(event, address, modalActions);
 };
 
 deleteTodo = function(event) {
-  var address, cookie, data;
-  event.preventDefault();
-  cookie = readCookie('do-it');
+  var address, data, modalActions;
   data = $("[name='id']").val();
-  console.log(data);
-  address = axios["delete"]("/item/" + data, {
-    headers: {
-      'clientcookie': cookie
-    }
-  });
-  return closeAndRefresh(event, address);
+  address = axios["delete"]("/item/" + data);
+  modalActions = function() {
+    return editItemModal.close();
+  };
+  return closeAndRefresh(event, address, modalActions);
 };
 
-closeAndRefresh = function(event, address) {
+postContexts = function(event) {
+  var address, data, modalActions;
+  data = formToJSON(event.target.elements);
+  address = axios.post('/context', data);
+  modalActions = function() {
+    return editContextModal.close();
+  };
+  return closeAndRefresh(event, address, modalActions);
+};
+
+putRenameContext = function(event) {
+  var address, data, modalActions;
+  data = formToJSON(event.target.elements);
+  address = axios.put('/renameContext', data);
+  modalActions = function() {
+    return renameContextModal.close();
+  };
+  return closeAndRefresh(event, address, modalActions);
+};
+
+putChangeContext = function(event) {
+  var address, data, modalActions;
+  data = formToJSON(event.target.elements);
+  address = axios.put('/changeContext', data);
+  modalActions = function() {
+    return changeContextModal.close();
+  };
+  return closeAndRefresh(event, address, modalActions);
+};
+
+deleteContext = function(event) {
+  var address, data, modalActions;
+  data = $("[name='contextToDelete']:checked").val();
+  address = axios["delete"]("/deleteContext/" + data);
+  modalActions = function() {
+    return deleteContextModal.close();
+  };
+  return closeAndRefresh(event, address, modalActions);
+};
+
+closeAndRefresh = function(event, address, modalActions) {
+  event.preventDefault();
   return address.then(function(result) {
-    editItemModal.close();
+    modalActions();
     console.log(result);
     $('#content').html(result.data);
     if (result.headers.cookie) {

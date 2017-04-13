@@ -55,11 +55,12 @@ cruds = (event, address) ->
 # and call for the login or the todos page accordingly
 auth = (cookie) ->
 	if cookie and cookie != 'undefined'
-		console.log 'auth fired'
-		address = axios.get '/item', {headers: {'clientcookie': cookie}}
+		# console.log 'auth fired'
+		address = axios.get '/item'
 		cruds event, address
 	else
 		getLogin null
+
 
 # load signup page from login page with click handler
 getSignup = (event) ->
@@ -73,8 +74,7 @@ getLogin = (event) ->
 
 # load settings page from any logged in page with click handler
 getSettings = (event) ->
-	cookie = readCookie('do-it')
-	address = axios.get '/user', {headers: {'clientcookie': cookie}}
+	address = axios.get '/user'
 	cruds event, address
 
 # signup from signup page with submit handler
@@ -97,9 +97,8 @@ putSettings = (event) ->
 	hideShowSubmit()
 	$('.hide-show').parent().find('[name="newPassword"]').attr 'type','password'
 	data = formToJSON event.target.elements
-	cookie = readCookie 'do-it'
 	console.log data
-	address = axios.put '/user', data, {headers: {'clientcookie': cookie}}
+	address = axios.put '/user', data
 	cruds event, address
 
 # logout from any logged in page with click handler
@@ -110,33 +109,20 @@ logout = (event) ->
 # delete account from settings page with click handler
 deleteAccount = (event) ->
 	password = $('[name="password"]').val()
-	#cookie = readCookie 'do-it'
 	console.log password
-	#console.log cookie
 	address = axios.delete '/user', {headers: {'password': password}}
-	cruds event, address
-
-
-# post new contexts from todos page with submit handler
-postContexts = (event) ->
-	data = formToJSON event.target.elements
-	console.log data
-	cookie = readCookie 'do-it'
-	address = axios.post '/context', data, {headers: {'clientcookie': cookie}}
 	cruds event, address
 
 # show todos and contexts
 getTodos = (event) ->
-	cookie = readCookie 'do-it'
-	address = axios.get '/item', {headers: {'clientcookie': cookie}}
+	address = axios.get '/item'
 	cruds event, address
 
 # post new todo items
 postItems = (event) ->
 	data = formToJSON event.target.elements
-	cookie = readCookie 'do-it'
 	console.log data
-	address = axios.post '/item', data, {headers: {'clientcookie': cookie}}
+	address = axios.post '/item', data
 	cruds event, address
 
 # show/hide passwords

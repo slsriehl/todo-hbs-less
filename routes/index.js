@@ -88,11 +88,34 @@ router.post('/context', (req, res) => {
 	contextController.createContext(req, res);
 });
 
-// //Read contexts
-// router.get('/context', (req, res) => {
-// 	contextController.readContexts(req, res);
-// });
+//context edit modal
+router.get('/editContextModal', (req, res) => {
+	readController.editContextModal(req, res);
+});
 
+router.get('/renameContext', (req, res) => {
+	readController.getRenameContext(req, res);
+});
+
+router.get('/changeContext', (req, res) => {
+	readController.getChangeContext(req, res);
+});
+
+router.get('/deleteContext', (req, res) => {
+	readController.getDeleteContext(req, res);
+});
+
+router.put('/renameContext', (req, res) => {
+	contextController.renameContext(req, res);
+});
+
+router.put('/changeContext', (req, res) => {
+	contextController.changeContext(req, res);
+});
+
+router.delete('/deleteContext/:id', (req, res) => {
+	contextController.deleteContext(req, res);
+});
 
 
 module.exports = router;

@@ -13,7 +13,12 @@ module.exports = {
 				type: Sequelize.STRING
 			},
 			UserId: {
-				type: Sequelize.UUID
+				type: Sequelize.UUID,
+				onDelete: 'CASCADE',
+				references: {
+					model: 'Users',
+					key: 'id'
+				}
 			},
 			createdAt: {
 				allowNull: false,

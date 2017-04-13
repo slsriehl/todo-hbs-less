@@ -33,20 +33,7 @@
 	<button type="submit">Add New Item</button>
 </form>
 
-<form id="add-context">
-	<div>
-		<label>New Context</label>
-		<input
-			type="text"
-			name="name"
-			pattern=".{3,50}"
-			required
-			title="Your context must be at least 3 characters."
-		/>
-	</div>
-
-	<button type="submit">Add New Context</button>
-</form>
+<button id="edit-contexts" type="button">Edit Contexts</button>
 
 <div>
 	{{#each userContextItem.contexts}}
