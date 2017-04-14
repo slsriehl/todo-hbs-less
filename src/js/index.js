@@ -15,6 +15,7 @@ $(document).ready(function() {
   $(document).off('submit', '#add-context').on('submit', '#add-context', postContexts);
   $(document).off('submit', '#add-todo').on('submit', '#add-todo', postAddItemModal);
   $(document).off('click', '.context-radio').on('click', '.context-radio', toggleRadios);
+  $(document).off('click', '.done-label').on('click', '.done-label', toggleDone);
   $(document).off('click', '.edit-item').on('click', '.edit-item', function() {
     return getItemModalContent(this.id);
   });
@@ -41,7 +42,7 @@ $(document).ready(function() {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, isValidElement, isValidValue, logout, postLogin, postSignup, putSettings, readCookie, toggleRadios;
+var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, isValidElement, isValidValue, logout, postLogin, postSignup, putSettings, readCookie, toggleDone, toggleRadios;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -208,8 +209,23 @@ toggleRadios = function(event) {
     $(this).children('input').prop('checked', false);
     return $(this).removeClass('checked');
   } else {
+    if ($('*').hasClass('checked')) {
+      $('*').removeClass('checked');
+    }
     $(this).children('input').prop('checked', true);
     return $(this).addClass('checked');
+  }
+};
+
+toggleDone = function(event) {
+  if ($(this).parent('.done-check').hasClass('checked1')) {
+    $(this).parent('.done-check').removeClass('checked1');
+    $('input[name="done"]').prop('checked', false);
+    return $(this).text('Not Done');
+  } else {
+    $(this).parent('.done-check').addClass('checked1');
+    $('input[name="done"]').prop('checked', true);
+    return $(this).text('Done');
   }
 };
 
@@ -414,6 +430,9 @@ putTodo = function(event) {
   var address, data, modalActions;
   data = formToJSON(event.target.elements);
   address = axios.put("/item", data);
+  if (!$('[name="ContextId"]').val()) {
+    $('.original-check').prop('checked', true);
+  }
   modalActions = function() {
     return editItemModal.close();
   };

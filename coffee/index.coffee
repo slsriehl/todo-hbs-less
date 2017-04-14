@@ -143,5 +143,17 @@ toggleRadios = (event) ->
 		$(this).children('input').prop 'checked', false
 		$(this).removeClass 'checked'
 	else
+		$('*').removeClass 'checked' if $('*').hasClass 'checked'
 		$(this).children('input').prop 'checked', true
 		$(this).addClass 'checked'
+
+#apply the proper label to the doneness toggle switch on toggle
+toggleDone = (event) ->
+	if $(this).parent('.done-check').hasClass 'checked1'
+		$(this).parent('.done-check').removeClass 'checked1'
+		$('input[name="done"]').prop 'checked', false
+		$(this).text 'Not Done'
+	else
+		$(this).parent('.done-check').addClass 'checked1'
+		$('input[name="done"]').prop 'checked', true
+		$(this).text 'Done'

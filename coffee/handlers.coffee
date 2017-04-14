@@ -14,6 +14,7 @@ $(document).ready () ->
 	$(document).off('submit', '#add-context').on 'submit', '#add-context', postContexts
 	$(document).off('submit', '#add-todo').on 'submit', '#add-todo', postAddItemModal
 	$(document).off('click', '.context-radio').on 'click', '.context-radio', toggleRadios
+	$(document).off('click', '.done-label').on 'click', '.done-label', toggleDone
 	$(document).off('click', '.edit-item').on 'click', '.edit-item', -> getItemModalContent this.id
 	$(document).off('click', '#edit-contexts').on 'click', '#edit-contexts', getContextModalContent
 	$(document).off('submit', '#edit-todo').on 'submit', '#edit-todo', putTodo

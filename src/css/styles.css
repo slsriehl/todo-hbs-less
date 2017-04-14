@@ -277,6 +277,7 @@ form .text-field label {
 form .text-field input,
 form .text-field textarea {
   box-sizing: border-box;
+  line-height: 2;
   padding: 14px;
   margin: 0 0 28px 0;
   width: 100%;
@@ -301,21 +302,31 @@ form .text-field textarea {
   transition: 1ms opacity ease;
 }
 /* radio buttons and checkboxes */
-.context-radio input {
+.context-radio input,
+.done-check input {
   display: none;
 }
-.context-radio {
+.context-radio,
+.done-check {
   display: block;
-  padding: 14px;
   margin-bottom: 28px;
   background: #92d4bf;
 }
-.context-radio label {
-  text-align: center;
+.context-radio label,
+.done-check label {
+  text-align: left;
   display: block;
+  padding: 14px;
 }
-.context-radio:last-child {
+.context-radio:last-child,
+.done-check:last-child {
   margin-bottom: 0;
+}
+input:checked + label {
+  background: #83E3C4;
+  text-align: right;
+  color: #642228;
+  font-weight: 700;
 }
 .context-label {
   display: inline-block;
@@ -399,8 +410,8 @@ form .text-field textarea {
   display: block;
 }
 .project-modal.fade-and-drop.modal-is-open {
-  top: 90px;
-  /* 2 layers of 45px header bar */
+  top: 45px;
+  /* 1 layer of 45px header bar */
   -webkit-transition: 500ms top 500ms ease;
   -moz-transition: 500ms top 500ms ease;
   -ms-transition: 500ms top 500ms ease;

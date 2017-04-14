@@ -172,6 +172,8 @@ getDeleteContext = ->
 putTodo = (event) ->
 	data = formToJSON event.target.elements
 	address = axios.put "/item", data
+	if !$('[name="ContextId"]').val()
+		$('.original-check').prop 'checked', true
 	modalActions =  ->
 		editItemModal.close()
 	closeAndRefresh event, address, modalActions

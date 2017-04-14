@@ -24,12 +24,12 @@
 	</div>
 	<div>
 		{{#if item.doneness}}
-		<div class="context-radio">
-			<input type="checkbox" name="done" checked="checked" required />  <label>Done</label>
+		<div class="done-check checked1">
+			<input type="checkbox" name="done" checked="checked" />  <label class="done-label">Done</label>
 		</div>
 		{{else}}
-		<div class="context-radio">
-			<input type="checkbox" name="done" required />  <label>Not Done</label>
+		<div class="done-check">
+			<input type="checkbox" name="done" />  <label class="done-label">Not Done</label>
 		</div>
 		{{/if}}
 	</div>
@@ -44,12 +44,12 @@
 		<div class="contexts">
 
 			<div>
-				<div class="context-radio">
-					<input type="radio" value="{{item.itemContextId}}" checked="checked" name="ContextId" required />  <label>{{item.itemContextName}}</label>
+				<div class="context-radio" class="checked original-check">
+					<input type="radio" value="{{item.itemContextId}}" checked="checked" name="ContextId" />  <label>{{item.itemContextName}}</label>
 				</div>
 			{{#each contexts}}
 				<div class="context-radio">
-					<input type="radio" value="{{contextId}}" name="ContextId" required />  <label>{{contextName}}</label>
+					<input type="radio" value="{{contextId}}" name="ContextId" />  <label>{{contextName}}</label>
 				</div>
 			{{/each}}
 			</div>
