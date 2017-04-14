@@ -20,10 +20,25 @@
 			name="description"
 		></textarea>
 	</div>
-	{{#each contexts}}
-		<div class="context-radio" style="background-color: #ccc;">
-			<input type="radio" value="{{contextId}}" name="context" required />  <label>{{contextName}}</label>
+
+	<div class="context-box">
+
+		<div class="context-label">
+
+			<span>Context</span>
 		</div>
-	{{/each}}
-	<button type="submit">Add New Item</button>
+
+		<div class="contexts">
+
+
+			{{#each contexts}}
+				<div class="context-radio">
+					<input type="radio" value="{{contextId}}" name="context" required />  <label>{{contextName}}</label>
+				</div>
+			{{/each}}
+		</div>
+	</div>
+	<div class="button-container">
+		<button type="submit">Add New Item</button>
+	</div>
 </form>

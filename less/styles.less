@@ -14,7 +14,7 @@ body {
 	line-height: 1.5;
 	color: @color-text-desat;
 	background-color: #fff;
-	width: 98%;
+	width: 100%;
 }
 
 
@@ -161,7 +161,7 @@ form {
 	// top: 15px + 14px + 28px; /* border * 5 + @line-height-quarter * 2 + @line-height */
 }
 
-.two-buttons {
+.button-container {
 	display: flex;
 	justify-content: space-between;
 	padding: @line-height 0 0 0;
@@ -186,9 +186,9 @@ form {
 		display: block;
 		padding: @line-height-half;
 	}
-	&:last-child {
-		margin-bottom: 0;
-	}
+}
+.context-radio:last-child {
+	margin-bottom: 0;
 }
 
 input:checked + label {
@@ -216,7 +216,6 @@ input:checked + label {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: @line-height;
 }
 
 /* Core modal css */
@@ -239,7 +238,7 @@ input:checked + label {
 	position: absolute;
 	z-index: 9050;
 	top: 50%;
-	left: 49%;
+	left: 50%;
 
 	opacity: 0;
 
@@ -274,6 +273,7 @@ input:checked + label {
 .project-overlay.modal-is-open{
 	opacity: 1;
 }
+
 
 /* Close Button */
 // .project-close {
