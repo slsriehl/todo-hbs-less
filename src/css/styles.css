@@ -136,6 +136,26 @@ body {
   font-size: 20px;
   line-height: 1.5;
   color: #4d393b;
+  background-color: #fff;
+}
+.box-of-items {
+  width: calc(99%);
+  padding: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+.box-of-items div {
+  width: calc(47%);
+  padding: 1rem;
+  margin: 0.5rem;
+  background-color: rgba(247, 253, 251, 0.55);
+}
+.context-title {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0.25rem;
+  background-color: rgba(247, 253, 251, 0.55);
 }
 h1 {
   font-size: 1.5em;
@@ -150,7 +170,7 @@ header {
   background-color: #80cdb4;
 }
 header span {
-  padding: 0.25em 0.5em;
+  padding: 0.25rem 0.5rem;
 }
 .header {
   display: flex;
@@ -159,7 +179,7 @@ header span {
   background-image: linear-gradient(45deg, #92d4bf, #7bebc7, #92d4bf);
 }
 .header span {
-  padding: 0.25em 0;
+  padding: 0.25rem 0;
 }
 /* Modal Base CSS */
 .project-overlay {

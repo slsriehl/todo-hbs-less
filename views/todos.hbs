@@ -20,7 +20,10 @@
 <div>
 	{{#each userContextItem.contexts}}
 		<div id="{{contextId}}">
-		<h3>{{contextName}}</h3>
+			<div class="context-title">
+				<h2>{{contextName}}</h2>
+			</div>
+			<div class="box-of-items">
 			{{#each items}}
 				<div id="{{itemId}}">
 				<h4>{{itemName}}</h4>
@@ -33,6 +36,7 @@
 				<button class="edit-item" id="{{itemId}}">Edit Item</button>
 				</div>
 			{{/each}}
+			</div>
 		</div>
 	{{/each}}
 </div>

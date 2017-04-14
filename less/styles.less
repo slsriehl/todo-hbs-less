@@ -9,6 +9,32 @@ body {
 	font-size: 20px;
 	line-height: 1.5;
 	color: @color-text-desat;
+	background-color: #fff;
+}
+
+
+.box-of-items {
+	width: calc(100% - 1rem);
+	padding: 0.5rem;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.box-of-items div {
+	width: calc(50% - 3rem);
+	padding: 1rem;
+	margin: 0.5rem;
+	background-color: fade(@color-bkg-pale, 55);
+	//margin: 0.25em;
+
+}
+
+.context-title {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	padding: 0.25rem;
+	background-color: fade(@color-bkg-pale, 55);
 }
 
 h1 {
@@ -30,7 +56,7 @@ header {
 }
 
 header span {
-	padding: 0.25em 0.5em;
+	padding: 0.25rem 0.5rem;
 }
 
 .header {
@@ -40,8 +66,10 @@ header span {
 	background-image: linear-gradient(45deg, @color-bkg-desat, saturate(@color-bkg, 10%), @color-bkg-desat);
 }
 .header span {
-	padding: 0.25em 0;
+	padding: 0.25rem 0;
 }
+
+
 
 /* Modal Base CSS */
 .project-overlay {
