@@ -231,10 +231,10 @@ Modal = (function(_this) {
     });
     defaults = {
       className: 'fade-and-drop',
-      closeButton: true,
+      closeButton: false,
       content: "",
-      maxWidth: 1000,
-      minWidth: 400,
+      maxWidth: 1900,
+      minWidth: 0,
       overlay: true
     };
     return {
@@ -472,6 +472,7 @@ deleteContext = function(event) {
 
 closeAndRefresh = function(event, address, modalActions) {
   event.preventDefault();
+  $('.fade-and-drop').addClass('.button-click');
   return address.then(function(result) {
     modalActions();
     console.log(result);

@@ -22,3 +22,24 @@
 	-o-transition: @time1 @position @time2 @ease;
 	transition: @time1 @position @time2 @ease;
 }
+
+.dual-button {
+	button {
+		box-sizing: border-box;
+		padding: @line-height-quarter;
+		width: 48%;
+		border: none;
+		color: @color-text-desat;
+		font-size: @font-size * 0.75;
+		font-family: @main-font;
+		&[type=submit] {
+			background: @color-bkg-desat;
+		}
+		&[type=button] {
+			background: rgba(0, 0, 0, 0.4);
+		}
+		&:active {
+			text-align: right;
+		}
+	}
+}

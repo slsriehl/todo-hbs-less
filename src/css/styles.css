@@ -131,37 +131,84 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+.dual-button button {
+  box-sizing: border-box;
+  padding: 7px;
+  width: 48%;
+  border: none;
+  color: #4d393b;
+  font-size: 15.75px;
+  font-family: 'Asar', serif;
+}
+.dual-button button[type=submit] {
+  background: #92d4bf;
+}
+.dual-button button[type=button] {
+  background: rgba(0, 0, 0, 0.4);
+}
+.dual-button button:active {
+  text-align: right;
+}
+.all-items {
+  width: 100%;
+}
 body {
   font-family: 'Asar', serif;
-  font-size: 20px;
+  font-size: 21px;
   line-height: 1.5;
   color: #4d393b;
   background-color: #fff;
+  width: 98%;
 }
 .box-of-items {
-  width: calc(99%);
-  padding: 0.5rem;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 7px;
   display: flex;
   flex-wrap: wrap;
 }
 .box-of-items div {
-  width: calc(47%);
-  padding: 1rem;
-  margin: 0.5rem;
-  background-color: rgba(247, 253, 251, 0.55);
+  box-sizing: border-box;
+  width: 50%;
+  padding: 21px;
+  border: 7px #fff solid;
+  background-color: #e3f4ee;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.box-of-items div button {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 7px;
+  margin: 7px 0 0 0;
+  background-color: #92d4bf;
+  color: #4d393b;
+  border: none;
+}
+.box-of-items div button:active {
+  text-align: right;
+}
+.content {
+  width: 100%;
 }
 .context-title {
+  box-sizing: border-box;
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 0.25rem;
-  background-color: rgba(247, 253, 251, 0.55);
+  padding: 7px;
+  background-color: #e3f4ee;
 }
 h1 {
-  font-size: 1.5em;
+  font-size: 31.5px;
 }
 h2 {
-  font-size: 1.25em;
+  font-size: 26.25px;
+}
+h4 {
+  font-size: 23.625px;
 }
 header {
   width: 100%;
@@ -170,7 +217,7 @@ header {
   background-color: #80cdb4;
 }
 header span {
-  padding: 0.25rem 0.5rem;
+  padding: 7px 14px;
 }
 .header {
   display: flex;
@@ -179,12 +226,119 @@ header span {
   background-image: linear-gradient(45deg, #92d4bf, #7bebc7, #92d4bf);
 }
 .header span {
-  padding: 0.25rem 0;
+  padding: 7px 0;
 }
-/* Modal Base CSS */
+/* cosmetic modal styling */
+.modal-title {
+  width: auto;
+  box-sizing: border-box;
+  border-top: none;
+  border: 2px #e3f4ee solid;
+  padding: 7px 14px 0 14px;
+  display: inline-block;
+  background: #e3f4ee;
+}
+button {
+  box-sizing: border-box;
+  padding: 7px;
+  width: 48%;
+  border: none;
+  color: #4d393b;
+  font-size: 15.75px;
+  font-family: 'Asar', serif;
+}
+button[type=submit] {
+  background: #92d4bf;
+}
+button[type=button] {
+  background: rgba(0, 0, 0, 0.4);
+}
+button:active {
+  text-align: right;
+}
+form {
+  box-sizing: border-box;
+  display: block;
+  border: 2px #e3f4ee solid;
+  width: 100%;
+  padding: 28px;
+  background: #e3f4ee;
+}
+form .text-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+form .text-field label {
+  background: #fff;
+  display: inline-block;
+  padding: 7px 14px 0 14px;
+}
+form .text-field input,
+form .text-field textarea {
+  box-sizing: border-box;
+  padding: 14px;
+  margin: 0 0 28px 0;
+  width: 100%;
+  font-size: 21px;
+  font-family: 'Asar', serif;
+  color: #642228;
+}
+form .text-field textarea {
+  height: 140px;
+}
+.two-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 28px 0 0 0;
+  width: 100%;
+}
+.button-click {
+  -webkit-transition: 1ms opacity ease;
+  -moz-transition: 1ms opacity ease;
+  -ms-transition: 1ms opacity ease;
+  -o-transition: 1ms opacity ease;
+  transition: 1ms opacity ease;
+}
+/* radio buttons and checkboxes */
+.context-radio input {
+  display: none;
+}
+.context-radio {
+  display: block;
+  padding: 14px;
+  margin-bottom: 28px;
+  background: #92d4bf;
+}
+.context-radio label {
+  text-align: center;
+  display: block;
+}
+.context-radio:last-child {
+  margin-bottom: 0;
+}
+.context-label {
+  display: inline-block;
+}
+.contexts {
+  width: 100%;
+}
+.context-label,
+.contexts {
+  box-sizing: border-box;
+  background: #fff;
+  padding: 14px;
+}
+.context-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 28px;
+}
+/* Core modal css */
 .project-overlay {
   position: fixed;
-  z-index: 9998;
+  z-index: 9000;
   top: 0;
   left: 0;
   opacity: 0;
@@ -195,16 +349,16 @@ header span {
   -ms-transition: 1ms opacity ease;
   -o-transition: 1ms opacity ease;
   transition: 1ms opacity ease;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.4);
 }
 .project-modal {
+  box-sizing: border-box;
   position: absolute;
-  z-index: 9999;
+  z-index: 9050;
   top: 50%;
-  left: 50%;
+  left: 49%;
   opacity: 0;
-  width: 94%;
-  padding: 24px 20px;
+  width: 80%;
   -webkit-transition: 1ms opacity ease;
   -moz-transition: 1ms opacity ease;
   -ms-transition: 1ms opacity ease;
@@ -215,41 +369,25 @@ header span {
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  border-radius: 2px;
-  background: #fff;
+  background: transparent;
 }
-.project-modal.modal-is-open.anchored {
-  top: 20px;
+.project-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.project-modal.modal-is-open {
+  opacity: 1;
   -webkit-transform: translate(-50%, 0);
   -moz-transform: translate(-50%, 0);
   -ms-transform: translate(-50%, 0);
   -o-transform: translate(-50%, 0);
   transform: translate(-50%, 0);
 }
-.project-modal.modal-is-open {
-  opacity: 1;
-}
 .project-overlay.modal-is-open {
   opacity: 1;
 }
 /* Close Button */
-.project-close {
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 12px;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  padding: 5px 7px 7px;
-  cursor: pointer;
-  color: #fff;
-  border: 0;
-  outline: none;
-  background: #e74c3c;
-}
-.project-close:hover {
-  background: #c0392b;
-}
 /* Default Animation */
 .project-overlay.fade-and-drop {
   display: block;
@@ -261,7 +399,8 @@ header span {
   display: block;
 }
 .project-modal.fade-and-drop.modal-is-open {
-  top: 50%;
+  top: 90px;
+  /* 2 layers of 45px header bar */
   -webkit-transition: 500ms top 500ms ease;
   -moz-transition: 500ms top 500ms ease;
   -ms-transition: 500ms top 500ms ease;

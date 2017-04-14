@@ -10,10 +10,10 @@ Modal = (optionsObj) =>
 	#define option defaults
 	defaults =
 		className: 'fade-and-drop'
-		closeButton: true
+		closeButton: false
 		content: ""
-		maxWidth: 1000
-		minWidth: 400
+		maxWidth: 1900
+		minWidth: 0
 		overlay: true
 
 	# #create options by extending defaults with passed in arguments
@@ -44,7 +44,7 @@ Modal = (optionsObj) =>
 
 	buildOut: ->
 
-		# docFrag = document.createDocumentFragment()
+		# docFrag = document.createElement "div"
 
 		@.modal = document.createElement "div"
 		@.modal.className = "project-modal #{@.options.className}"
@@ -215,6 +215,7 @@ deleteContext = (event) ->
 
 closeAndRefresh = (event, address, modalActions) ->
 	event.preventDefault()
+	$('.fade-and-drop').addClass('.button-click');
 	address
 	.then (result) ->
 		modalActions()

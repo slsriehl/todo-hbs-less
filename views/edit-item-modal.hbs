@@ -1,9 +1,12 @@
-<h2>Edit To-Do Item</h2>
+<div class="modal-title">
+	<span>Edit Task</span>
+	<div></div>
+</div>
 
 <form id="edit-todo">
-	<div>
+	<div class="text-field">
 		<input type="hidden" name="id" value="{{item.itemId}}" />
-		<label>Current To-Do Item</label>
+		<label>Task</label>
 		<input
 			type="text"
 			name="name"
@@ -13,7 +16,7 @@
 			title="Your to-do item must be 3-50 characters."
 		/>
 	</div>
-	<div>
+	<div class="text-field">
 		<label>Description</label>
 		<textarea
 			name="description"
@@ -21,33 +24,41 @@
 	</div>
 	<div>
 		{{#if item.doneness}}
-		<div class="context-radio" style="background-color: #aaa;">
-			<input type="radio" value="1" name="done" checked="checked" required />  <label>Done</label>
-		</div>
-		<div class="context-radio" style="background-color: #ccc;">
-			<input type="radio" value="0" name="done" required />  <label>Not Done</label>
+		<div class="context-radio">
+			<input type="checkbox" name="done" checked="checked" required />  <label>Done</label>
 		</div>
 		{{else}}
-		<div class="context-radio" style="background-color: #ccc;">
-			<input type="radio" value="1" name="done" required />  <label>Done</label>
-		</div>
-		<div class="context-radio" style="background-color: #aaa;">
-			<input type="radio" value="0" name="done" checked="checked" required />  <label>Not Done</label>
+		<div class="context-radio">
+			<input type="checkbox" name="done" required />  <label>Not Done</label>
 		</div>
 		{{/if}}
 	</div>
 
+	<div class="context-box">
 
-	<div>
-		<div class="context-radio" style="background-color: #aaa;">
-			<input type="radio" value="{{item.itemContextId}}" checked="checked" name="ContextId" required />  <label>{{item.itemContextName}}</label>
+		<div class="context-label">
+
+			<span>Context</span>
 		</div>
-	{{#each contexts}}
-		<div class="context-radio" style="background-color: #ccc;">
-			<input type="radio" value="{{contextId}}" name="ContextId" required />  <label>{{contextName}}</label>
+
+		<div class="contexts">
+
+			<div>
+				<div class="context-radio">
+					<input type="radio" value="{{item.itemContextId}}" checked="checked" name="ContextId" required />  <label>{{item.itemContextName}}</label>
+				</div>
+			{{#each contexts}}
+				<div class="context-radio">
+					<input type="radio" value="{{contextId}}" name="ContextId" required />  <label>{{contextName}}</label>
+				</div>
+			{{/each}}
+			</div>
+
 		</div>
-	{{/each}}
 	</div>
-	<button type="submit">Edit Item</button>
-	<button type="button" id="delete-todo">Delete Item</button>
+
+	<div class="two-buttons">
+		<button type="submit">Edit Item</button>
+		<button type="button" id="delete-todo">Delete Item</button>
+	</div>
 </form>
