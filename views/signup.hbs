@@ -1,6 +1,7 @@
 <div>
 	<div class="header">
 		<span id="log-in">Login</span>
+		<span class="current-page">Sign Up</span>
 	</div>
 
 {{#if data}}
@@ -9,12 +10,10 @@
 </div>
 {{/if}}
 
-<div class="getin-form">
-	<!-- <form id="deleteTask" method="POST" action="/todos/{{id}}?_method=DELETE" /> -->
+
 	<form id="signup-form">
-		<h3>Sign Up</h3>
-		<div>
-			<label>Email Address</label>
+		<div class="text-field">
+			<label>Email</label>
 			<input
 				type="email"
 				name="email"
@@ -23,8 +22,8 @@
 				title="Please enter a valid email."
 			/>
 		</div>
-		<div>
-			<label>Repeat Email Address</label>
+		<div class="text-field">
+			<label>Repeat Email</label>
 			<input
 				type="email"
 				name="emailConf"
@@ -32,7 +31,7 @@
 				required
 			/>
 		</div>
-		<div>
+		<div class="text-field">
 			<label>Password</label>
 			<input
 				type="password"

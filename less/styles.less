@@ -103,15 +103,19 @@ header span {
 }
 
 .header {
+	box-sizing: border-box;
 	display: flex;
 	width: 100%;
 	justify-content: space-around;
 	background-image: linear-gradient(45deg, @color-bkg-desat, saturate(@color-bkg, 10%), @color-bkg-desat);
-}
-.header span {
-	padding: @line-height-quarter 0;
+	span {
+		padding: @line-height-quarter @line-height-half;
+	}
 }
 
+.current-page {
+	background: @color-bkg-pale;
+}
 
 /* cosmetic modal styling */
 .modal-title {
