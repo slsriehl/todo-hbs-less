@@ -154,7 +154,6 @@ body {
   width: 50%;
   padding: 21px;
   border: 7px #fff solid;
-  background-color: #e3f4ee;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -169,12 +168,23 @@ body {
   width: 100%;
   padding: 7px;
   margin: 7px 0 0 0;
-  background-color: #92d4bf;
   color: #4d393b;
   border: none;
 }
 .box-of-items div button:active {
   text-align: right;
+}
+.box-of-items .undone-items {
+  background-color: #e3f4ee;
+}
+.box-of-items .undone-items button {
+  background-color: #92d4bf;
+}
+.box-of-items .done-items {
+  background: #ddd;
+}
+.box-of-items .done-items button {
+  background: #aaa;
 }
 .content {
   width: 100%;

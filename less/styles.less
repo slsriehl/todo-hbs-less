@@ -29,7 +29,6 @@ body {
 		width: 50%;
 		padding: @font-size;
 		border: @line-height-quarter #fff solid;
-		background-color: @color-bkg-pale;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -42,7 +41,6 @@ body {
 			width: 100%;
 			padding: @line-height-quarter;
 			margin: @line-height-quarter 0 0 0;
-			background-color: @color-bkg-desat;
 			color: @color-text-desat;
 			border: none;
 			&:active {
@@ -50,7 +48,21 @@ body {
 			}
 		}
 	}
+	.undone-items {
+		background-color: @color-bkg-pale;
+		button {
+			background-color: @color-bkg-desat;
+		}
+	}
+	.done-items {
+		background: #ddd;
+		button {
+			background: #aaa;
+
+		}
+	}
 }
+
 
 .content {
 	width: 100%;
@@ -116,6 +128,8 @@ header span {
 .current-page {
 	background: @color-bkg-pale;
 }
+
+
 
 /* cosmetic modal styling */
 .modal-title {

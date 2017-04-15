@@ -15,16 +15,22 @@
 			</div>
 			<div class="box-of-items">
 			{{#each items}}
-				<div id="{{itemId}}">
-				<h4>{{itemName}}</h4>
-					{{#if doneness}}
-						<p>complete</p>
-					{{else}}
-						<p>ready to do!</p>
-					{{/if}}
-				<p>{{description}}</p>
-				<button class="edit-item" id="{{itemId}}">Edit Task</button>
-				</div>
+				{{#unless doneness}}
+					<div id="{{itemId}}" class="undone-items">
+					<h4>{{itemName}}</h4>
+					<p>{{description}}</p>
+					<button class="edit-item" id="{{itemId}}">Edit Task</button>
+					</div>
+				{{/unless}}
+			{{/each}}
+			{{#each items}}
+				{{#if doneness}}
+					<div id="{{itemId}}" class="done-items">
+					<h4>{{itemName}}</h4>
+					<p>{{description}}</p>
+					<button class="edit-item" id="{{itemId}}">Edit Task</button>
+					</div>
+				{{/if}}
 			{{/each}}
 			</div>
 		</div>
