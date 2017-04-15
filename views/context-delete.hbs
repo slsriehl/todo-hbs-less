@@ -1,9 +1,23 @@
-<p>Delete a context:</p>
+<div class="modal-title">
+	<span>Delete a Context</span>
+</div>
+
 <form id="context-delete">
-	{{#each contexts}}
-		<div class="context-radio">
-			<input type="radio" value="{{contextId}}" name="contextToDelete" />  <label>{{contextName}}</label>
+
+	<div class="context-box">
+
+		<div class="context-label">
+
+			<span>Context</span>
 		</div>
-	{{/each}}
-<button type="submit">Delete This Context</button>
+
+		<div class="contexts">
+			{{#each contexts}}
+			<div class="context-radio">
+				<input type="radio" value="{{contextId}}" name="contextToDelete" />  <label>{{contextName}}</label>
+			</div>
+			{{/each}}
+		</div>
+	</div>
+<button class="context-button" type="submit">Delete Context</button>
 </form>
