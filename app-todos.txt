@@ -109,16 +109,21 @@ edit modal less
 
 //prevent duplicate contexts
 
-anchor modals to the top??? anchored to the right right now
+//anchor modals to the top??? anchored to the right right now
 
 //actually cascade deletes
 
 add confirm about deleting user irretrievably deleting all todos
 
 //learn less
-look for design inspiration
-style login, signup, and settings pages
+//look for design inspiration
+//style login, signup, and settings pages
 write coffeescript and less to create dynamic, interactive todos with adding contexts
+
+add context add to new todo and edit todo modals
+transitions on submit
+//color coding for done and undone tasks
+//get done and undone to stack in order with all done at bottom, out of category context
 
 write tests for item controller
 write tests for read controller
