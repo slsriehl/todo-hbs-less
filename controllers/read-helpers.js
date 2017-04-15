@@ -2,7 +2,7 @@ const models = require('../models');
 const util = require('util');
 
 const helpers = {
-	lookupTodos: (req, res, data) => {
+	lookupTodos: (req, res, data, message) => {
 		let userId;
 		if(data) {
 			const userIdObj = JSON.parse(data.dataValues.data);
@@ -34,14 +34,18 @@ const helpers = {
 						});
 					})
 				});
-				res.render('todos.hbs', {userContextItem, layout: false});
+				if(message) {
+					res.render('todos.hbs', {data: message, userContextItem, layout: false});
+				} else {
+					res.render('todos.hbs', {userContextItem, layout: false});
+				}
 			})
 			.catch((error) => {
 				console.log('join failed');
 				throw error;
 			});
 		} else {
-			res.render('login.hbs');
+			res.render('login.hbs', {data: message, layout: false});
 		}
 	},
 	lookupEdits: (req, res, data) => {

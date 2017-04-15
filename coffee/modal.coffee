@@ -98,6 +98,7 @@ renameContextModal = null
 changeContextModal = null
 deleteContextModal = null
 addItemModal = null
+settingsModal = null
 #define content for the editItemModal options
 #by getting server-side hbs template
 #then instantiate modal and open
@@ -169,6 +170,14 @@ getDeleteContext = ->
 		deleteContextModal.open()
 	modalCruds address, modalActions
 
+	# load settings page from any logged in page with click handler
+getSettings = ->
+	address = axios.get '/user'
+	modalActions = (options) ->
+		settingsModal = new Modal options
+		settingsModal.open()
+	modalCruds address, modalActions
+
 putTodo = (event) ->
 	data = formToJSON event.target.elements
 	address = axios.put "/item", data
@@ -213,6 +222,17 @@ deleteContext = (event) ->
 	address = axios.delete "/deleteContext/#{data}"
 	modalActions = ->
 		deleteContextModal.close()
+	closeAndRefresh event, address, modalActions
+
+# change email or password from settings page with submit handler
+putSettings = (event) ->
+	hideShowSubmit()
+	$('.hide-show').parent().find('[name="newPassword"]').attr 'type','password'
+	data = formToJSON event.target.elements
+	console.log data
+	address = axios.put '/user', data
+	modalActions = ->
+		settingsModal.close()
 	closeAndRefresh event, address, modalActions
 
 closeAndRefresh = (event, address, modalActions) ->

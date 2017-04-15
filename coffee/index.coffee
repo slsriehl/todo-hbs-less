@@ -72,11 +72,6 @@ getLogin = (event) ->
 	address = axios.get '/user/login'
 	cruds event, address
 
-# load settings page from any logged in page with click handler
-getSettings = (event) ->
-	address = axios.get '/user'
-	cruds event, address
-
 # signup from signup page with submit handler
 postSignup = (event) ->
 	hideShowSubmit()
@@ -90,15 +85,6 @@ postLogin = (event) ->
 	hideShowSubmit()
 	data = formToJSON event.target.elements
 	address = axios.post '/user/login', data
-	cruds event, address
-
-# change email or password from settings page with submit handler
-putSettings = (event) ->
-	hideShowSubmit()
-	$('.hide-show').parent().find('[name="newPassword"]').attr 'type','password'
-	data = formToJSON event.target.elements
-	console.log data
-	address = axios.put '/user', data
 	cruds event, address
 
 # logout from any logged in page with click handler

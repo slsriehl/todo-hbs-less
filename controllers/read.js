@@ -4,7 +4,7 @@ const helpers = require('./read-helpers');
 const cookieHelpers = require('./cookie-helpers');
 
 const controller = {
-	readTodos: (req, res, cookie) => {
+	readTodos: (req, res, cookie, message) => {
 		//use cookie to locate session
 		console.log(req.headers);
 		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
@@ -13,15 +13,15 @@ const controller = {
 			.then(data => {
 				console.log(data);
 				//parse the data object from the ConnectSessions table
-				helpers.lookupTodos(req, res, data);
+				helpers.lookupTodos(req, res, data, message);
 			})
 			.catch((error) => {
 				console.log('cookie present but no page returned');
 				throw error;
-				res.render('login.hbs');
+				res.render('login.hbs', {data: message, layout: false});
 			})
 		} else if(cookie === req.session.id) {
-			helpers.lookupTodos(req, res, null);
+			helpers.lookupTodos(req, res, null, message);
 		}
 	},
 	editItemModal: (req, res) => {
@@ -39,7 +39,7 @@ const controller = {
 		});
 	},
 	editContextModal: (req, res) => {
-		res.render('edit-context-modal.hbs');
+		res.render('edit-context-modal.hbs', {layout: false});
 	},
 	getRenameContext: (req, res) => {
 		helpers.getContextModals(req, res, 'context-rename.hbs');

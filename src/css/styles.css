@@ -131,24 +131,6 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-.dual-button button {
-  box-sizing: border-box;
-  padding: 7px;
-  width: 48%;
-  border: none;
-  color: #4d393b;
-  font-size: 15.75px;
-  font-family: 'Asar', serif;
-}
-.dual-button button[type=submit] {
-  background: #92d4bf;
-}
-.dual-button button[type=button] {
-  background: rgba(0, 0, 0, 0.4);
-}
-.dual-button button:active {
-  text-align: right;
-}
 .all-items {
   width: 100%;
 }
@@ -178,6 +160,10 @@ body {
   justify-content: center;
   align-items: center;
 }
+.box-of-items div h4,
+.box-of-items div p {
+  text-align: center;
+}
 .box-of-items div button {
   box-sizing: border-box;
   width: 100%;
@@ -192,6 +178,11 @@ body {
 }
 .content {
   width: 100%;
+}
+.context-button {
+  width: 100%;
+  background: #92d4bf;
+  margin: 28px 0 0 0;
 }
 .context-title {
   box-sizing: border-box;
@@ -268,6 +259,14 @@ form .text-field {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 0 28px 0;
+}
+form .text-field i {
+  box-sizing: border-box;
+  background: #fff;
+  padding: 14px;
+  line-height: 2;
+  width: 100%;
 }
 form .text-field label {
   background: #fff;
@@ -279,7 +278,6 @@ form .text-field textarea {
   box-sizing: border-box;
   line-height: 2;
   padding: 14px;
-  margin: 0 0 28px 0;
   width: 100%;
   font-size: 21px;
   font-family: 'Asar', serif;
@@ -287,6 +285,13 @@ form .text-field textarea {
 }
 form .text-field textarea {
   height: 140px;
+}
+.hide-show {
+  align-self: flex-start;
+}
+.hide-show span {
+  font-size: 15.75px;
+  text-decoration: underline;
 }
 .button-container {
   display: flex;
@@ -320,6 +325,10 @@ form .text-field textarea {
 }
 .context-radio:last-child {
   margin-bottom: 0;
+}
+.contexts + .text-field,
+.context-box + .context-box {
+  margin: 28px 0 0 0;
 }
 input:checked + label {
   background: #83E3C4;

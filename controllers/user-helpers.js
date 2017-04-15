@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const util = require('util');
 
 const cookieHelpers = require('./cookie-helpers');
+const readController = require('./read');
 
 const helpers = {
 	updateUser: (req, res, objToUpdate) => {
@@ -107,7 +108,8 @@ const helpers = {
 	settingsSessMessage: (req, res, message) => {
 		req.session.message = message;
 		req.session.save();
-		res.render('settings.hbs', {data: req.session.message, email: req.session.email, layout: false})
+		readController.readTodos(req, res, null, req.session.message);
+		//res.render('todos.hbs', {data: req.session.message, email: req.session.email, layout: false})
 	}
 }
 

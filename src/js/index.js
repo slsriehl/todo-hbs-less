@@ -42,7 +42,7 @@ $(document).ready(function() {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, isValidElement, isValidValue, logout, postLogin, postSignup, putSettings, readCookie, toggleDone, toggleRadios;
+var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSignup, getTodos, hideShow, hideShowSubmit, isValidElement, isValidValue, logout, postLogin, postSignup, readCookie, toggleDone, toggleRadios;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -127,12 +127,6 @@ getLogin = function(event) {
   return cruds(event, address);
 };
 
-getSettings = function(event) {
-  var address;
-  address = axios.get('/user');
-  return cruds(event, address);
-};
-
 postSignup = function(event) {
   var address, data;
   hideShowSubmit();
@@ -147,16 +141,6 @@ postLogin = function(event) {
   hideShowSubmit();
   data = formToJSON(event.target.elements);
   address = axios.post('/user/login', data);
-  return cruds(event, address);
-};
-
-putSettings = function(event) {
-  var address, data;
-  hideShowSubmit();
-  $('.hide-show').parent().find('[name="newPassword"]').attr('type', 'password');
-  data = formToJSON(event.target.elements);
-  console.log(data);
-  address = axios.put('/user', data);
   return cruds(event, address);
 };
 
@@ -234,7 +218,7 @@ toggleDone = function(event) {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var Modal, addItemModal, changeContextModal, closeAndRefresh, deleteContext, deleteContextModal, deleteTodo, editContextModal, editItemModal, extendDefaults, getAddItemModal, getChangeContext, getContextModalContent, getDeleteContext, getItemModalContent, getRenameContext, modalCruds, postAddItemModal, postContexts, putChangeContext, putRenameContext, putTodo, renameContextModal,
+var Modal, addItemModal, changeContextModal, closeAndRefresh, deleteContext, deleteContextModal, deleteTodo, editContextModal, editItemModal, extendDefaults, getAddItemModal, getChangeContext, getContextModalContent, getDeleteContext, getItemModalContent, getRenameContext, getSettings, modalCruds, postAddItemModal, postContexts, putChangeContext, putRenameContext, putSettings, putTodo, renameContextModal, settingsModal,
   hasProp = {}.hasOwnProperty;
 
 Modal = (function(_this) {
@@ -336,6 +320,8 @@ deleteContextModal = null;
 
 addItemModal = null;
 
+settingsModal = null;
+
 modalCruds = function(address, modalActions) {
   return address.then(function(data) {
     var options;
@@ -426,6 +412,16 @@ getDeleteContext = function() {
   return modalCruds(address, modalActions);
 };
 
+getSettings = function() {
+  var address, modalActions;
+  address = axios.get('/user');
+  modalActions = function(options) {
+    settingsModal = new Modal(options);
+    return settingsModal.open();
+  };
+  return modalCruds(address, modalActions);
+};
+
 putTodo = function(event) {
   var address, data, modalActions;
   data = formToJSON(event.target.elements);
@@ -485,6 +481,19 @@ deleteContext = function(event) {
   address = axios["delete"]("/deleteContext/" + data);
   modalActions = function() {
     return deleteContextModal.close();
+  };
+  return closeAndRefresh(event, address, modalActions);
+};
+
+putSettings = function(event) {
+  var address, data, modalActions;
+  hideShowSubmit();
+  $('.hide-show').parent().find('[name="newPassword"]').attr('type', 'password');
+  data = formToJSON(event.target.elements);
+  console.log(data);
+  address = axios.put('/user', data);
+  modalActions = function() {
+    return settingsModal.close();
   };
   return closeAndRefresh(event, address, modalActions);
 };
