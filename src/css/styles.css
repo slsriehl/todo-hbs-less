@@ -304,7 +304,6 @@ form .text-field textarea {
   align-self: flex-start;
 }
 .hide-show span {
-  font-size: 15.75px;
   text-decoration: underline;
 }
 .button-container {
@@ -341,7 +340,8 @@ form .text-field textarea {
   margin-bottom: 0;
 }
 .contexts + .text-field,
-.context-box + .context-box {
+.context-box + .context-box,
+.context-box + .text-field {
   margin: 28px 0 0 0;
 }
 input:checked + label {
