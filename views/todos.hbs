@@ -16,19 +16,19 @@
 			<div class="box-of-items">
 			{{#each items}}
 				{{#unless doneness}}
-					<div id="{{itemId}}" class="undone-items">
-					<h4>{{itemName}}</h4>
-					<p>{{description}}</p>
-					<button class="edit-item" id="{{itemId}}">Edit Task</button>
+					<div id="{{itemId}}" class="item undone-items">
+						<h4>{{itemName}}</h4>
+						<p>{{description}}</p>
+						<button class="edit-item" id="{{itemId}}">Edit Task</button>
 					</div>
 				{{/unless}}
 			{{/each}}
 			{{#each items}}
 				{{#if doneness}}
-					<div id="{{itemId}}" class="done-items">
-					<h4>{{itemName}}</h4>
-					<p>{{description}}</p>
-					<button class="edit-item" id="{{itemId}}">Edit Task</button>
+					<div id="{{itemId}}" class="item done-items">
+						<h4>{{itemName}}</h4>
+						<p>{{description}}</p>
+						<button class="edit-item" id="{{itemId}}">Edit Task</button>
 					</div>
 				{{/if}}
 			{{/each}}

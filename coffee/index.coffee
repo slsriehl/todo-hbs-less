@@ -22,6 +22,7 @@ readCookie = (cookieName) ->
 			console.log b[1]
 			return b[1]
 	return null
+	
 
 # validate the fields sent to form to JSON so they're excluded if blank
 isValidElement = (element) ->
