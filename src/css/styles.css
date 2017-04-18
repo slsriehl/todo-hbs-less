@@ -142,6 +142,7 @@ table {
 /* ++++++ CSS MENU ++++++ */
 /* body, containers, basic elements */
 /* headers */
+/* data message center */
 /* buttons */
 /* task page */
 /* forms */
@@ -188,6 +189,14 @@ header span,
 }
 .current-page {
   background: #e3f4ee;
+}
+/* data message center */
+.data {
+  background: #e7d67f;
+  width: 100%;
+  box-sizing: border-box;
+  border: 3px #F6E070 solid;
+  padding: 14px;
 }
 /* buttons */
 button {
