@@ -1,0 +1,42 @@
+<div class="modal-title">
+	<span>Add Task</span>
+	<div></div>
+</div>
+
+<form id="add-todo">
+	<div class="text-field">
+		<label>Task</label>
+		<input
+			type="text"
+			name="item"
+			pattern=".{3,50}"
+			required
+			title="Your to-do item must be 3-50 characters."
+		/>
+	</div>
+	<div class="text-field">
+		<label>Description</label>
+		<textarea
+			name="description"
+		></textarea>
+	</div>
+
+	<div class="context-box">
+
+		<div class="context-label">
+
+			<span>Context</span>
+		</div>
+
+		<div class="contexts">
+
+
+			{{#each contexts}}
+				<div class="context-radio">
+					<input type="radio" value="{{contextId}}" name="context" required />  <label>{{contextName}}</label>
+				</div>
+			{{/each}}
+		</div>
+	</div>
+		<button type="submit">Add New Item</button>
+</form>

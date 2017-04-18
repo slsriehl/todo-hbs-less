@@ -32,6 +32,12 @@ const controller = {
 	//read items in the read controller
 	updateItem: (req, res) => {
 		console.log(req.body);
+		if (!req.body.done) {
+			req.body.done = false;
+		} else {
+			req.body.done = true;
+		}
+		console.log(req.body);
 		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
 		//send item id and doneness and other items
 		return models.ConnectSession

@@ -1,5 +1,6 @@
 <div>
 	<div class="header">
+		<span class="current-page">Login</span>
 		<span id="sign-up">Sign Up</span>
 	</div>
 
@@ -9,12 +10,10 @@
 </div>
 {{/if}}
 
-<div class="getin-form">
-	<!-- <form id="deleteTask" method="POST" action="/todos/{{id}}?_method=DELETE" /> -->
+
 	<form id="login-form">
-		<h3>Login</h3>
-		<div>
-			<label>Email Address</label>
+		<div class="text-field">
+			<label>Email</label>
 			<input
 				type="email"
 				name="email"
@@ -22,7 +21,7 @@
 				autocorrect="off"
 			/>
 		</div>
-		<div>
+		<div class="text-field">
 			<label>Password</label>
 			<input
 				type="password"
@@ -34,5 +33,3 @@
 		</div>
 		<button type="submit">Login</button>
 	</form>
-
-</div>

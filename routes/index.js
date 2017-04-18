@@ -35,6 +35,10 @@ router.get('/editItemModal/:id', (req, res) => {
 	readController.editItemModal(req, res);
 });
 
+router.get('/addItemModal', (req, res) => {
+	readController.addItemModal(req, res);
+});
+
 //++++++ USER routes ++++++
 
 //render landing page based on logged in status

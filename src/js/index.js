@@ -11,9 +11,11 @@ $(document).ready(function() {
   $(document).off('click', '#go-to-dos').on('click', '#go-to-dos', getTodos);
   $(document).off('click', '#log-out').on('click', '#log-out', logout);
   $(document).off('click', '.hide-show span').on('click', '.hide-show span', hideShow);
+  $(document).off('click', '#add-todo-menu').on('click', '#add-todo-menu', getAddItemModal);
   $(document).off('submit', '#add-context').on('submit', '#add-context', postContexts);
-  $(document).off('submit', '#add-todo').on('submit', '#add-todo', postItems);
+  $(document).off('submit', '#add-todo').on('submit', '#add-todo', postAddItemModal);
   $(document).off('click', '.context-radio').on('click', '.context-radio', toggleRadios);
+  $(document).off('click', '.done-label').on('click', '.done-label', toggleDone);
   $(document).off('click', '.edit-item').on('click', '.edit-item', function() {
     return getItemModalContent(this.id);
   });
@@ -40,7 +42,7 @@ $(document).ready(function() {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSettings, getSignup, getTodos, hideShow, hideShowSubmit, isValidElement, isValidValue, logout, postItems, postLogin, postSignup, putSettings, readCookie, toggleRadios;
+var auth, createCookie, cruds, deleteAccount, formToJSON, getLogin, getSignup, getTodos, hideShow, hideShowSubmit, isValidElement, isValidValue, logout, postLogin, postSignup, readCookie, toggleDone, toggleRadios;
 
 createCookie = function(name, value, days) {
   var date, expires;
@@ -125,12 +127,6 @@ getLogin = function(event) {
   return cruds(event, address);
 };
 
-getSettings = function(event) {
-  var address;
-  address = axios.get('/user');
-  return cruds(event, address);
-};
-
 postSignup = function(event) {
   var address, data;
   hideShowSubmit();
@@ -145,16 +141,6 @@ postLogin = function(event) {
   hideShowSubmit();
   data = formToJSON(event.target.elements);
   address = axios.post('/user/login', data);
-  return cruds(event, address);
-};
-
-putSettings = function(event) {
-  var address, data;
-  hideShowSubmit();
-  $('.hide-show').parent().find('[name="newPassword"]').attr('type', 'password');
-  data = formToJSON(event.target.elements);
-  console.log(data);
-  address = axios.put('/user', data);
   return cruds(event, address);
 };
 
@@ -179,14 +165,6 @@ deleteAccount = function(event) {
 getTodos = function(event) {
   var address;
   address = axios.get('/item');
-  return cruds(event, address);
-};
-
-postItems = function(event) {
-  var address, data;
-  data = formToJSON(event.target.elements);
-  console.log(data);
-  address = axios.post('/item', data);
   return cruds(event, address);
 };
 
@@ -215,8 +193,23 @@ toggleRadios = function(event) {
     $(this).children('input').prop('checked', false);
     return $(this).removeClass('checked');
   } else {
+    if ($('*').hasClass('checked')) {
+      $('*').removeClass('checked');
+    }
     $(this).children('input').prop('checked', true);
     return $(this).addClass('checked');
+  }
+};
+
+toggleDone = function(event) {
+  if ($(this).parent('.done-check').hasClass('checked1')) {
+    $(this).parent('.done-check').removeClass('checked1');
+    $('input[name="done"]').prop('checked', false);
+    return $(this).text('Not Done');
+  } else {
+    $(this).parent('.done-check').addClass('checked1');
+    $('input[name="done"]').prop('checked', true);
+    return $(this).text('Done');
   }
 };
 
@@ -225,7 +218,7 @@ toggleRadios = function(event) {
  * Copyright 2017-2017 Sarah Schieffer Riehl
  * Licensed under  ()
  */
-var Modal, changeContextModal, closeAndRefresh, deleteContext, deleteContextModal, deleteTodo, editContextModal, editItemModal, extendDefaults, getChangeContext, getContextModalContent, getDeleteContext, getItemModalContent, getRenameContext, modalCruds, postContexts, putChangeContext, putRenameContext, putTodo, renameContextModal,
+var Modal, addItemModal, changeContextModal, closeAndRefresh, deleteContext, deleteContextModal, deleteTodo, editContextModal, editItemModal, extendDefaults, getAddItemModal, getChangeContext, getContextModalContent, getDeleteContext, getItemModalContent, getRenameContext, getSettings, modalCruds, postAddItemModal, postContexts, putChangeContext, putRenameContext, putSettings, putTodo, renameContextModal, settingsModal,
   hasProp = {}.hasOwnProperty;
 
 Modal = (function(_this) {
@@ -238,10 +231,10 @@ Modal = (function(_this) {
     });
     defaults = {
       className: 'fade-and-drop',
-      closeButton: true,
+      closeButton: false,
       content: "",
-      maxWidth: 1000,
-      minWidth: 400,
+      maxWidth: 1900,
+      minWidth: 0,
       overlay: true
     };
     return {
@@ -325,6 +318,10 @@ changeContextModal = null;
 
 deleteContextModal = null;
 
+addItemModal = null;
+
+settingsModal = null;
+
 modalCruds = function(address, modalActions) {
   return address.then(function(data) {
     var options;
@@ -349,6 +346,27 @@ getItemModalContent = function(itemId) {
     return editItemModal.open();
   };
   return modalCruds(address, modalActions);
+};
+
+getAddItemModal = function() {
+  var address, modalActions;
+  address = axios.get("/addItemModal");
+  modalActions = function(options) {
+    addItemModal = new Modal(options);
+    return addItemModal.open();
+  };
+  return modalCruds(address, modalActions);
+};
+
+postAddItemModal = function(event) {
+  var address, data, modalActions;
+  data = formToJSON(event.target.elements);
+  console.log(data);
+  address = axios.post('/item', data);
+  modalActions = function() {
+    return addItemModal.close();
+  };
+  return closeAndRefresh(event, address, modalActions);
 };
 
 getContextModalContent = function() {
@@ -394,10 +412,23 @@ getDeleteContext = function() {
   return modalCruds(address, modalActions);
 };
 
+getSettings = function() {
+  var address, modalActions;
+  address = axios.get('/user');
+  modalActions = function(options) {
+    settingsModal = new Modal(options);
+    return settingsModal.open();
+  };
+  return modalCruds(address, modalActions);
+};
+
 putTodo = function(event) {
   var address, data, modalActions;
   data = formToJSON(event.target.elements);
   address = axios.put("/item", data);
+  if (!$('[name="ContextId"]').val()) {
+    $('.original-check').prop('checked', true);
+  }
   modalActions = function() {
     return editItemModal.close();
   };
@@ -454,8 +485,22 @@ deleteContext = function(event) {
   return closeAndRefresh(event, address, modalActions);
 };
 
+putSettings = function(event) {
+  var address, data, modalActions;
+  hideShowSubmit();
+  $('.hide-show').parent().find('[name="newPassword"]').attr('type', 'password');
+  data = formToJSON(event.target.elements);
+  console.log(data);
+  address = axios.put('/user', data);
+  modalActions = function() {
+    return settingsModal.close();
+  };
+  return closeAndRefresh(event, address, modalActions);
+};
+
 closeAndRefresh = function(event, address, modalActions) {
   event.preventDefault();
+  $('.fade-and-drop').addClass('.button-click');
   return address.then(function(result) {
     modalActions();
     console.log(result);

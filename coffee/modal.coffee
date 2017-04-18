@@ -10,10 +10,10 @@ Modal = (optionsObj) =>
 	#define option defaults
 	defaults =
 		className: 'fade-and-drop'
-		closeButton: true
+		closeButton: false
 		content: ""
-		maxWidth: 1000
-		minWidth: 400
+		maxWidth: 1900
+		minWidth: 0
 		overlay: true
 
 	# #create options by extending defaults with passed in arguments
@@ -44,7 +44,7 @@ Modal = (optionsObj) =>
 
 	buildOut: ->
 
-		# docFrag = document.createDocumentFragment()
+		# docFrag = document.createElement "div"
 
 		@.modal = document.createElement "div"
 		@.modal.className = "project-modal #{@.options.className}"
@@ -97,6 +97,8 @@ editContextModal = null
 renameContextModal = null
 changeContextModal = null
 deleteContextModal = null
+addItemModal = null
+settingsModal = null
 #define content for the editItemModal options
 #by getting server-side hbs template
 #then instantiate modal and open
@@ -120,6 +122,22 @@ getItemModalContent = (itemId) ->
 		editItemModal = new Modal options
 		editItemModal.open()
 	modalCruds address, modalActions
+
+getAddItemModal = ->
+	address = axios.get "/addItemModal"
+	modalActions = (options) ->
+		addItemModal = new Modal options
+		addItemModal.open()
+	modalCruds address, modalActions
+
+postAddItemModal = (event) ->
+	data = formToJSON event.target.elements
+	console.log data
+	address = axios.post '/item', data
+	modalActions = ->
+		addItemModal.close()
+	closeAndRefresh event, address, modalActions
+
 
 getContextModalContent = ->
 	address = axios.get "/editContextModal"
@@ -152,9 +170,19 @@ getDeleteContext = ->
 		deleteContextModal.open()
 	modalCruds address, modalActions
 
+	# load settings page from any logged in page with click handler
+getSettings = ->
+	address = axios.get '/user'
+	modalActions = (options) ->
+		settingsModal = new Modal options
+		settingsModal.open()
+	modalCruds address, modalActions
+
 putTodo = (event) ->
 	data = formToJSON event.target.elements
 	address = axios.put "/item", data
+	if !$('[name="ContextId"]').val()
+		$('.original-check').prop 'checked', true
 	modalActions =  ->
 		editItemModal.close()
 	closeAndRefresh event, address, modalActions
@@ -196,8 +224,20 @@ deleteContext = (event) ->
 		deleteContextModal.close()
 	closeAndRefresh event, address, modalActions
 
+# change email or password from settings page with submit handler
+putSettings = (event) ->
+	hideShowSubmit()
+	$('.hide-show').parent().find('[name="newPassword"]').attr 'type','password'
+	data = formToJSON event.target.elements
+	console.log data
+	address = axios.put '/user', data
+	modalActions = ->
+		settingsModal.close()
+	closeAndRefresh event, address, modalActions
+
 closeAndRefresh = (event, address, modalActions) ->
 	event.preventDefault()
+	$('.fade-and-drop').addClass('.button-click');
 	address
 	.then (result) ->
 		modalActions()

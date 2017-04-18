@@ -1,17 +1,38 @@
-<p>Move all items from one context to another:</p>
-<form id="context-change">
-	<p>Take the items in this context:</p>
-	{{#each contexts}}
-		<div class="context-radio">
-			<input type="radio" value="{{contextId}}" name="oldContext" />  <label>{{contextName}}</label>
-		</div>
-	{{/each}}
+<div class="modal-title">
+	<span>Bulk Change Contexts</span>
+</div>
 
-	<p>And move them to this other context:</p>
-	{{#each contexts}}
-		<div class="context-radio">
-			<input type="radio" value="{{contextId}}" name="newContext" />  <label>{{contextName}}</label>
+<form id="context-change">
+	<div class="context-box">
+
+		<div class="context-label">
+
+			<span>Old Context</span>
 		</div>
-	{{/each}}
-	<button type="submit">Move All Items to New Context</button>
+
+		<div class="contexts">
+			{{#each contexts}}
+			<div class="context-radio">
+				<input type="radio" value="{{contextId}}" name="oldContext" />  <label>{{contextName}}</label>
+			</div>
+			{{/each}}
+		</div>
+	</div>
+
+	<div class="context-box">
+
+		<div class="context-label">
+
+			<span>New Context</span>
+		</div>
+
+		<div class="contexts">
+			{{#each contexts}}
+			<div class="context-radio">
+				<input type="radio" value="{{contextId}}" name="newContext" />  <label>{{contextName}}</label>
+			</div>
+			{{/each}}
+		</div>
+	</div>
+	<button class="full-width-button" type="submit">Bulk Move Tasks</button>
 </form>

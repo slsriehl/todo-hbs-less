@@ -23,6 +23,7 @@ readCookie = (cookieName) ->
 			return b[1]
 	return null
 
+
 # validate the fields sent to form to JSON so they're excluded if blank
 isValidElement = (element) ->
 	return element.name and element.value
@@ -72,11 +73,6 @@ getLogin = (event) ->
 	address = axios.get '/user/login'
 	cruds event, address
 
-# load settings page from any logged in page with click handler
-getSettings = (event) ->
-	address = axios.get '/user'
-	cruds event, address
-
 # signup from signup page with submit handler
 postSignup = (event) ->
 	hideShowSubmit()
@@ -90,15 +86,6 @@ postLogin = (event) ->
 	hideShowSubmit()
 	data = formToJSON event.target.elements
 	address = axios.post '/user/login', data
-	cruds event, address
-
-# change email or password from settings page with submit handler
-putSettings = (event) ->
-	hideShowSubmit()
-	$('.hide-show').parent().find('[name="newPassword"]').attr 'type','password'
-	data = formToJSON event.target.elements
-	console.log data
-	address = axios.put '/user', data
 	cruds event, address
 
 # logout from any logged in page with click handler
@@ -118,17 +105,10 @@ getTodos = (event) ->
 	address = axios.get '/item'
 	cruds event, address
 
-# post new todo items
-postItems = (event) ->
-	data = formToJSON event.target.elements
-	console.log data
-	address = axios.post '/item', data
-	cruds event, address
-
 # show/hide passwords
 hideShow = (event) ->
 	console.log 'hide show fired'
-	if $(this).hasClass 'show'
+	if $(@).hasClass 'show'
 		$('.hide-show span').text 'Hide'
 		$('[name="password"]').attr 'type', 'text'
 		$('[name="newPassword"]').attr 'type', 'text'
@@ -146,9 +126,21 @@ hideShowSubmit = ->
 
 # toggle radio buttons by clicking the div around their labels
 toggleRadios = (event) ->
-	if $(this).hasClass 'checked'
-		$(this).children('input').prop 'checked', false
-		$(this).removeClass 'checked'
+	if $(@).hasClass 'checked'
+		$(@).children('input').prop 'checked', false
+		$(@).removeClass 'checked'
 	else
-		$(this).children('input').prop 'checked', true
-		$(this).addClass 'checked'
+		$('*').removeClass 'checked' if $('*').hasClass 'checked'
+		$(@).children('input').prop 'checked', true
+		$(@).addClass 'checked'
+
+#apply the proper label to the doneness toggle switch on toggle
+toggleDone = (event) ->
+	if $(@).parent('.done-check').hasClass 'checked1'
+		$(@).parent('.done-check').removeClass 'checked1'
+		$('input[name="done"]').prop 'checked', false
+		$(@).text 'Not Done'
+	else
+		$(@).parent('.done-check').addClass 'checked1'
+		$('input[name="done"]').prop 'checked', true
+		$(@).text 'Done'

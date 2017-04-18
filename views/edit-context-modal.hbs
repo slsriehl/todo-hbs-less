@@ -1,8 +1,9 @@
-<div>
-	<div>
-		<p>Add a context:</p>
+<div class="modal-title">
+	<span>Edit Contexts</span>
+</div>
+
 		<form id="add-context">
-			<div>
+			<div class="text-field">
 				<label>New Context</label>
 				<input
 					type="text"
@@ -13,12 +14,11 @@
 				/>
 			</div>
 			<div>
-				<button type="submit">Add New Context</button>
+				<button type="submit">Add Context</button>
 			</div>
-		</form>
-	</div>
 
-	<span id="rename-context">Rename a context</span> |
-	<span id="change-context">Move all items in one context to another context</span> |
-	<span id="delete-context">Delete a context</span>
-</div>
+			<button class="full-width-button" id="rename-context">Rename a Content</button>
+			<button class="full-width-button" id="change-context">Bulk Change Contexts</button>
+			<button class="full-width-button" id="delete-context">Delete a Context</button>
+
+		</form>

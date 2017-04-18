@@ -7,50 +7,36 @@
 {{/if}}
 
 <!-- todos -->
-
-<form id="add-todo">
-	<div>
-		<label>New To-Do Item</label>
-		<input
-			type="text"
-			name="item"
-			pattern=".{3,50}"
-			required
-			title="Your to-do item must be 3-50 characters."
-		/>
-	</div>
-	<div>
-		<label>Description</label>
-		<textarea
-			name="description"
-		></textarea>
-	</div>
-	{{#each userContextItem.contexts}}
-		<div class="context-radio" style="background-color: #ccc;">
-			<input type="radio" value="{{contextId}}" name="context" required />  <label>{{contextName}}</label>
-		</div>
-	{{/each}}
-	<button type="submit">Add New Item</button>
-</form>
-
-<button id="edit-contexts" type="button">Edit Contexts</button>
-
-<div>
+<div class="all-items">
 	{{#each userContextItem.contexts}}
 		<div id="{{contextId}}">
-		<h3>{{contextName}}</h3>
+			<div class="context-title">
+				<h2>{{contextName}}</h2>
+			</div>
+			<div class="box-of-items">
 			{{#each items}}
-				<div id="{{itemId}}">
-				<h4>{{itemName}}</h4>
-					{{#if doneness}}
-						<p>complete</p>
-					{{else}}
-						<p>ready to do!</p>
-					{{/if}}
-				<p>{{description}}</p>
-				<button class="edit-item" id="{{itemId}}">Edit Item</button>
-				</div>
+				{{#unless doneness}}
+					<div id="{{itemId}}" class="item undone-items">
+						<div>
+							<h4>{{itemName}}</h4>
+							<p>{{description}}</p>
+							<button class="edit-item" id="{{itemId}}">Edit Task</button>
+						</div>
+					</div>
+				{{/unless}}
 			{{/each}}
+			{{#each items}}
+				{{#if doneness}}
+					<div id="{{itemId}}" class="item done-items">
+						<div>
+							<h4>{{itemName}}</h4>
+							<p>{{description}}</p>
+							<button class="edit-item" id="{{itemId}}">Edit Task</button>
+						</div>
+					</div>
+				{{/if}}
+			{{/each}}
+			</div>
 		</div>
 	{{/each}}
 </div>

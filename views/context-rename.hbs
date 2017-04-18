@@ -1,13 +1,29 @@
-<p>Select a context below to rename:</p>
+<div class="modal-title">
+	<span>Rename a Context</span>
+	<div></div>
+</div>
+
 <form id="context-rename">
-{{#each contexts}}
-<div class="context-radio">
-	<input type="radio" value="{{contextId}}" name="contextToRename" />  <label>{{contextName}}</label>
+
+	<div class="context-box">
+
+		<div class="context-label">
+			<span>Old Context Name</span>
+		</div>
+
+		<div class="contexts">
+			{{#each contexts}}
+			<div class="context-radio">
+				<input type="radio" value="{{contextId}}" name="contextToRename" />  <label>{{contextName}}</label>
+			</div>
+			{{/each}}
+	</div>
 </div>
-{{/each}}
-<div>
-	<label>New Name</label>
-	<input type="text" name="newName" />
-</div>
-<button type="submit">Change Context Name</button>
+	<div class="text-field">
+		<label>New Name</label>
+		<input type="text" name="newName" />
+	</div>
+	<div class="button-container">
+		<button type="submit">Rename Context</button>
+	</div>
 </form>

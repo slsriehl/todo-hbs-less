@@ -1,7 +1,6 @@
-<div>
-	<div class="header">
-		<span id="log-out">Log Out</span> | <span id="go-to-dos">Go To To-Dos</span>
-	</div>
+<div class="modal-title">
+	<span>Change Login Info</span>
+</div>
 
 {{#if data}}
 <div class="data">
@@ -9,12 +8,13 @@
 </div>
 {{/if}}
 
-<div class="getin-form">
-	<!-- <form id="deleteTask" method="POST" action="/todos/{{id}}?_method=DELETE" /> -->
 	<form id="change-form">
-		<h3>Change your email or password</h3>
-		<span id="logged-in-email">Current Email Address  {{email}}</span>
-		<div>
+		<div class="text-field">
+			<label>Current Email Address</label>
+			<i id="logged-in-email">{{email}}</i>
+		</div>
+
+		<div class="text-field">
 			<label>Current Password</label>
 			<input
 				type="password"
@@ -25,8 +25,8 @@
 				<span class="show">Show</span>
 			</div>
 		</div>
-		<div>
-			<label>New Email Address</label>
+		<div class="text-field">
+			<label>New Email</label>
 			<input
 				type="email"
 				name="newEmail"
@@ -34,7 +34,7 @@
 				title="Please enter a valid email."
 			/>
 		</div>
-		<div>
+		<div class="text-field">
 			<label>New Password</label>
 			<input
 				type="password"
@@ -47,7 +47,8 @@
 				<span class="show">Show</span>
 			</div>
 		</div>
-		<button type="submit">Change Data</button>
+		<div class="button-container">
+			<button type="submit">Change Data</button>
+			<button type="button" id="delete-account">Delete Account</button>
+		</div>
 	</form>
-	<button type="button" id="delete-account">Delete Account</button>
-</div>
