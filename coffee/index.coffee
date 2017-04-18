@@ -22,7 +22,7 @@ readCookie = (cookieName) ->
 			console.log b[1]
 			return b[1]
 	return null
-	
+
 
 # validate the fields sent to form to JSON so they're excluded if blank
 isValidElement = (element) ->
@@ -108,7 +108,7 @@ getTodos = (event) ->
 # show/hide passwords
 hideShow = (event) ->
 	console.log 'hide show fired'
-	if $(this).hasClass 'show'
+	if $(@).hasClass 'show'
 		$('.hide-show span').text 'Hide'
 		$('[name="password"]').attr 'type', 'text'
 		$('[name="newPassword"]').attr 'type', 'text'
@@ -126,21 +126,21 @@ hideShowSubmit = ->
 
 # toggle radio buttons by clicking the div around their labels
 toggleRadios = (event) ->
-	if $(this).hasClass 'checked'
-		$(this).children('input').prop 'checked', false
-		$(this).removeClass 'checked'
+	if $(@).hasClass 'checked'
+		$(@).children('input').prop 'checked', false
+		$(@).removeClass 'checked'
 	else
 		$('*').removeClass 'checked' if $('*').hasClass 'checked'
-		$(this).children('input').prop 'checked', true
-		$(this).addClass 'checked'
+		$(@).children('input').prop 'checked', true
+		$(@).addClass 'checked'
 
 #apply the proper label to the doneness toggle switch on toggle
 toggleDone = (event) ->
-	if $(this).parent('.done-check').hasClass 'checked1'
-		$(this).parent('.done-check').removeClass 'checked1'
+	if $(@).parent('.done-check').hasClass 'checked1'
+		$(@).parent('.done-check').removeClass 'checked1'
 		$('input[name="done"]').prop 'checked', false
-		$(this).text 'Not Done'
+		$(@).text 'Not Done'
 	else
-		$(this).parent('.done-check').addClass 'checked1'
+		$(@).parent('.done-check').addClass 'checked1'
 		$('input[name="done"]').prop 'checked', true
-		$(this).text 'Done'
+		$(@).text 'Done'

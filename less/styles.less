@@ -110,20 +110,28 @@ button {
 	box-sizing: border-box;
 	width: 100%;
 	padding: @line-height-quarter;
+	position: relative;
 	display: flex;
 	flex-wrap: wrap;
-	div {
+	// display: block;
+	.item {
 		box-sizing: border-box;
 		width: 50%;
 		padding: @font-size;
 		border: @line-height-quarter #fff solid;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		//align-self: stretch;
-		h4, p {
-			text-align: center;
+		// float: left;
+		//display: block;
+		div {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			//align-self: stretch;
+			h4, p {
+				text-align: center;
+			}
 		}
 	}
 	.undone-items {
@@ -136,6 +144,10 @@ button {
 		}
 	}
 }
+
+// .item-size {
+// 	width: 50%;
+// }
 
 /* forms */
 
@@ -229,12 +241,12 @@ form {
 	}
 	input {
 		display: none;
-	}
-	&:checked + label {
-		background: @color-bkg;
-		text-align: right;
-		color: @color-text;
-		font-weight: 700;
+		&:checked + label {
+			background: @color-bkg;
+			text-align: right;
+			color: @color-text;
+			font-weight: 900;
+		}
 	}
 }
 .context-radio:first-child {

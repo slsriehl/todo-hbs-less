@@ -232,21 +232,26 @@ button:active {
   box-sizing: border-box;
   width: 100%;
   padding: 7px;
+  position: relative;
   display: flex;
   flex-wrap: wrap;
 }
-.box-of-items div {
+.box-of-items .item {
   box-sizing: border-box;
   width: 50%;
   padding: 21px;
   border: 7px #fff solid;
+}
+.box-of-items .item div {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.box-of-items div h4,
-.box-of-items div p {
+.box-of-items .item div h4,
+.box-of-items .item div p {
   text-align: center;
 }
 .box-of-items .undone-items {
@@ -349,12 +354,12 @@ form {
 .done-check input {
   display: none;
 }
-.context-radio:checked + label,
-.done-check:checked + label {
+.context-radio input:checked + label,
+.done-check input:checked + label {
   background: #83E3C4;
   text-align: right;
   color: #642228;
-  font-weight: 700;
+  font-weight: 900;
 }
 .context-radio:first-child {
   margin: 0;

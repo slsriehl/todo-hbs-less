@@ -17,18 +17,22 @@
 			{{#each items}}
 				{{#unless doneness}}
 					<div id="{{itemId}}" class="item undone-items">
-						<h4>{{itemName}}</h4>
-						<p>{{description}}</p>
-						<button class="edit-item" id="{{itemId}}">Edit Task</button>
+						<div>
+							<h4>{{itemName}}</h4>
+							<p>{{description}}</p>
+							<button class="edit-item" id="{{itemId}}">Edit Task</button>
+						</div>
 					</div>
 				{{/unless}}
 			{{/each}}
 			{{#each items}}
 				{{#if doneness}}
 					<div id="{{itemId}}" class="item done-items">
-						<h4>{{itemName}}</h4>
-						<p>{{description}}</p>
-						<button class="edit-item" id="{{itemId}}">Edit Task</button>
+						<div>
+							<h4>{{itemName}}</h4>
+							<p>{{description}}</p>
+							<button class="edit-item" id="{{itemId}}">Edit Task</button>
+						</div>
 					</div>
 				{{/if}}
 			{{/each}}

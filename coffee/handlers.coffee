@@ -37,3 +37,6 @@ $(document).ready () ->
 	$(document).off('submit', '#context-rename').on 'submit', '#context-rename', putRenameContext
 	$(document).off('submit', '#context-change').on 'submit', '#context-change', putChangeContext
 	$(document).off('submit', '#context-delete').on 'submit', '#context-delete', deleteContext
+
+	# $(document).on 'load', '.box-of-items', ->
+	# 	setTimeout $('.item').wookmark({ autoResize: true, container: $('.box-of-items'), direction: left }), 200
