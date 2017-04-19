@@ -125,6 +125,10 @@ transitions on submit
 //color coding for done and undone tasks
 //get done and undone to stack in order with all done at bottom, out of category context
 
+tablet styling
+desktop styling
+breakpoint styling
+
 write tests for item controller
 write tests for read controller
 write tests for context controller

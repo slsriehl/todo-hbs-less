@@ -8,8 +8,7 @@ const express         = require('express'),
       logger          = require('morgan'),
 			hbs							= require('express-handlebars'),
       cookieParser    = require('cookie-parser'),
-      app             = express(),
-			routes 					= require('./routes/index');
+      app             = express();
 
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({
@@ -17,7 +16,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(express.static("./src"));
+app.use(express.static("./public"));
 
 //++++++ Handlebars config ++++++
 app.engine('hbs', hbs({
@@ -43,16 +42,20 @@ app.use(session({
   saveUninitialized: true
 }));
 
-//++++++ Routes ++++++
-app.use(routes);
+// ++++++ Express routes ++++++
+const userRoutes		= require('./routes/user'),
+			contextRoutes = require('./routes/context'),
+			itemRoutes		= require('./routes/item');
+
+app.use(userRoutes);
+app.use(contextRoutes);
+app.use(itemRoutes);
 
 // ++++++ SERVER LISTEN ++++++
-const PORT = process.env.PORT || 6321;
+const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, function () {
-  const host = server.address().address;
-  const port = server.address().port;
-  console.log('express server listening to your mom at http://' + host + ':' + port);
+  console.log('express server listening to your mom at port' + PORT);
 });
 
 module.exports = server;

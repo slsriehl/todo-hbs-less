@@ -1,4 +1,10 @@
 
+# table of contents - index.coffee
+	# cookies
+	# formToJSON function family to convert form input to JSON
+	# high-level CRUD operation functions
+
+# ++++++ COOKIES ++++++
 
 # create a cookie sent from the server
 createCookie = (name, value, days) ->
@@ -23,6 +29,7 @@ readCookie = (cookieName) ->
 			return b[1]
 	return null
 
+# ++++++ formToJSON family ++++++
 
 # validate the fields sent to form to JSON so they're excluded if blank
 isValidElement = (element) ->
@@ -40,7 +47,9 @@ formToJSON = (elements) ->
 		return data
 	, {})
 
-# the root of all axios calls in the front end script
+# ++++++ high level CRUD operations ++++++
+
+# CRUD operations for non-modal views
 cruds = (event, address) ->
 	event.preventDefault() if event
 	address
@@ -52,95 +61,31 @@ cruds = (event, address) ->
 	.catch (error) ->
 		console.log error
 
-# determine if a cookie is present on the client on initial load
-# and call for the login or the todos page accordingly
-auth = (cookie) ->
-	if cookie and cookie != 'undefined'
-		# console.log 'auth fired'
-		address = axios.get '/item'
-		cruds event, address
-	else
-		getLogin null
 
+# CRUD operations to get modal content
+modalCruds = (address, modalActions) ->
+	address
+	.then (data) ->
+		console.log data
+		options =
+			content: data.data
+		console.log options
+		modalActions options
+	.catch (error) ->
+		console.log error
+		return error
 
-# load signup page from login page with click handler
-getSignup = (event) ->
-	address = axios.get '/user/signup'
-	cruds event, address
-
-# load login page from signup page with click handler
-getLogin = (event) ->
-	address = axios.get '/user/login'
-	cruds event, address
-
-# signup from signup page with submit handler
-postSignup = (event) ->
-	hideShowSubmit()
-	data = formToJSON event.target.elements
-	console.log data
-	address = axios.post '/user/signup', data
-	cruds event, address
-
-# login from login page with submit handler
-postLogin = (event) ->
-	hideShowSubmit()
-	data = formToJSON event.target.elements
-	address = axios.post '/user/login', data
-	cruds event, address
-
-# logout from any logged in page with click handler
-logout = (event) ->
-	address = axios.delete '/user/logout'
-	cruds event, address
-
-# delete account from settings page with click handler
-deleteAccount = (event) ->
-	password = $('[name="password"]').val()
-	console.log password
-	address = axios.delete '/user', {headers: {'password': password}}
-	cruds event, address
-
-# show todos and contexts
-getTodos = (event) ->
-	address = axios.get '/item'
-	cruds event, address
-
-# show/hide passwords
-hideShow = (event) ->
-	console.log 'hide show fired'
-	if $(@).hasClass 'show'
-		$('.hide-show span').text 'Hide'
-		$('[name="password"]').attr 'type', 'text'
-		$('[name="newPassword"]').attr 'type', 'text'
-		$('.hide-show span').removeClass 'show'
-	else
-		$('.hide-show span').text 'Show'
-		$('[name="password"]').attr 'type', 'password'
-		$('[name="newPassword"]').attr 'type', 'password'
-		$('.hide-show span').addClass 'show'
-
-# change the password fields back to password input type on submit
-hideShowSubmit = ->
-	$('.hide-show span').text('Show').addClass 'show'
-	$('.hide-show').parent().find('[name="password"]').attr 'type','password'
-
-# toggle radio buttons by clicking the div around their labels
-toggleRadios = (event) ->
-	if $(@).hasClass 'checked'
-		$(@).children('input').prop 'checked', false
-		$(@).removeClass 'checked'
-	else
-		$('*').removeClass 'checked' if $('*').hasClass 'checked'
-		$(@).children('input').prop 'checked', true
-		$(@).addClass 'checked'
-
-#apply the proper label to the doneness toggle switch on toggle
-toggleDone = (event) ->
-	if $(@).parent('.done-check').hasClass 'checked1'
-		$(@).parent('.done-check').removeClass 'checked1'
-		$('input[name="done"]').prop 'checked', false
-		$(@).text 'Not Done'
-	else
-		$(@).parent('.done-check').addClass 'checked1'
-		$('input[name="done"]').prop 'checked', true
-		$(@).text 'Done'
+# CRUD operations that submit modal forms and close the modal
+closeAndRefresh = (event, address, modalActions) ->
+	event.preventDefault()
+	$('.fade-and-drop').addClass('.button-click');
+	address
+	.then (result) ->
+		modalActions()
+		console.log result
+		$('#content').html result.data
+		if result.headers.cookie
+			createCookie 'do-it', result.headers.cookie, 3
+	.catch (error) ->
+		console.log error
+		return error

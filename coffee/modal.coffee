@@ -1,4 +1,6 @@
 
+# high-level Modal constructor - modal.coffee
+
 	#define constructor
 Modal = (optionsObj) =>
 
@@ -16,7 +18,7 @@ Modal = (optionsObj) =>
 		minWidth: 0
 		overlay: true
 
-	# #create options by extending defaults with passed in arguments
+	#create options by extending defaults with passed in arguments
 	options: extendDefaults(defaults, optionsObj)
 
 #public methods
@@ -91,160 +93,3 @@ extendDefaults = (sourceOptions, passedOptions) ->
 	for own property of passedOptions
 		sourceCopy[property] = passedOptions[property]
 	return sourceCopy
-
-editItemModal = null
-editContextModal = null
-renameContextModal = null
-changeContextModal = null
-deleteContextModal = null
-addItemModal = null
-settingsModal = null
-#define content for the editItemModal options
-#by getting server-side hbs template
-#then instantiate modal and open
-
-modalCruds = (address, modalActions) ->
-	address
-	.then (data) ->
-		console.log data
-		options =
-			content: data.data
-		console.log options
-		modalActions(options)
-	.catch (error) ->
-		console.log error
-		return error
-
-getItemModalContent = (itemId) ->
-	console.log itemId
-	address = axios.get "/editItemModal/#{itemId}"
-	modalActions = (options) ->
-		editItemModal = new Modal options
-		editItemModal.open()
-	modalCruds address, modalActions
-
-getAddItemModal = ->
-	address = axios.get "/addItemModal"
-	modalActions = (options) ->
-		addItemModal = new Modal options
-		addItemModal.open()
-	modalCruds address, modalActions
-
-postAddItemModal = (event) ->
-	data = formToJSON event.target.elements
-	console.log data
-	address = axios.post '/item', data
-	modalActions = ->
-		addItemModal.close()
-	closeAndRefresh event, address, modalActions
-
-
-getContextModalContent = ->
-	address = axios.get "/editContextModal"
-	modalActions = (options) ->
-		editContextModal = new Modal options
-		editContextModal.open()
-	modalCruds address, modalActions
-
-getRenameContext = ->
-	address = axios.get "/renameContext"
-	modalActions = (options) ->
-		renameContextModal = new Modal options
-		editContextModal.close()
-		renameContextModal.open()
-	modalCruds address, modalActions
-
-getChangeContext = ->
-	address = axios.get "/changeContext"
-	modalActions = (options) ->
-		changeContextModal = new Modal options
-		editContextModal.close()
-		changeContextModal.open()
-	modalCruds address, modalActions
-
-getDeleteContext = ->
-	address = axios.get "/deleteContext"
-	modalActions = (options) ->
-		deleteContextModal = new Modal options
-		editContextModal.close()
-		deleteContextModal.open()
-	modalCruds address, modalActions
-
-	# load settings page from any logged in page with click handler
-getSettings = ->
-	address = axios.get '/user'
-	modalActions = (options) ->
-		settingsModal = new Modal options
-		settingsModal.open()
-	modalCruds address, modalActions
-
-putTodo = (event) ->
-	data = formToJSON event.target.elements
-	address = axios.put "/item", data
-	if !$('[name="ContextId"]').val()
-		$('.original-check').prop 'checked', true
-	modalActions =  ->
-		editItemModal.close()
-	closeAndRefresh event, address, modalActions
-
-deleteTodo = (event) ->
-	data = $("[name='id']").val()
-	address = axios.delete "/item/#{data}"
-	modalActions = ->
-		editItemModal.close()
-	closeAndRefresh event, address, modalActions
-
-# post new contexts from modal with submit handler
-postContexts = (event) ->
-	data = formToJSON event.target.elements
-	address = axios.post '/context', data
-	modalActions = ->
-		editContextModal.close()
-	closeAndRefresh event, address, modalActions
-
-
-putRenameContext = (event) ->
-	data = formToJSON event.target.elements
-	address = axios.put '/renameContext', data
-	modalActions = ->
-		renameContextModal.close()
-	closeAndRefresh event, address, modalActions
-
-putChangeContext = (event) ->
-	data = formToJSON event.target.elements
-	address = axios.put '/changeContext', data
-	modalActions = ->
-		changeContextModal.close()
-	closeAndRefresh event, address, modalActions
-
-deleteContext = (event) ->
-	data = $("[name='contextToDelete']:checked").val()
-	address = axios.delete "/deleteContext/#{data}"
-	modalActions = ->
-		deleteContextModal.close()
-	closeAndRefresh event, address, modalActions
-
-# change email or password from settings page with submit handler
-putSettings = (event) ->
-	hideShowSubmit()
-	$('.hide-show').parent().find('[name="newPassword"]').attr 'type','password'
-	data = formToJSON event.target.elements
-	console.log data
-	address = axios.put '/user', data
-	modalActions = ->
-		settingsModal.close()
-	closeAndRefresh event, address, modalActions
-
-closeAndRefresh = (event, address, modalActions) ->
-	event.preventDefault()
-	$('.fade-and-drop').addClass('.button-click');
-	address
-	.then (result) ->
-		modalActions()
-		console.log result
-		$('#content').html result.data
-		if result.headers.cookie
-			createCookie 'do-it', result.headers.cookie, 3
-	.catch (error) ->
-		console.log error
-		return error

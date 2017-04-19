@@ -17,7 +17,7 @@ var banner = ['/*!\n',
     ''
 ].join('');
 
-// Compile LESS files from /less into /css
+// Compile and minify less
 gulp.task('styles', function() {
   return gulp.src('./less/styles.less')
     .pipe(less())
@@ -29,18 +29,20 @@ gulp.task('styles', function() {
     .pipe(gulp.dest('./public/css'))
 });
 
+// compile and minify coffeescript files
 gulp.task('coffee', function() {
   return gulp.src('./coffee/*.coffee')
     .pipe(coffee({bare: true}))
     .pipe(header(banner, { pkg: pkg }))
-		.pipe(concat('index.js'))
     .pipe(gulp.dest('./src/js'))
+		.pipe(concat('index.js'))
     .pipe(uglify())
     .pipe(header(banner, { pkg: pkg }))
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest('./public/js'))
 });
 
+//watch for new coffeescript and less files
 gulp.task('watch', function() {
   gulp.watch('./coffee/*.coffee', ['coffee']);
   gulp.watch('./less/styles.less', ['styles']);

@@ -7,12 +7,13 @@ const controller = {
 	createContext: (req, res) => {
 		console.log(req.body);
 		const sentCookie = cookieHelpers.readCookie(req, 'do-it');
+		let sessionObj;
 		return models.ConnectSession
 		.findOne({
 			where: { sid: sentCookie }
 		})
 		.then((data) => {
-			const sessionObj = JSON.parse(data.dataValues.data);
+			sessionObj = JSON.parse(data.dataValues.data);
 			return models.Context
 			.findOne({
 				where: { name: req.body.name }
