@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A to-do application written with Nodejs, Handlebars, MySQL, LESS, and more.",
   "main": "server.js",
+	"engines": {
+		"node": "7.8.0",
+		"npm": "4.2.0"
+	},
   "scripts": {
     "test": "mocha"
   },
