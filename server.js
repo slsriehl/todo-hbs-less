@@ -35,8 +35,16 @@ const session 		= require('express-session'),
 			secret 			= require('./config/secret'),
 			modelName		= 'ConnectSession';
 
+const setSecret = (sessionSecret, secret) => {
+	if(sessionSecret) {
+		return sessionSecret;
+	} else {
+		return secret;
+	}
+}
+
 app.use(session({
-  secret: secret,
+  secret: setSecret(process.env.SESSION_SECRET, secret),
   store: new SequelStore(database, {}, modelName),
   resave: true,
   saveUninitialized: true
@@ -55,7 +63,7 @@ app.use(itemRoutes);
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, function () {
-  console.log('express server listening to your mom at port' + PORT);
+  console.log('express server listening to your mom at port ' + PORT);
 });
 
 module.exports = server;
