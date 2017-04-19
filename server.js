@@ -32,19 +32,19 @@ app.set('view engine', 'hbs');
 const session 		= require('express-session'),
 			database 		= require('./models').sequelize,
  			SequelStore	= require('connect-sequelize')(session),
-			secret 			= require('./config/secret'),
 			modelName		= 'ConnectSession';
 
-const setSecret = (sessionSecret, secret) => {
-	if(sessionSecret) {
-		return sessionSecret;
+const setSecret = (secretEnvVar) => {
+	if(secretEnvVar) {
+		return secretEnvVar;
 	} else {
-		return secret;
+		const secretKey = require('./config/secret');
+		return secretKey;
 	}
 }
 
 app.use(session({
-  secret: setSecret(process.env.SESSION_SECRET, secret),
+  secret: setSecret(process.env.SESSION_SECRET),
   store: new SequelStore(database, {}, modelName),
   resave: true,
   saveUninitialized: true
